@@ -15,12 +15,12 @@
 
 ### Layout
 
-- [ ] **LAYO-01**: Base layout with persistent header navigation linking all top-level pages (Home, Blog, Projects, Films, Photos, About)
-- [ ] **LAYO-02**: Minimal footer with email link
-- [ ] **LAYO-03**: Dark mode toggle in header using class strategy, persisted to localStorage
-- [ ] **LAYO-04**: Inline script in `<head>` prevents dark mode flash on page load
-- [ ] **LAYO-05**: Responsive layout — all pages usable on mobile viewports
-- [ ] **LAYO-06**: Brutalist visual aesthetic — raw, expressive typography and unconventional layouts
+- [x] **LAYO-01**: Base layout with persistent header navigation linking all top-level pages (Home, Blog, Projects, Films, Photos, About)
+- [x] **LAYO-02**: Minimal footer with email link
+- [x] **LAYO-03**: Dark mode toggle in header using class strategy, persisted to localStorage
+- [x] **LAYO-04**: Inline script in `<head>` prevents dark mode flash on page load
+- [x] **LAYO-05**: Responsive layout — all pages usable on mobile viewports
+- [x] **LAYO-06**: Brutalist visual aesthetic — raw, expressive typography and unconventional layouts
 
 ### Blog
 
@@ -110,12 +110,12 @@
 | FOUND-03 | Phase 1 | Complete (01-01) |
 | FOUND-04 | Phase 1 | Complete (01-01) |
 | FOUND-05 | Phase 1 | Complete (01-01) |
-| LAYO-01 | Phase 1 | Pending |
-| LAYO-02 | Phase 1 | Pending |
-| LAYO-03 | Phase 1 | Pending |
-| LAYO-04 | Phase 1 | Pending |
-| LAYO-05 | Phase 1 | Pending |
-| LAYO-06 | Phase 1 | Pending |
+| LAYO-01 | Phase 1 | Complete (01-02) |
+| LAYO-02 | Phase 1 | Complete (01-02) |
+| LAYO-03 | Phase 1 | Complete (01-02) |
+| LAYO-04 | Phase 1 | Complete (01-02) |
+| LAYO-05 | Phase 1 | Complete (01-02) |
+| LAYO-06 | Phase 1 | Complete (01-02) |
 | BLOG-01 | Phase 2 | Pending |
 | BLOG-02 | Phase 2 | Pending |
 | BLOG-03 | Phase 2 | Pending |
@@ -148,4 +148,4 @@
 
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-03-31 after roadmap creation*
+*Last updated: 2026-03-31 after plan 01-02 completion*

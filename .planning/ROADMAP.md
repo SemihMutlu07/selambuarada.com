@@ -12,7 +12,7 @@ Three phases take the site from a bare scaffold to a fully deployed personal bra
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation and Layout** - Scaffold, tooling, content schemas, base layout, dark mode
+- [x] **Phase 1: Foundation and Layout** - Scaffold, tooling, content schemas, base layout, dark mode
 - [ ] **Phase 2: Content Sections** - Blog, Projects, Films, and Photos — all content pages live
 - [ ] **Phase 3: Pages and SEO** - Home page, About page, sitemap, and meta tag finalization
 
@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Astro 5 scaffold, Tailwind v4 + MDX tooling, content collection schemas
-- [ ] 01-02-PLAN.md — Base layout with header nav, dark mode toggle, footer, brutalist styling, route stubs
+- [x] 01-02-PLAN.md — Base layout with header nav, dark mode toggle, footer, brutalist styling, route stubs
 
 ### Phase 2: Content Sections
 **Goal**: All four disciplines are publicly accessible — blog posts, project cards, film case studies, and photo sets
@@ -73,6 +73,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation and Layout | 1/2 | In progress | - |
+| 1. Foundation and Layout | 2/2 | Complete | 2026-03-31 |
 | 2. Content Sections | 0/4 | Not started | - |
 | 3. Pages and SEO | 0/1 | Not started | - |

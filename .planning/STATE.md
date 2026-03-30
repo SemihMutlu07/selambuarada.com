@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 ## Current Position
 
 Phase: 1 of 3 (Foundation and Layout)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-03-30 — Plan 01-01 complete (scaffold + content collections)
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-03-31 — Plan 01-02 complete (base layout, dark mode, brutalist stubs)
 
-Progress: [█░░░░░░░░░] 17%
+Progress: [██░░░░░░░░] 33%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 4 min
-- Total execution time: 4 min
+- Total plans completed: 2
+- Average duration: 17 min
+- Total execution time: 34 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 01-foundation-and-layout | 1 | 4 min | 4 min |
+| 01-foundation-and-layout | 2 | 34 min | 17 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (4 min)
+- Last 5 plans: 01-01 (4 min), 01-02 (30 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -48,6 +48,9 @@ Recent decisions affecting current work:
 - Plan 01-01: `@tailwindcss/vite` Vite plugin used (not `@astrojs/tailwind` — that is v3 only)
 - Plan 01-01: `z` imported from `astro/zod`; loaders from `astro/loaders` (not `astro:loaders`)
 - Plan 01-01: `@astrojs/check` installed as devDependency for TypeScript verification
+- Plan 01-02: Hamburger menu chosen over flex-wrap nav on mobile — 6 uppercase bold links wrap awkwardly at 375px
+- Plan 01-02: Dark mode toggle script is bundled (not is:inline); FOUC prevention handled separately in BaseLayout head via is:inline script
+- Plan 01-02: BaseLayout pattern established — every page imports BaseLayout and passes title prop; description is optional
 
 ### Pending Todos
 
@@ -61,6 +64,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30
-Stopped at: Completed 01-01-PLAN.md — Astro 5 scaffold + content collections
+Last session: 2026-03-31
+Stopped at: Completed 01-02-PLAN.md — base layout, dark mode, brutalist route stubs
 Resume file: None
