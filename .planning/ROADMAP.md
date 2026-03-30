@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Astro 5 scaffold, Tailwind v4 + MDX tooling, content collection schemas
+- [x] 01-01-PLAN.md — Astro 5 scaffold, Tailwind v4 + MDX tooling, content collection schemas
 - [ ] 01-02-PLAN.md — Base layout with header nav, dark mode toggle, footer, brutalist styling, route stubs
 
 ### Phase 2: Content Sections
@@ -73,6 +73,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation and Layout | 0/2 | Planning complete | - |
+| 1. Foundation and Layout | 1/2 | In progress | - |
 | 2. Content Sections | 0/4 | Not started | - |
 | 3. Pages and SEO | 0/1 | Not started | - |

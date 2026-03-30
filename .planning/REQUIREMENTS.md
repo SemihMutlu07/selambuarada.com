@@ -7,11 +7,11 @@
 
 ### Foundation
 
-- [ ] **FOUND-01**: Site scaffolded with Astro 5, TypeScript strict mode, Tailwind CSS v4 via `@tailwindcss/vite`
-- [ ] **FOUND-02**: MDX support via `@astrojs/mdx` integration
-- [ ] **FOUND-03**: GSAP installed as dependency (not configured)
-- [ ] **FOUND-04**: Geist font loaded via @fontsource, self-hosted
-- [ ] **FOUND-05**: Content collections defined in `src/content.config.ts` with typed Zod schemas for blog, projects, films, and photosets
+- [x] **FOUND-01**: Site scaffolded with Astro 5, TypeScript strict mode, Tailwind CSS v4 via `@tailwindcss/vite`
+- [x] **FOUND-02**: MDX support via `@astrojs/mdx` integration
+- [x] **FOUND-03**: GSAP installed as dependency (not configured)
+- [x] **FOUND-04**: Geist font loaded via @fontsource, self-hosted
+- [x] **FOUND-05**: Content collections defined in `src/content.config.ts` with typed Zod schemas for blog, projects, films, and photosets
 
 ### Layout
 
@@ -105,11 +105,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | Phase 1 | Pending |
-| FOUND-02 | Phase 1 | Pending |
-| FOUND-03 | Phase 1 | Pending |
-| FOUND-04 | Phase 1 | Pending |
-| FOUND-05 | Phase 1 | Pending |
+| FOUND-01 | Phase 1 | Complete (01-01) |
+| FOUND-02 | Phase 1 | Complete (01-01) |
+| FOUND-03 | Phase 1 | Complete (01-01) |
+| FOUND-04 | Phase 1 | Complete (01-01) |
+| FOUND-05 | Phase 1 | Complete (01-01) |
 | LAYO-01 | Phase 1 | Pending |
 | LAYO-02 | Phase 1 | Pending |
 | LAYO-03 | Phase 1 | Pending |
