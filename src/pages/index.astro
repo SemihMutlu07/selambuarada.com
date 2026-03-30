@@ -1,13 +1,7 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Parker Mutsuz</title>
-  </head>
-  <body class="font-sans">
-    <h1>Site scaffold working</h1>
-  </body>
-</html>
+<BaseLayout title="Parker Mutsuz">
+  <h1 class="text-5xl md:text-7xl font-bold tracking-tight">Parker Mutsuz</h1>
+  <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">Developer. Filmmaker. Photographer.</p>
+</BaseLayout>
