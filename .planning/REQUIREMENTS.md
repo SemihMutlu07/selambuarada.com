@@ -105,47 +105,47 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | — | Pending |
-| FOUND-02 | — | Pending |
-| FOUND-03 | — | Pending |
-| FOUND-04 | — | Pending |
-| FOUND-05 | — | Pending |
-| LAYO-01 | — | Pending |
-| LAYO-02 | — | Pending |
-| LAYO-03 | — | Pending |
-| LAYO-04 | — | Pending |
-| LAYO-05 | — | Pending |
-| LAYO-06 | — | Pending |
-| BLOG-01 | — | Pending |
-| BLOG-02 | — | Pending |
-| BLOG-03 | — | Pending |
-| BLOG-04 | — | Pending |
-| BLOG-05 | — | Pending |
-| BLOG-06 | — | Pending |
-| PROJ-01 | — | Pending |
-| PROJ-02 | — | Pending |
-| PROJ-03 | — | Pending |
-| FILM-01 | — | Pending |
-| FILM-02 | — | Pending |
-| FILM-03 | — | Pending |
-| FILM-04 | — | Pending |
-| FILM-05 | — | Pending |
-| FILM-06 | — | Pending |
-| PHOT-01 | — | Pending |
-| PHOT-02 | — | Pending |
-| PHOT-03 | — | Pending |
-| PHOT-04 | — | Pending |
-| PAGE-01 | — | Pending |
-| PAGE-02 | — | Pending |
-| SEO-01 | — | Pending |
-| SEO-02 | — | Pending |
-| SEO-03 | — | Pending |
+| FOUND-01 | Phase 1 | Pending |
+| FOUND-02 | Phase 1 | Pending |
+| FOUND-03 | Phase 1 | Pending |
+| FOUND-04 | Phase 1 | Pending |
+| FOUND-05 | Phase 1 | Pending |
+| LAYO-01 | Phase 1 | Pending |
+| LAYO-02 | Phase 1 | Pending |
+| LAYO-03 | Phase 1 | Pending |
+| LAYO-04 | Phase 1 | Pending |
+| LAYO-05 | Phase 1 | Pending |
+| LAYO-06 | Phase 1 | Pending |
+| BLOG-01 | Phase 2 | Pending |
+| BLOG-02 | Phase 2 | Pending |
+| BLOG-03 | Phase 2 | Pending |
+| BLOG-04 | Phase 2 | Pending |
+| BLOG-05 | Phase 2 | Pending |
+| BLOG-06 | Phase 2 | Pending |
+| PROJ-01 | Phase 2 | Pending |
+| PROJ-02 | Phase 2 | Pending |
+| PROJ-03 | Phase 2 | Pending |
+| FILM-01 | Phase 2 | Pending |
+| FILM-02 | Phase 2 | Pending |
+| FILM-03 | Phase 2 | Pending |
+| FILM-04 | Phase 2 | Pending |
+| FILM-05 | Phase 2 | Pending |
+| FILM-06 | Phase 2 | Pending |
+| PHOT-01 | Phase 2 | Pending |
+| PHOT-02 | Phase 2 | Pending |
+| PHOT-03 | Phase 2 | Pending |
+| PHOT-04 | Phase 2 | Pending |
+| PAGE-01 | Phase 3 | Pending |
+| PAGE-02 | Phase 3 | Pending |
+| SEO-01 | Phase 3 | Pending |
+| SEO-02 | Phase 3 | Pending |
+| SEO-03 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 35 total
-- Mapped to phases: 0
-- Unmapped: 35
+- Mapped to phases: 35
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-03-31 after initial definition*
+*Last updated: 2026-03-31 after roadmap creation*
