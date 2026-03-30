@@ -1,0 +1,151 @@
+# Requirements: Personal Site
+
+**Defined:** 2026-03-31
+**Core Value:** A single cohesive home that presents all facets of the creator's work — code, films, photos, writing — without privileging one over another.
+
+## v1 Requirements
+
+### Foundation
+
+- [ ] **FOUND-01**: Site scaffolded with Astro 5, TypeScript strict mode, Tailwind CSS v4 via `@tailwindcss/vite`
+- [ ] **FOUND-02**: MDX support via `@astrojs/mdx` integration
+- [ ] **FOUND-03**: GSAP installed as dependency (not configured)
+- [ ] **FOUND-04**: Geist font loaded via @fontsource, self-hosted
+- [ ] **FOUND-05**: Content collections defined in `src/content.config.ts` with typed Zod schemas for blog, projects, films, and photosets
+
+### Layout
+
+- [ ] **LAYO-01**: Base layout with persistent header navigation linking all top-level pages (Home, Blog, Projects, Films, Photos, About)
+- [ ] **LAYO-02**: Minimal footer with email link
+- [ ] **LAYO-03**: Dark mode toggle in header using class strategy, persisted to localStorage
+- [ ] **LAYO-04**: Inline script in `<head>` prevents dark mode flash on page load
+- [ ] **LAYO-05**: Responsive layout — all pages usable on mobile viewports
+- [ ] **LAYO-06**: Brutalist visual aesthetic — raw, expressive typography and unconventional layouts
+
+### Blog
+
+- [ ] **BLOG-01**: Blog index page at `/blog` listing all posts sorted by date
+- [ ] **BLOG-02**: Individual blog post pages at `/blog/[slug]` rendering MDX content
+- [ ] **BLOG-03**: Blog post frontmatter: title, date, description, tags, slug
+- [ ] **BLOG-04**: Tag index page listing all tags with post counts
+- [ ] **BLOG-05**: Tag filter page showing posts for a specific tag
+- [ ] **BLOG-06**: Static OG image per blog post via meta tags
+
+### Projects
+
+- [ ] **PROJ-01**: Projects index page at `/projects` displaying project cards
+- [ ] **PROJ-02**: Project cards show title, tech stack, brief description, and external links
+- [ ] **PROJ-03**: Projects content collection with typed schema
+
+### Films
+
+- [ ] **FILM-01**: Films index page at `/films` listing all film entries
+- [ ] **FILM-02**: Individual film case study pages with embedded video (YouTube/Vimeo)
+- [ ] **FILM-03**: Film case study includes written description/writeup
+- [ ] **FILM-04**: Film case study includes credits section (structured data from frontmatter)
+- [ ] **FILM-05**: Film case study includes behind-the-scenes section
+- [ ] **FILM-06**: Films content collection with typed schema (title, year, role, embed URL, credits array, description)
+
+### Photos
+
+- [ ] **PHOT-01**: Single photo gallery page at `/photos` with all curated sets
+- [ ] **PHOT-02**: Each photo set is an expandable section with title and description
+- [ ] **PHOT-03**: Images optimized via Astro `<Image>` component (src/assets, not public)
+- [ ] **PHOT-04**: Photo sets content collection (JSON) with typed schema
+
+### Pages
+
+- [ ] **PAGE-01**: Home page at `/` with hero section and short intro
+- [ ] **PAGE-02**: About page at `/about` with bio and personal info
+
+### SEO
+
+- [ ] **SEO-01**: `@astrojs/sitemap` integration generating sitemap.xml
+- [ ] **SEO-02**: Meta tags (title, description, OG image) on every page
+- [ ] **SEO-03**: `site` property configured in `astro.config.mjs`
+
+## v2 Requirements
+
+### Animations
+
+- **ANIM-01**: GSAP scroll reveal animations on page sections
+- **ANIM-02**: Page transition animations between routes
+- **ANIM-03**: Hover effects on interactive elements
+
+### Photos
+
+- **PHOT-05**: Lightbox for individual photo viewing
+- **PHOT-06**: Lazy loading with blur-up placeholders for photo sets
+
+### Blog
+
+- **BLOG-07**: Dynamic OG image generation via Satori
+- **BLOG-08**: Reading time estimation on posts
+- **BLOG-09**: Table of contents for long posts
+
+### Projects
+
+- **PROJ-04**: Individual project detail pages with full writeup
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| CMS or database | Content lives in files — MDX and JSON collections |
+| Contact form | Spam magnet, adds backend complexity — use mailto link |
+| Comments on blog | Moderation burden, zero community at launch |
+| Search functionality | Low ROI at personal-site scale; tags handle discovery |
+| Analytics / tracking | Out of scope per project vision |
+| Skill bars / ratings | Universally mocked; list tech in actual projects instead |
+| Loading screens | Adds friction; content-first approach |
+| Sample/placeholder content | Ship with empty collections |
+| Mobile app / PWA | Static web site only |
+
+## Traceability
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| FOUND-01 | — | Pending |
+| FOUND-02 | — | Pending |
+| FOUND-03 | — | Pending |
+| FOUND-04 | — | Pending |
+| FOUND-05 | — | Pending |
+| LAYO-01 | — | Pending |
+| LAYO-02 | — | Pending |
+| LAYO-03 | — | Pending |
+| LAYO-04 | — | Pending |
+| LAYO-05 | — | Pending |
+| LAYO-06 | — | Pending |
+| BLOG-01 | — | Pending |
+| BLOG-02 | — | Pending |
+| BLOG-03 | — | Pending |
+| BLOG-04 | — | Pending |
+| BLOG-05 | — | Pending |
+| BLOG-06 | — | Pending |
+| PROJ-01 | — | Pending |
+| PROJ-02 | — | Pending |
+| PROJ-03 | — | Pending |
+| FILM-01 | — | Pending |
+| FILM-02 | — | Pending |
+| FILM-03 | — | Pending |
+| FILM-04 | — | Pending |
+| FILM-05 | — | Pending |
+| FILM-06 | — | Pending |
+| PHOT-01 | — | Pending |
+| PHOT-02 | — | Pending |
+| PHOT-03 | — | Pending |
+| PHOT-04 | — | Pending |
+| PAGE-01 | — | Pending |
+| PAGE-02 | — | Pending |
+| SEO-01 | — | Pending |
+| SEO-02 | — | Pending |
+| SEO-03 | — | Pending |
+
+**Coverage:**
+- v1 requirements: 35 total
+- Mapped to phases: 0
+- Unmapped: 35
+
+---
+*Requirements defined: 2026-03-31*
+*Last updated: 2026-03-31 after initial definition*
