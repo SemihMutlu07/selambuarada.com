@@ -28,11 +28,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Toggling dark mode persists across page navigation with no visible flash on load
   4. The site renders correctly and is usable on a 375px mobile viewport
   5. Brutalist typography and raw layout aesthetic is established as the visual baseline
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Astro 5 + Tailwind v4 + MDX scaffold and tooling
-- [ ] 01-02: Content collection schemas and base layout with dark mode
+- [ ] 01-01-PLAN.md — Astro 5 scaffold, Tailwind v4 + MDX tooling, content collection schemas
+- [ ] 01-02-PLAN.md — Base layout with header nav, dark mode toggle, footer, brutalist styling, route stubs
 
 ### Phase 2: Content Sections
 **Goal**: All four disciplines are publicly accessible — blog posts, project cards, film case studies, and photo sets
@@ -73,6 +73,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation and Layout | 0/2 | Not started | - |
+| 1. Foundation and Layout | 0/2 | Planning complete | - |
 | 2. Content Sections | 0/4 | Not started | - |
 | 3. Pages and SEO | 0/1 | Not started | - |
