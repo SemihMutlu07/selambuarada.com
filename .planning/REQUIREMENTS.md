@@ -26,7 +26,7 @@
 
 - [ ] **BLOG-01**: Blog index page at `/blog` listing all posts sorted by date
 - [ ] **BLOG-02**: Individual blog post pages at `/blog/[slug]` rendering MDX content
-- [ ] **BLOG-03**: Blog post frontmatter: title, date, description, tags, slug
+- [ ] **BLOG-03**: Blog post frontmatter: title, date, description, tags (Astro 5 uses post.id for URL routing — no slug field)
 - [ ] **BLOG-04**: Tag index page listing all tags with post counts
 - [ ] **BLOG-05**: Tag filter page showing posts for a specific tag
 - [ ] **BLOG-06**: Static OG image per blog post via meta tags
