@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { fetchProjectGraph } from '../../lib/github';
 
+const graph = await fetchProjectGraph();
 const projects = await getCollection('projects');
 ---
 
@@ -9,47 +11,59 @@ const projects = await getCollection('projects');
   <h1 class="text-5xl md:text-7xl font-bold tracking-tight">Projects</h1>
   <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">Software I've built and shipped.</p>
 
-  {projects.length === 0 ? (
-    <p class="mt-12 text-neutral-600 dark:text-neutral-400">No projects yet.</p>
-  ) : (
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-      {projects.map((project) => (
-        <div class="border-2 border-neutral-900 dark:border-neutral-100 p-6">
-          <h2 class="text-2xl font-bold">{project.data.title}</h2>
-          <p class="mt-2 text-neutral-600 dark:text-neutral-400">{project.data.description}</p>
+  <div id="mycelium-container" class="relative mt-12 w-full" style="height: 70vh;">
+    <p id="mycelium-loading" class="absolute inset-0 flex items-center justify-center text-neutral-400 font-mono text-sm">
+      Loading network...
+    </p>
+    <div
+      id="project-tooltip"
+      class="absolute z-10 hidden pointer-events-none px-3 py-2 border-2 border-neutral-900 dark:border-neutral-100 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-mono text-sm max-w-xs"
+    ></div>
+  </div>
 
-          <div class="flex flex-wrap gap-2 mt-4">
-            {project.data.tech.map((item) => (
-              <span class="text-xs font-bold uppercase tracking-wider border border-neutral-400 dark:border-neutral-600 px-2 py-1">
-                {item}
-              </span>
-            ))}
+  <noscript>
+    {projects.length === 0 ? (
+      <p class="mt-12 text-neutral-600 dark:text-neutral-400">No projects yet.</p>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+        {projects.map((project) => (
+          <div class="border-2 border-neutral-900 dark:border-neutral-100 p-6">
+            <h2 class="text-2xl font-bold">{project.data.title}</h2>
+            <p class="mt-2 text-neutral-600 dark:text-neutral-400">{project.data.description}</p>
+            <div class="flex flex-wrap gap-2 mt-4">
+              {project.data.tech.map((item) => (
+                <span class="text-xs font-bold uppercase tracking-wider border border-neutral-400 dark:border-neutral-600 px-2 py-1">
+                  {item}
+                </span>
+              ))}
+            </div>
+            <div class="flex gap-4 mt-4">
+              {project.data.url && (
+                <a href={project.data.url} target="_blank" rel="noopener" class="text-sm font-bold uppercase underline">Visit</a>
+              )}
+              {project.data.github && (
+                <a href={project.data.github} target="_blank" rel="noopener" class="text-sm font-bold uppercase underline">GitHub</a>
+              )}
+            </div>
           </div>
+        ))}
+      </div>
+    )}
+  </noscript>
 
-          <div class="flex gap-4 mt-4">
-            {project.data.url && (
-              <a
-                href={project.data.url}
-                target="_blank"
-                rel="noopener"
-                class="text-sm font-bold uppercase underline"
-              >
-                Visit
-              </a>
-            )}
-            {project.data.github && (
-              <a
-                href={project.data.github}
-                target="_blank"
-                rel="noopener"
-                class="text-sm font-bold uppercase underline"
-              >
-                GitHub
-              </a>
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
-  )}
+  <script type="application/json" id="project-graph-data" set:html={JSON.stringify(graph)} />
+
+  <script>
+    import { initMycelium } from '../../lib/mycelium'
+
+    const container = document.getElementById('mycelium-container')!
+    const tooltip = document.getElementById('project-tooltip')!
+    const dataEl = document.getElementById('project-graph-data')!
+    const data = JSON.parse(dataEl.textContent!)
+
+    const { dispose } = initMycelium(container, tooltip, data)
+    document.getElementById('mycelium-loading')?.remove()
+
+    document.addEventListener('astro:before-swap', () => dispose(), { once: true })
+  </script>
 </BaseLayout>
