@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "id": "sample-short",
+    "title": "Sample Short Film",
+    "year": 2025,
+    "role": "Director / Editor",
+    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "description": "A sample short film entry to verify the films pipeline works. This description would contain the filmmaker's writeup about the project, its inspiration, and the creative process.",
+    "credits": [
+      { "role": "Director", "name": "Sample Creator" },
+      { "role": "Cinematographer", "name": "Sample DP" },
+      { "role": "Editor", "name": "Sample Creator" }
+    ],
+    "bts": "Behind the scenes of this sample project. This section covers the production process, challenges faced, and lessons learned during filming."
+  },
+  {
+    "id": "sample-doc",
+    "title": "Sample Documentary",
+    "year": 2024,
+    "role": "Cinematographer",
+    "embedUrl": "https://player.vimeo.com/video/148751763",
+    "description": "A sample documentary entry demonstrating the Vimeo embed format. No behind-the-scenes section for this entry.",
+    "credits": [
+      { "role": "Director", "name": "Collaborator Name" },
+      { "role": "Cinematographer", "name": "Sample Creator" },
+      { "role": "Sound", "name": "Audio Person" }
+    ]
+  }
+]

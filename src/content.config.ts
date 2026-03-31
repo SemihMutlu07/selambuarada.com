@@ -35,6 +35,7 @@ const films = defineCollection({
       role: z.string(),
       name: z.string(),
     })),
+    bts: z.string().optional(),
   }),
 });
 
