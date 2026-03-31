@@ -39,12 +39,12 @@
 
 ### Films
 
-- [ ] **FILM-01**: Films index page at `/films` listing all film entries
-- [ ] **FILM-02**: Individual film case study pages with embedded video (YouTube/Vimeo)
-- [ ] **FILM-03**: Film case study includes written description/writeup
-- [ ] **FILM-04**: Film case study includes credits section (structured data from frontmatter)
-- [ ] **FILM-05**: Film case study includes behind-the-scenes section
-- [ ] **FILM-06**: Films content collection with typed schema (title, year, role, embed URL, credits array, description)
+- [x] **FILM-01**: Films index page at `/films` listing all film entries
+- [x] **FILM-02**: Individual film case study pages with embedded video (YouTube/Vimeo)
+- [x] **FILM-03**: Film case study includes written description/writeup
+- [x] **FILM-04**: Film case study includes credits section (structured data from frontmatter)
+- [x] **FILM-05**: Film case study includes behind-the-scenes section
+- [x] **FILM-06**: Films content collection with typed schema (title, year, role, embed URL, credits array, description)
 
 ### Photos
 
@@ -125,12 +125,12 @@
 | PROJ-01 | Phase 2 | Pending |
 | PROJ-02 | Phase 2 | Pending |
 | PROJ-03 | Phase 2 | Pending |
-| FILM-01 | Phase 2 | Pending |
-| FILM-02 | Phase 2 | Pending |
-| FILM-03 | Phase 2 | Pending |
-| FILM-04 | Phase 2 | Pending |
-| FILM-05 | Phase 2 | Pending |
-| FILM-06 | Phase 2 | Pending |
+| FILM-01 | Phase 2 | Complete |
+| FILM-02 | Phase 2 | Complete |
+| FILM-03 | Phase 2 | Complete |
+| FILM-04 | Phase 2 | Complete |
+| FILM-05 | Phase 2 | Complete |
+| FILM-06 | Phase 2 | Complete |
 | PHOT-01 | Phase 2 | Pending |
 | PHOT-02 | Phase 2 | Pending |
 | PHOT-03 | Phase 2 | Pending |

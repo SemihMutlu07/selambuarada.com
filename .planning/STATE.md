@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 01-02-PLAN.md — base layout, dark mode, brutalist route stubs
-last_updated: "2026-03-31T00:03:25.892Z"
+stopped_at: Completed 02-03-PLAN.md — films section with video embeds, credits, and conditional BTS
+last_updated: "2026-03-31T08:12:08.345Z"
 last_activity: 2026-03-31 — Plan 01-02 complete (base layout, dark mode, brutalist stubs)
 progress:
   total_phases: 3
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 6
+  completed_plans: 5
   percent: 33
 ---
 
@@ -50,6 +50,8 @@ Progress: [██░░░░░░░░] 33%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 02-content-sections P03 | 1 | 2 tasks | 4 files |
+| Phase 02-content-sections P02 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -67,6 +69,8 @@ Recent decisions affecting current work:
 - Plan 01-02: Hamburger menu chosen over flex-wrap nav on mobile — 6 uppercase bold links wrap awkwardly at 375px
 - Plan 01-02: Dark mode toggle script is bundled (not is:inline); FOUC prevention handled separately in BaseLayout head via is:inline script
 - Plan 01-02: BaseLayout pattern established — every page imports BaseLayout and passes title prop; description is optional
+- [Phase 02-content-sections]: film.id used for getStaticPaths params (not film.slug — slug removed in Astro 5 Content Layer API)
+- [Phase 02-content-sections]: BTS rendered conditionally with {bts && ...} — no separate boolean field needed
 
 ### Pending Todos
 
@@ -80,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-31
-Stopped at: Completed 01-02-PLAN.md — base layout, dark mode, brutalist route stubs
+Last session: 2026-03-31T08:11:49.367Z
+Stopped at: Completed 02-03-PLAN.md — films section with video embeds, credits, and conditional BTS
 Resume file: None
