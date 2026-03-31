@@ -26,10 +26,10 @@
 
 - [ ] **BLOG-01**: Blog index page at `/blog` listing all posts sorted by date
 - [ ] **BLOG-02**: Individual blog post pages at `/blog/[slug]` rendering MDX content
-- [ ] **BLOG-03**: Blog post frontmatter: title, date, description, tags (Astro 5 uses post.id for URL routing — no slug field)
+- [x] **BLOG-03**: Blog post frontmatter: title, date, description, tags (Astro 5 uses post.id for URL routing — no slug field)
 - [ ] **BLOG-04**: Tag index page listing all tags with post counts
 - [ ] **BLOG-05**: Tag filter page showing posts for a specific tag
-- [ ] **BLOG-06**: Static OG image per blog post via meta tags
+- [x] **BLOG-06**: Static OG image per blog post via meta tags
 
 ### Projects
 
@@ -118,10 +118,10 @@
 | LAYO-06 | Phase 1 | Complete (01-02) |
 | BLOG-01 | Phase 2 | Pending |
 | BLOG-02 | Phase 2 | Pending |
-| BLOG-03 | Phase 2 | Pending |
+| BLOG-03 | Phase 2 | Complete |
 | BLOG-04 | Phase 2 | Pending |
 | BLOG-05 | Phase 2 | Pending |
-| BLOG-06 | Phase 2 | Pending |
+| BLOG-06 | Phase 2 | Complete |
 | PROJ-01 | Phase 2 | Complete |
 | PROJ-02 | Phase 2 | Complete |
 | PROJ-03 | Phase 2 | Complete |
