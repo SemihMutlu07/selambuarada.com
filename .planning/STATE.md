@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 02-03-PLAN.md — films section with video embeds, credits, and conditional BTS
-last_updated: "2026-03-31T08:12:08.345Z"
+stopped_at: Completed 02-02-PLAN.md — projects index page with card layout
+last_updated: "2026-03-31T08:12:31.208Z"
 last_activity: 2026-03-31 — Plan 01-02 complete (base layout, dark mode, brutalist stubs)
 progress:
   total_phases: 3
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 33
 ---
 
@@ -52,6 +52,7 @@ Progress: [██░░░░░░░░] 33%
 *Updated after each plan completion*
 | Phase 02-content-sections P03 | 1 | 2 tasks | 4 files |
 | Phase 02-content-sections P02 | 2 | 2 tasks | 2 files |
+| Phase 02-content-sections P04 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Recent decisions affecting current work:
 - Plan 01-02: BaseLayout pattern established — every page imports BaseLayout and passes title prop; description is optional
 - [Phase 02-content-sections]: film.id used for getStaticPaths params (not film.slug — slug removed in Astro 5 Content Layer API)
 - [Phase 02-content-sections]: BTS rendered conditionally with {bts && ...} — no separate boolean field needed
+- [Phase 02-content-sections]: Plan 02-02: JSON array entries in projects.json require explicit id field for Astro file() loader
+- [Phase 02-content-sections]: Plan 02-04: import.meta.glob required for JSON file() loader collections — Astro image() schema helper only works with MDX frontmatter
+- [Phase 02-content-sections]: Plan 02-04: Images stored in src/assets/ (not public/) to enable Astro WebP optimization pipeline; src paths in JSON must match /src/assets/... glob key format
 
 ### Pending Todos
 
@@ -84,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-31T08:11:49.367Z
-Stopped at: Completed 02-03-PLAN.md — films section with video embeds, credits, and conditional BTS
+Last session: 2026-03-31T08:12:16.627Z
+Stopped at: Completed 02-02-PLAN.md — projects index page with card layout
 Resume file: None

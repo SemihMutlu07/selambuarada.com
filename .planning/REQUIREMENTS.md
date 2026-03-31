@@ -33,9 +33,9 @@
 
 ### Projects
 
-- [ ] **PROJ-01**: Projects index page at `/projects` displaying project cards
-- [ ] **PROJ-02**: Project cards show title, tech stack, brief description, and external links
-- [ ] **PROJ-03**: Projects content collection with typed schema
+- [x] **PROJ-01**: Projects index page at `/projects` displaying project cards
+- [x] **PROJ-02**: Project cards show title, tech stack, brief description, and external links
+- [x] **PROJ-03**: Projects content collection with typed schema
 
 ### Films
 
@@ -122,9 +122,9 @@
 | BLOG-04 | Phase 2 | Pending |
 | BLOG-05 | Phase 2 | Pending |
 | BLOG-06 | Phase 2 | Pending |
-| PROJ-01 | Phase 2 | Pending |
-| PROJ-02 | Phase 2 | Pending |
-| PROJ-03 | Phase 2 | Pending |
+| PROJ-01 | Phase 2 | Complete |
+| PROJ-02 | Phase 2 | Complete |
+| PROJ-03 | Phase 2 | Complete |
 | FILM-01 | Phase 2 | Complete |
 | FILM-02 | Phase 2 | Complete |
 | FILM-03 | Phase 2 | Complete |
