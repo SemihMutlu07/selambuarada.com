@@ -1,7 +1,54 @@
 ---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const photosets = await getCollection('photosets');
+
+// Eagerly import all photo assets — Vite resolves at build time
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/photos/**/*.{jpg,jpeg,png,webp}',
+  { eager: true }
+);
 ---
-<BaseLayout title="Photos">
+
+<BaseLayout title="Photos" description="Photography and visual work.">
   <h1 class="text-5xl md:text-7xl font-bold tracking-tight">Photos</h1>
   <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">Photography and visual work.</p>
+
+  {photosets.length === 0 ? (
+    <p class="mt-8 text-neutral-600 dark:text-neutral-400">No photo sets yet.</p>
+  ) : (
+    <div class="mt-12 space-y-4">
+      {photosets.map(set => (
+        <details class="border-2 border-neutral-900 dark:border-neutral-100 group">
+          <summary class="p-6 cursor-pointer font-bold text-xl select-none">
+            {set.data.title}
+            <span class="ml-2 text-sm font-normal text-neutral-500">
+              {set.data.images.length} photos
+            </span>
+          </summary>
+          <div class="p-6 pt-0">
+            <p class="text-neutral-600 dark:text-neutral-400 mb-6">{set.data.description}</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {set.data.images.map(img => {
+                const mod = imageModules[img.src];
+                return mod ? (
+                  <Image
+                    src={mod.default}
+                    alt={img.alt}
+                    class="w-full h-auto"
+                    widths={[400, 800]}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                ) : (
+                  <p class="text-red-500 text-sm">Image not found: {img.src}</p>
+                );
+              })}
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
+  )}
 </BaseLayout>
