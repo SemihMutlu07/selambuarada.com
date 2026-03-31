@@ -1,0 +1,449 @@
+import * as THREE from 'three'
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import type { ProjectGraph, ProjectNode, ProjectEdge } from './github'
+
+// --- Constants ---
+
+const MATURITY_CONFIG = {
+  thriving: { radius: 1.0, opacity: 0.95, emissive: 1.0, pulse: true, pulseSpeed: 0.8, particleSpeed: 0.003 },
+  healthy:  { radius: 0.7, opacity: 0.75, emissive: 0.6, pulse: true, pulseSpeed: 0.4, particleSpeed: 0.002 },
+  dormant:  { radius: 0.4, opacity: 0.45, emissive: 0.3, pulse: false, pulseSpeed: 0, particleSpeed: 0.001 },
+  seedling: { radius: 0.2, opacity: 0.25, emissive: 0.1, pulse: false, pulseSpeed: 0, particleSpeed: 0 },
+} as const
+
+function easeInOut(t: number): number {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+}
+
+function isDarkMode(): boolean {
+  return document.documentElement.classList.contains('dark')
+}
+
+function getBaseColor(): THREE.Color {
+  return isDarkMode() ? new THREE.Color(0xffffff) : new THREE.Color(0x1a1a1a)
+}
+
+// --- Force-directed layout ---
+
+function computeLayout(nodes: ProjectNode[], edges: ProjectEdge[]): THREE.Vector3[] {
+  const positions: THREE.Vector3[] = nodes.map(() =>
+    new THREE.Vector3(
+      (Math.random() - 0.5) * 20,
+      (Math.random() - 0.5) * 20,
+      (Math.random() - 0.5) * 20,
+    ),
+  )
+  const velocities: THREE.Vector3[] = nodes.map(() => new THREE.Vector3())
+
+  const repulsionStrength = 50
+  const springLength = 8
+  const springStrength = 0.05
+  const damping = 0.9
+  const iterations = 200
+
+  for (let iter = 0; iter < iterations; iter++) {
+    // Repulsion (inverse square)
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const diff = new THREE.Vector3().subVectors(positions[i], positions[j])
+        const distSq = Math.max(diff.lengthSq(), 0.01)
+        const force = diff.normalize().multiplyScalar(repulsionStrength / distSq)
+        velocities[i].add(force)
+        velocities[j].sub(force)
+      }
+    }
+
+    // Spring attraction along edges
+    for (const edge of edges) {
+      const diff = new THREE.Vector3().subVectors(positions[edge.target], positions[edge.source])
+      const dist = diff.length()
+      const displacement = dist - springLength
+      const force = diff.normalize().multiplyScalar(displacement * springStrength * edge.weight)
+      velocities[edge.source].add(force)
+      velocities[edge.target].sub(force)
+    }
+
+    // Apply damping + update positions
+    for (let i = 0; i < nodes.length; i++) {
+      velocities[i].multiplyScalar(damping)
+      positions[i].add(velocities[i])
+    }
+  }
+
+  return positions
+}
+
+// --- Main ---
+
+export function initMycelium(
+  container: HTMLElement,
+  tooltip: HTMLElement,
+  data: ProjectGraph,
+): { dispose: () => void } {
+  const { nodes, edges } = data
+  const positions = computeLayout(nodes, edges)
+
+  // Scene setup
+  const scene = new THREE.Scene()
+  const camera = new THREE.PerspectiveCamera(
+    60,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    200,
+  )
+  camera.position.set(0, 0, 35)
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+  renderer.setSize(container.clientWidth, container.clientHeight)
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  container.appendChild(renderer.domElement)
+
+  const controls = new OrbitControls(camera, renderer.domElement)
+  controls.autoRotate = true
+  controls.autoRotateSpeed = 0.3
+  controls.enableDamping = true
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.1)
+  scene.add(ambientLight)
+
+  // --- Build nodes ---
+
+  const sphereGeo = new THREE.SphereGeometry(1, 24, 24)
+  const nodeMeshes: THREE.Mesh[] = []
+  const nodeMaterials: THREE.MeshBasicMaterial[] = []
+
+  for (let i = 0; i < nodes.length; i++) {
+    const cfg = MATURITY_CONFIG[nodes[i].maturity]
+    const baseColor = getBaseColor()
+    const mat = new THREE.MeshBasicMaterial({
+      color: baseColor,
+      transparent: true,
+      opacity: cfg.opacity,
+    })
+    const mesh = new THREE.Mesh(sphereGeo, mat)
+    mesh.position.copy(positions[i])
+    mesh.scale.setScalar(cfg.radius)
+    mesh.userData = { index: i }
+    scene.add(mesh)
+    nodeMeshes.push(mesh)
+    nodeMaterials.push(mat)
+  }
+
+  // --- Build tendrils ---
+
+  interface TendrilData {
+    line: THREE.Line
+    material: THREE.LineBasicMaterial
+    curve: THREE.QuadraticBezierCurve3
+    edge: ProjectEdge
+  }
+
+  const tendrils: TendrilData[] = []
+
+  for (const edge of edges) {
+    const start = positions[edge.source]
+    const end = positions[edge.target]
+    const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5)
+    mid.x += (Math.random() - 0.5) * 3
+    mid.y += (Math.random() - 0.5) * 3
+    mid.z += (Math.random() - 0.5) * 3
+
+    const curve = new THREE.QuadraticBezierCurve3(start.clone(), mid, end.clone())
+    const curvePoints = curve.getPoints(30)
+    const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints)
+
+    const baseColor = getBaseColor()
+    const opacity = Math.min(0.15 + edge.weight * 0.08, 1)
+    const material = new THREE.LineBasicMaterial({
+      color: baseColor,
+      transparent: true,
+      opacity,
+    })
+
+    const line = new THREE.Line(geometry, material)
+    scene.add(line)
+    tendrils.push({ line, material, curve, edge })
+  }
+
+  // --- Build particles ---
+
+  interface ParticleSet {
+    points: THREE.Points
+    material: THREE.PointsMaterial
+    progresses: number[]
+    curve: THREE.QuadraticBezierCurve3
+    speed: number
+  }
+
+  const particleSets: ParticleSet[] = []
+
+  for (const tendril of tendrils) {
+    const sourceSpeed = MATURITY_CONFIG[nodes[tendril.edge.source].maturity].particleSpeed
+    const targetSpeed = MATURITY_CONFIG[nodes[tendril.edge.target].maturity].particleSpeed
+    const speed = Math.max(sourceSpeed, targetSpeed)
+    if (speed === 0) continue
+
+    const count = 3
+    const progresses = Array.from({ length: count }, () => Math.random())
+    const particlePositions = new Float32Array(count * 3)
+
+    for (let i = 0; i < count; i++) {
+      const pt = tendril.curve.getPoint(progresses[i])
+      particlePositions[i * 3] = pt.x
+      particlePositions[i * 3 + 1] = pt.y
+      particlePositions[i * 3 + 2] = pt.z
+    }
+
+    const geo = new THREE.BufferGeometry()
+    geo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3))
+
+    const baseColor = getBaseColor()
+    const mat = new THREE.PointsMaterial({
+      color: baseColor,
+      size: 0.15,
+      transparent: true,
+      opacity: 0.4,
+      sizeAttenuation: true,
+    })
+
+    const points = new THREE.Points(geo, mat)
+    scene.add(points)
+    particleSets.push({ points, material: mat, progresses, curve: tendril.curve, speed })
+  }
+
+  // --- Raycaster / Interaction ---
+
+  const raycaster = new THREE.Raycaster()
+  const mouse = new THREE.Vector2()
+  let hoveredIndex: number | null = null
+  let isAnimatingClick = false
+
+  // Adjacency map for highlight
+  const adjacency = new Map<number, Set<number>>()
+  for (const edge of edges) {
+    if (!adjacency.has(edge.source)) adjacency.set(edge.source, new Set())
+    if (!adjacency.has(edge.target)) adjacency.set(edge.target, new Set())
+    adjacency.get(edge.source)!.add(edge.target)
+    adjacency.get(edge.target)!.add(edge.source)
+  }
+
+  function onPointerMove(event: PointerEvent) {
+    const rect = renderer.domElement.getBoundingClientRect()
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+
+    raycaster.setFromCamera(mouse, camera)
+    const intersects = raycaster.intersectObjects(nodeMeshes)
+
+    if (intersects.length > 0) {
+      const idx = intersects[0].object.userData.index as number
+      hoveredIndex = idx
+      renderer.domElement.style.cursor = 'pointer'
+
+      const node = nodes[idx]
+      tooltip.innerHTML = `
+        <strong>${node.name}</strong><br/>
+        ${node.language ? `<span>${node.language}</span><br/>` : ''}
+        ${node.description ? `<em>${node.description}</em><br/>` : ''}
+        <span style="text-transform:capitalize">${node.maturity}</span>
+      `
+      tooltip.style.left = `${event.clientX - rect.left + 12}px`
+      tooltip.style.top = `${event.clientY - rect.top - 12}px`
+      tooltip.style.display = 'block'
+    } else {
+      hoveredIndex = null
+      renderer.domElement.style.cursor = 'grab'
+      tooltip.style.display = 'none'
+    }
+  }
+
+  function onClick(event: MouseEvent) {
+    if (isAnimatingClick) return
+
+    const rect = renderer.domElement.getBoundingClientRect()
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+
+    raycaster.setFromCamera(mouse, camera)
+    const intersects = raycaster.intersectObjects(nodeMeshes)
+    if (intersects.length === 0) return
+
+    const idx = intersects[0].object.userData.index as number
+    const node = nodes[idx]
+    const targetPos = positions[idx].clone()
+
+    // Lerp camera toward node
+    isAnimatingClick = true
+    const startPos = camera.position.clone()
+    const direction = new THREE.Vector3().subVectors(targetPos, startPos).normalize()
+    const endPos = targetPos.clone().sub(direction.multiplyScalar(5))
+    const duration = 500
+    const startTime = performance.now()
+
+    function animateZoom() {
+      const elapsed = performance.now() - startTime
+      const t = Math.min(elapsed / duration, 1)
+      const e = easeInOut(t)
+      camera.position.lerpVectors(startPos, endPos, e)
+      camera.lookAt(targetPos)
+
+      if (t < 1) {
+        requestAnimationFrame(animateZoom)
+      } else {
+        // Pause then open URL and ease back
+        setTimeout(() => {
+          window.open(node.url, '_blank')
+          const returnStart = performance.now()
+          function animateReturn() {
+            const elapsed2 = performance.now() - returnStart
+            const t2 = Math.min(elapsed2 / duration, 1)
+            const e2 = easeInOut(t2)
+            camera.position.lerpVectors(endPos, startPos, e2)
+            camera.lookAt(new THREE.Vector3(0, 0, 0))
+            if (t2 < 1) {
+              requestAnimationFrame(animateReturn)
+            } else {
+              isAnimatingClick = false
+            }
+          }
+          requestAnimationFrame(animateReturn)
+        }, 300)
+      }
+    }
+    requestAnimationFrame(animateZoom)
+  }
+
+  renderer.domElement.addEventListener('pointermove', onPointerMove)
+  renderer.domElement.addEventListener('click', onClick)
+
+  // --- Dark/light mode observer ---
+
+  function updateColors() {
+    const color = getBaseColor()
+
+    for (const mat of nodeMaterials) {
+      mat.color.copy(color)
+    }
+    for (const tendril of tendrils) {
+      tendril.material.color.copy(color)
+    }
+    for (const ps of particleSets) {
+      ps.material.color.copy(color)
+    }
+  }
+
+  const observer = new MutationObserver(() => {
+    updateColors()
+  })
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  })
+
+  // --- Resize handler ---
+
+  function onResize() {
+    camera.aspect = container.clientWidth / container.clientHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize(container.clientWidth, container.clientHeight)
+  }
+  window.addEventListener('resize', onResize)
+
+  // --- Animation loop ---
+
+  let animFrameId: number
+  const clock = new THREE.Clock()
+
+  function animate() {
+    animFrameId = requestAnimationFrame(animate)
+    const elapsed = clock.getElapsedTime()
+
+    // Pulse nodes
+    for (let i = 0; i < nodes.length; i++) {
+      const cfg = MATURITY_CONFIG[nodes[i].maturity]
+      const mesh = nodeMeshes[i]
+      const isHovered = hoveredIndex === i
+
+      if (cfg.pulse) {
+        const pulseScale = cfg.radius * (1 + Math.sin(elapsed * cfg.pulseSpeed * Math.PI * 2) * 0.08)
+        mesh.scale.setScalar(isHovered ? pulseScale * 1.3 : pulseScale)
+      } else {
+        mesh.scale.setScalar(isHovered ? cfg.radius * 1.3 : cfg.radius)
+      }
+    }
+
+    // Hover dimming
+    if (hoveredIndex !== null) {
+      const connected = adjacency.get(hoveredIndex) ?? new Set()
+      for (let i = 0; i < nodes.length; i++) {
+        const cfg = MATURITY_CONFIG[nodes[i].maturity]
+        if (i === hoveredIndex || connected.has(i)) {
+          nodeMaterials[i].opacity = cfg.opacity
+        } else {
+          nodeMaterials[i].opacity = 0.15
+        }
+      }
+      for (const tendril of tendrils) {
+        const { source, target, weight } = tendril.edge
+        if (source === hoveredIndex || target === hoveredIndex) {
+          tendril.material.opacity = Math.min(0.15 + weight * 0.08, 1)
+        } else {
+          tendril.material.opacity = 0.15
+        }
+      }
+    } else {
+      for (let i = 0; i < nodes.length; i++) {
+        nodeMaterials[i].opacity = MATURITY_CONFIG[nodes[i].maturity].opacity
+      }
+      for (const tendril of tendrils) {
+        tendril.material.opacity = Math.min(0.15 + tendril.edge.weight * 0.08, 1)
+      }
+    }
+
+    // Animate particles
+    for (const ps of particleSets) {
+      const posAttr = ps.points.geometry.getAttribute('position') as THREE.BufferAttribute
+      for (let i = 0; i < ps.progresses.length; i++) {
+        ps.progresses[i] = (ps.progresses[i] + ps.speed) % 1
+        const pt = ps.curve.getPoint(ps.progresses[i])
+        posAttr.setXYZ(i, pt.x, pt.y, pt.z)
+      }
+      posAttr.needsUpdate = true
+    }
+
+    controls.update()
+    renderer.render(scene, camera)
+  }
+
+  animate()
+
+  // --- Dispose ---
+
+  function dispose() {
+    cancelAnimationFrame(animFrameId)
+    renderer.domElement.removeEventListener('pointermove', onPointerMove)
+    renderer.domElement.removeEventListener('click', onClick)
+    window.removeEventListener('resize', onResize)
+    observer.disconnect()
+    controls.dispose()
+    renderer.dispose()
+
+    // Clean up geometries and materials
+    scene.traverse((obj) => {
+      if (obj instanceof THREE.Mesh || obj instanceof THREE.Line || obj instanceof THREE.Points) {
+        obj.geometry.dispose()
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach((m) => m.dispose())
+        } else {
+          obj.material.dispose()
+        }
+      }
+    })
+
+    if (renderer.domElement.parentElement) {
+      renderer.domElement.parentElement.removeChild(renderer.domElement)
+    }
+  }
+
+  return { dispose }
+}
