@@ -1,8 +1,30 @@
+export const LANGUAGE_COLORS: Record<string, string> = {
+  TypeScript: '#3178C6',
+  JavaScript: '#F1E05A',
+  Python: '#3572A5',
+  Go: '#00ADD8',
+  'C#': '#178600',
+  HTML: '#E34C26',
+  CSS: '#563D7C',
+  Rust: '#DEA584',
+  Java: '#B07219',
+  Shell: '#89E051',
+  Dart: '#00B4AB',
+  Kotlin: '#A97BFF',
+  Swift: '#F05138',
+  Ruby: '#CC342D',
+  C: '#555555',
+  'C++': '#F34B7D',
+}
+
+const DEFAULT_COLOR = '#888888'
+
 export interface ProjectNode {
   name: string
   description: string | null
   url: string
   language: string | null
+  color: string
   languages: Record<string, number>
   stars: number
   updatedAt: string
@@ -93,6 +115,7 @@ export async function fetchProjectGraph(): Promise<ProjectGraph> {
         description: repo.description,
         url: repo.html_url,
         language: repo.language,
+        color: (repo.language && LANGUAGE_COLORS[repo.language]) || DEFAULT_COLOR,
         languages,
         stars: repo.stargazers_count,
         updatedAt: repo.updated_at,

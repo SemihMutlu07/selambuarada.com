@@ -5,18 +5,35 @@ import type { ProjectGraph, ProjectNode, ProjectEdge } from './github'
 // --- Constants ---
 
 const MATURITY_CONFIG = {
-  thriving: { radius: 1.0, opacity: 0.95, pulse: true, pulseSpeed: 0.8, particleSpeed: 0.003 },
-  healthy:  { radius: 0.7, opacity: 0.75, pulse: true, pulseSpeed: 0.4, particleSpeed: 0.002 },
-  dormant:  { radius: 0.4, opacity: 0.45, pulse: false, pulseSpeed: 0, particleSpeed: 0.001 },
-  seedling: { radius: 0.2, opacity: 0.25, pulse: false, pulseSpeed: 0, particleSpeed: 0 },
+  thriving: { radius: 1.2, opacity: 1.0, pulse: true, pulseSpeed: 0.8, particleSpeed: 0.003 },
+  healthy:  { radius: 0.85, opacity: 0.9, pulse: true, pulseSpeed: 0.4, particleSpeed: 0.002 },
+  dormant:  { radius: 0.5, opacity: 0.65, pulse: false, pulseSpeed: 0, particleSpeed: 0.001 },
+  seedling: { radius: 0.3, opacity: 0.45, pulse: false, pulseSpeed: 0, particleSpeed: 0 },
 } as const
+
+export interface MyceliumSettings {
+  colorMode: 'language' | 'mono'
+  showLabels: boolean
+}
 
 function easeInOut(t: number): number {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
 }
 
 function tendrilOpacity(weight: number): number {
-  return Math.min(0.15 + weight * 0.08, 1)
+  return Math.min(0.25 + weight * 0.12, 1)
+}
+
+function loadSettings(): MyceliumSettings {
+  try {
+    const raw = localStorage.getItem('mycelium-settings')
+    if (raw) return JSON.parse(raw)
+  } catch { /* ignore */ }
+  return { colorMode: 'language', showLabels: false }
+}
+
+function saveSettings(s: MyceliumSettings) {
+  localStorage.setItem('mycelium-settings', JSON.stringify(s))
 }
 
 function isDarkMode(): boolean {
@@ -83,9 +100,10 @@ export function initMycelium(
   container: HTMLElement,
   tooltip: HTMLElement,
   data: ProjectGraph,
-): { dispose: () => void } {
+): { dispose: () => void; updateSettings: (s: MyceliumSettings) => void } {
   const { nodes, edges } = data
   const positions = computeLayout(nodes, edges)
+  let settings = loadSettings()
 
   // Scene setup
   const scene = new THREE.Scene()
@@ -116,12 +134,35 @@ export function initMycelium(
   const sphereGeo = new THREE.SphereGeometry(1, 24, 24)
   const nodeMeshes: THREE.Mesh[] = []
   const nodeMaterials: THREE.MeshBasicMaterial[] = []
+  const glowSprites: THREE.Sprite[] = []
+  const glowMaterials: THREE.SpriteMaterial[] = []
+  const labelSprites: THREE.Sprite[] = []
+
+  // Glow texture (radial gradient on canvas)
+  const glowCanvas = document.createElement('canvas')
+  glowCanvas.width = 64
+  glowCanvas.height = 64
+  const ctx = glowCanvas.getContext('2d')!
+  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
+  gradient.addColorStop(0, 'rgba(255,255,255,0.6)')
+  gradient.addColorStop(0.4, 'rgba(255,255,255,0.15)')
+  gradient.addColorStop(1, 'rgba(255,255,255,0)')
+  ctx.fillStyle = gradient
+  ctx.fillRect(0, 0, 64, 64)
+  const glowTexture = new THREE.CanvasTexture(glowCanvas)
+
+  function getNodeColor(i: number): THREE.Color {
+    if (settings.colorMode === 'language') {
+      return new THREE.Color(nodes[i].color)
+    }
+    return getBaseColor()
+  }
 
   for (let i = 0; i < nodes.length; i++) {
     const cfg = MATURITY_CONFIG[nodes[i].maturity]
-    const baseColor = getBaseColor()
+    const color = getNodeColor(i)
     const mat = new THREE.MeshBasicMaterial({
-      color: baseColor,
+      color,
       transparent: true,
       opacity: cfg.opacity,
     })
@@ -132,6 +173,41 @@ export function initMycelium(
     scene.add(mesh)
     nodeMeshes.push(mesh)
     nodeMaterials.push(mat)
+
+    // Glow sprite behind node
+    const glowMat = new THREE.SpriteMaterial({
+      map: glowTexture,
+      color,
+      transparent: true,
+      opacity: cfg.opacity * 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    })
+    const glow = new THREE.Sprite(glowMat)
+    glow.position.copy(positions[i])
+    glow.scale.setScalar(cfg.radius * 4)
+    scene.add(glow)
+    glowSprites.push(glow)
+    glowMaterials.push(glowMat)
+
+    // Label sprite (hidden by default)
+    const labelCanvas = document.createElement('canvas')
+    labelCanvas.width = 256
+    labelCanvas.height = 64
+    const lctx = labelCanvas.getContext('2d')!
+    lctx.font = 'bold 24px monospace'
+    lctx.fillStyle = '#ffffff'
+    lctx.textAlign = 'center'
+    lctx.fillText(nodes[i].name, 128, 40)
+    const labelTexture = new THREE.CanvasTexture(labelCanvas)
+    const labelMat = new THREE.SpriteMaterial({ map: labelTexture, transparent: true, opacity: 0.8, depthWrite: false })
+    const label = new THREE.Sprite(labelMat)
+    label.position.copy(positions[i])
+    label.position.y += cfg.radius * 1.8
+    label.scale.set(5, 1.25, 1)
+    label.visible = settings.showLabels
+    scene.add(label)
+    labelSprites.push(label)
   }
 
   // --- Build tendrils ---
@@ -202,13 +278,17 @@ export function initMycelium(
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3))
 
-    const baseColor = getBaseColor()
+    const particleColor = settings.colorMode === 'language'
+      ? new THREE.Color(nodes[tendril.edge.source].color)
+      : getBaseColor()
     const mat = new THREE.PointsMaterial({
-      color: baseColor,
-      size: 0.15,
+      color: particleColor,
+      size: 0.2,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.6,
       sizeAttenuation: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
     })
 
     const points = new THREE.Points(geo, mat)
@@ -336,24 +416,41 @@ export function initMycelium(
   renderer.domElement.addEventListener('pointermove', onPointerMove)
   renderer.domElement.addEventListener('click', onClick)
 
-  // --- Dark/light mode observer ---
+  // --- Color management ---
 
-  function updateColors() {
-    const color = getBaseColor()
-
-    for (const mat of nodeMaterials) {
-      mat.color.copy(color)
+  function applyColors() {
+    for (let i = 0; i < nodes.length; i++) {
+      const color = getNodeColor(i)
+      nodeMaterials[i].color.copy(color)
+      glowMaterials[i].color.copy(color)
     }
+    const tendrilColor = getBaseColor()
     for (const tendril of tendrils) {
-      tendril.material.color.copy(color)
+      tendril.material.color.copy(tendrilColor)
     }
-    for (const ps of particleSets) {
-      ps.material.color.copy(color)
+    for (let pi = 0; pi < particleSets.length; pi++) {
+      const ps = particleSets[pi]
+      if (settings.colorMode === 'language') {
+        // Find the source edge to get node color
+        const edge = tendrils[pi]?.edge
+        if (edge) ps.material.color.copy(new THREE.Color(nodes[edge.source].color))
+      } else {
+        ps.material.color.copy(getBaseColor())
+      }
+    }
+    for (const label of labelSprites) {
+      label.visible = settings.showLabels
     }
   }
 
+  function updateSettings(newSettings: MyceliumSettings) {
+    settings = newSettings
+    saveSettings(settings)
+    applyColors()
+  }
+
   const observer = new MutationObserver(() => {
-    updateColors()
+    applyColors()
   })
   observer.observe(document.documentElement, {
     attributes: true,
@@ -400,7 +497,7 @@ export function initMycelium(
         if (i === hoveredIndex || connected.has(i)) {
           nodeMaterials[i].opacity = cfg.opacity
         } else {
-          nodeMaterials[i].opacity = 0.15
+          nodeMaterials[i].opacity = 0.08
         }
       }
       for (const tendril of tendrils) {
@@ -408,7 +505,7 @@ export function initMycelium(
         if (source === hoveredIndex || target === hoveredIndex) {
           tendril.material.opacity = tendrilOpacity(weight)
         } else {
-          tendril.material.opacity = 0.15
+          tendril.material.opacity = 0.05
         }
       }
     } else {
@@ -465,5 +562,5 @@ export function initMycelium(
     }
   }
 
-  return { dispose }
+  return { dispose, updateSettings }
 }
