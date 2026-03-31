@@ -97,9 +97,10 @@ export function initMycelium(
   )
   camera.position.set(0, 0, 35)
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+  const isMobile = window.innerWidth < 768
+  const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true })
   renderer.setSize(container.clientWidth, container.clientHeight)
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2))
   container.appendChild(renderer.domElement)
 
   const controls = new OrbitControls(camera, renderer.domElement)
