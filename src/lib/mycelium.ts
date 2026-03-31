@@ -5,14 +5,18 @@ import type { ProjectGraph, ProjectNode, ProjectEdge } from './github'
 // --- Constants ---
 
 const MATURITY_CONFIG = {
-  thriving: { radius: 1.0, opacity: 0.95, emissive: 1.0, pulse: true, pulseSpeed: 0.8, particleSpeed: 0.003 },
-  healthy:  { radius: 0.7, opacity: 0.75, emissive: 0.6, pulse: true, pulseSpeed: 0.4, particleSpeed: 0.002 },
-  dormant:  { radius: 0.4, opacity: 0.45, emissive: 0.3, pulse: false, pulseSpeed: 0, particleSpeed: 0.001 },
-  seedling: { radius: 0.2, opacity: 0.25, emissive: 0.1, pulse: false, pulseSpeed: 0, particleSpeed: 0 },
+  thriving: { radius: 1.0, opacity: 0.95, pulse: true, pulseSpeed: 0.8, particleSpeed: 0.003 },
+  healthy:  { radius: 0.7, opacity: 0.75, pulse: true, pulseSpeed: 0.4, particleSpeed: 0.002 },
+  dormant:  { radius: 0.4, opacity: 0.45, pulse: false, pulseSpeed: 0, particleSpeed: 0.001 },
+  seedling: { radius: 0.2, opacity: 0.25, pulse: false, pulseSpeed: 0, particleSpeed: 0 },
 } as const
 
 function easeInOut(t: number): number {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+}
+
+function tendrilOpacity(weight: number): number {
+  return Math.min(0.15 + weight * 0.08, 1)
 }
 
 function isDarkMode(): boolean {
@@ -153,7 +157,7 @@ export function initMycelium(
     const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints)
 
     const baseColor = getBaseColor()
-    const opacity = Math.min(0.15 + edge.weight * 0.08, 1)
+    const opacity = tendrilOpacity(edge.weight)
     const material = new THREE.LineBasicMaterial({
       color: baseColor,
       transparent: true,
@@ -241,12 +245,27 @@ export function initMycelium(
       renderer.domElement.style.cursor = 'pointer'
 
       const node = nodes[idx]
-      tooltip.innerHTML = `
-        <strong>${node.name}</strong><br/>
-        ${node.language ? `<span>${node.language}</span><br/>` : ''}
-        ${node.description ? `<em>${node.description}</em><br/>` : ''}
-        <span style="text-transform:capitalize">${node.maturity}</span>
-      `
+      tooltip.textContent = ''
+      const nameEl = document.createElement('strong')
+      nameEl.textContent = node.name
+      tooltip.appendChild(nameEl)
+      if (node.language) {
+        tooltip.appendChild(document.createElement('br'))
+        const langEl = document.createElement('span')
+        langEl.textContent = node.language
+        tooltip.appendChild(langEl)
+      }
+      if (node.description) {
+        tooltip.appendChild(document.createElement('br'))
+        const descEl = document.createElement('em')
+        descEl.textContent = node.description.length > 80 ? node.description.slice(0, 77) + '...' : node.description
+        tooltip.appendChild(descEl)
+      }
+      tooltip.appendChild(document.createElement('br'))
+      const matEl = document.createElement('span')
+      matEl.style.textTransform = 'capitalize'
+      matEl.textContent = node.maturity
+      tooltip.appendChild(matEl)
       tooltip.style.left = `${event.clientX - rect.left + 12}px`
       tooltip.style.top = `${event.clientY - rect.top - 12}px`
       tooltip.style.display = 'block'
@@ -352,11 +371,11 @@ export function initMycelium(
   // --- Animation loop ---
 
   let animFrameId: number
-  const clock = new THREE.Clock()
+  const startTime = performance.now()
 
   function animate() {
     animFrameId = requestAnimationFrame(animate)
-    const elapsed = clock.getElapsedTime()
+    const elapsed = (performance.now() - startTime) / 1000
 
     // Pulse nodes
     for (let i = 0; i < nodes.length; i++) {
@@ -386,7 +405,7 @@ export function initMycelium(
       for (const tendril of tendrils) {
         const { source, target, weight } = tendril.edge
         if (source === hoveredIndex || target === hoveredIndex) {
-          tendril.material.opacity = Math.min(0.15 + weight * 0.08, 1)
+          tendril.material.opacity = tendrilOpacity(weight)
         } else {
           tendril.material.opacity = 0.15
         }
@@ -396,7 +415,7 @@ export function initMycelium(
         nodeMaterials[i].opacity = MATURITY_CONFIG[nodes[i].maturity].opacity
       }
       for (const tendril of tendrils) {
-        tendril.material.opacity = Math.min(0.15 + tendril.edge.weight * 0.08, 1)
+        tendril.material.opacity = tendrilOpacity(tendril.edge.weight)
       }
     }
 
