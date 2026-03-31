@@ -44,13 +44,13 @@ Plans:
   3. Visiting `/projects` shows project cards with tech stack, description, and external links
   4. Visiting `/films` lists all films; clicking one loads a full case study with embedded video, written description, credits section, and behind-the-scenes section
   5. Visiting `/photos` shows all curated photo sets as expandable sections with optimized images
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: Blog — index, post pages, tag system, OG meta
-- [ ] 02-02: Projects — cards page and content collection
-- [ ] 02-03: Films — index, case study pages, video embed, credits, BTS
-- [ ] 02-04: Photos — single gallery page with expandable sets and optimized images
+- [ ] 02-01-PLAN.md — Blog index, post pages, tag system, OG meta infrastructure
+- [ ] 02-02-PLAN.md — Projects cards page with seed data
+- [ ] 02-03-PLAN.md — Films index, case study pages with video embed, credits, BTS
+- [ ] 02-04-PLAN.md — Photos gallery with expandable sets and optimized images
 
 ### Phase 3: Pages and SEO
 **Goal**: The site is complete and discoverable — home page, about page, sitemap, and meta tags on every page
