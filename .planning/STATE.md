@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: "Completed 02-05-PLAN.md — fix broken og:image and correct stale BLOG-03 requirement"
-last_updated: "2026-03-31T08:44:45.811Z"
+stopped_at: Completed 03-01-PLAN.md — sitemap integration, home page hero, about bio, full SEO coverage
+last_updated: "2026-03-31T13:07:14.182Z"
 last_activity: 2026-03-31 — Plan 01-02 complete (base layout, dark mode, brutalist stubs)
 progress:
   total_phases: 3
-  completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  completed_phases: 3
+  total_plans: 8
+  completed_plans: 8
   percent: 33
 ---
 
@@ -54,6 +54,7 @@ Progress: [██░░░░░░░░] 33%
 | Phase 02-content-sections P02 | 2 | 2 tasks | 2 files |
 | Phase 02-content-sections P04 | 2 | 2 tasks | 3 files |
 | Phase 02-content-sections P05 | 1 | 1 tasks | 2 files |
+| Phase 03-pages-and-seo P01 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,8 @@ Recent decisions affecting current work:
 - [Phase 02-content-sections]: Plan 02-04: import.meta.glob required for JSON file() loader collections — Astro image() schema helper only works with MDX frontmatter
 - [Phase 02-content-sections]: Plan 02-04: Images stored in src/assets/ (not public/) to enable Astro WebP optimization pipeline; src paths in JSON must match /src/assets/... glob key format
 - [Phase 02-content-sections]: Plan 02-05: Removed per-post ogImage override from [slug].astro — BaseLayout /og-image.png default is v1 strategy; BLOG-03 requirement corrected to remove slug field reference
+- [Phase 03-pages-and-seo]: Plan 03-01: site URL set without trailing slash — Astro double-slash in sitemap otherwise
+- [Phase 03-pages-and-seo]: Plan 03-01: Home page is fully static, no getCollection() — works with empty collections
 
 ### Pending Todos
 
@@ -90,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-31T08:41:01.996Z
-Stopped at: Completed 02-05-PLAN.md — fix broken og:image and correct stale BLOG-03 requirement
+Last session: 2026-03-31T13:07:14.178Z
+Stopped at: Completed 03-01-PLAN.md — sitemap integration, home page hero, about bio, full SEO coverage
 Resume file: None

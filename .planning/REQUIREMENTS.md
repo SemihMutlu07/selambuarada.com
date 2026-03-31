@@ -55,14 +55,14 @@
 
 ### Pages
 
-- [ ] **PAGE-01**: Home page at `/` with hero section and short intro
-- [ ] **PAGE-02**: About page at `/about` with bio and personal info
+- [x] **PAGE-01**: Home page at `/` with hero section and short intro
+- [x] **PAGE-02**: About page at `/about` with bio and personal info
 
 ### SEO
 
-- [ ] **SEO-01**: `@astrojs/sitemap` integration generating sitemap.xml
-- [ ] **SEO-02**: Meta tags (title, description, OG image) on every page
-- [ ] **SEO-03**: `site` property configured in `astro.config.mjs`
+- [x] **SEO-01**: `@astrojs/sitemap` integration generating sitemap.xml
+- [x] **SEO-02**: Meta tags (title, description, OG image) on every page
+- [x] **SEO-03**: `site` property configured in `astro.config.mjs`
 
 ## v2 Requirements
 
@@ -135,11 +135,11 @@
 | PHOT-02 | Phase 2 | Complete |
 | PHOT-03 | Phase 2 | Complete |
 | PHOT-04 | Phase 2 | Complete |
-| PAGE-01 | Phase 3 | Pending |
-| PAGE-02 | Phase 3 | Pending |
-| SEO-01 | Phase 3 | Pending |
-| SEO-02 | Phase 3 | Pending |
-| SEO-03 | Phase 3 | Pending |
+| PAGE-01 | Phase 3 | Complete |
+| PAGE-02 | Phase 3 | Complete |
+| SEO-01 | Phase 3 | Complete |
+| SEO-02 | Phase 3 | Complete |
+| SEO-03 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 35 total

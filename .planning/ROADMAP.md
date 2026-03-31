@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation and Layout** - Scaffold, tooling, content schemas, base layout, dark mode
 - [ ] **Phase 2: Content Sections** - Blog, Projects, Films, and Photos — all content pages live
-- [ ] **Phase 3: Pages and SEO** - Home page, About page, sitemap, and meta tag finalization
+- [x] **Phase 3: Pages and SEO** - Home page, About page, sitemap, and meta tag finalization (completed 2026-03-31)
 
 ## Phase Details
 
@@ -76,4 +76,4 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. Foundation and Layout | 2/2 | Complete | 2026-03-31 |
 | 2. Content Sections | 4/5 | Gap closure pending | - |
-| 3. Pages and SEO | 0/1 | Not started | - |
+| 3. Pages and SEO | 1/1 | Complete   | 2026-03-31 |
