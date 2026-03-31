@@ -1,331 +1,300 @@
-import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import type { ProjectGraph, ProjectNode, ProjectEdge } from './github'
+import {
+  forceSimulation,
+  forceLink,
+  forceManyBody,
+  forceCenter,
+  forceCollide,
+  type SimulationNodeDatum,
+  type SimulationLinkDatum,
+} from 'd3-force'
+import type { ProjectGraph, ProjectNode } from './github'
 
-// --- Constants ---
+// ── Types ──────────────────────────────────────────────
 
-const MATURITY_CONFIG = {
-  thriving: { radius: 1.2, opacity: 1.0, pulse: true, pulseSpeed: 0.8, particleSpeed: 0.003 },
-  healthy:  { radius: 0.85, opacity: 0.9, pulse: true, pulseSpeed: 0.4, particleSpeed: 0.002 },
-  dormant:  { radius: 0.5, opacity: 0.65, pulse: false, pulseSpeed: 0, particleSpeed: 0.001 },
-  seedling: { radius: 0.3, opacity: 0.45, pulse: false, pulseSpeed: 0, particleSpeed: 0 },
-} as const
+interface GraphNode extends SimulationNodeDatum {
+  index: number
+  node: ProjectNode
+  radius: number
+  opacity: number
+}
+
+interface GraphLink extends SimulationLinkDatum<GraphNode> {
+  weight: number
+}
 
 export interface MyceliumSettings {
   colorMode: 'language' | 'mono'
   showLabels: boolean
 }
 
-function easeInOut(t: number): number {
-  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
-}
+// ── Constants ──────────────────────────────────────────
 
-function tendrilOpacity(weight: number): number {
-  return Math.min(0.25 + weight * 0.12, 1)
-}
+const MATURITY = {
+  thriving: { radius: 28, opacity: 1.0, glowRadius: 50, pulseAmp: 3 },
+  healthy:  { radius: 20, opacity: 0.9, glowRadius: 36, pulseAmp: 2 },
+  dormant:  { radius: 14, opacity: 0.7, glowRadius: 24, pulseAmp: 0 },
+  seedling: { radius: 9,  opacity: 0.5, glowRadius: 14, pulseAmp: 0 },
+} as const
+
+// ── Helpers ────────────────────────────────────────────
 
 function loadSettings(): MyceliumSettings {
   try {
     const raw = localStorage.getItem('mycelium-settings')
     if (raw) return JSON.parse(raw)
   } catch { /* ignore */ }
-  return { colorMode: 'language', showLabels: false }
+  return { colorMode: 'language', showLabels: true }
 }
 
 function saveSettings(s: MyceliumSettings) {
   localStorage.setItem('mycelium-settings', JSON.stringify(s))
 }
 
-function isDarkMode(): boolean {
+function isDark(): boolean {
   return document.documentElement.classList.contains('dark')
 }
 
-function getBaseColor(): THREE.Color {
-  return isDarkMode() ? new THREE.Color(0xffffff) : new THREE.Color(0x1a1a1a)
+function monoColor(): string {
+  return isDark() ? '#ffffff' : '#1a1a1a'
 }
 
-// --- Force-directed layout ---
-
-function computeLayout(nodes: ProjectNode[], edges: ProjectEdge[]): THREE.Vector3[] {
-  const positions: THREE.Vector3[] = nodes.map(() =>
-    new THREE.Vector3(
-      (Math.random() - 0.5) * 20,
-      (Math.random() - 0.5) * 20,
-      (Math.random() - 0.5) * 20,
-    ),
-  )
-  const velocities: THREE.Vector3[] = nodes.map(() => new THREE.Vector3())
-
-  const repulsionStrength = 50
-  const springLength = 8
-  const springStrength = 0.05
-  const damping = 0.9
-  const iterations = 200
-
-  for (let iter = 0; iter < iterations; iter++) {
-    // Repulsion (inverse square)
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const diff = new THREE.Vector3().subVectors(positions[i], positions[j])
-        const distSq = Math.max(diff.lengthSq(), 0.01)
-        const force = diff.normalize().multiplyScalar(repulsionStrength / distSq)
-        velocities[i].add(force)
-        velocities[j].sub(force)
-      }
-    }
-
-    // Spring attraction along edges
-    for (const edge of edges) {
-      const diff = new THREE.Vector3().subVectors(positions[edge.target], positions[edge.source])
-      const dist = diff.length()
-      const displacement = dist - springLength
-      const force = diff.normalize().multiplyScalar(displacement * springStrength * edge.weight)
-      velocities[edge.source].add(force)
-      velocities[edge.target].sub(force)
-    }
-
-    // Apply damping + update positions
-    for (let i = 0; i < nodes.length; i++) {
-      velocities[i].multiplyScalar(damping)
-      positions[i].add(velocities[i])
-    }
-  }
-
-  return positions
+function bgColor(): string {
+  return isDark() ? '#0a0a0a' : '#ffffff'
 }
 
-// --- Main ---
+// ── Main ───────────────────────────────────────────────
 
 export function initMycelium(
   container: HTMLElement,
   tooltip: HTMLElement,
   data: ProjectGraph,
 ): { dispose: () => void; updateSettings: (s: MyceliumSettings) => void } {
-  const { nodes, edges } = data
-  const positions = computeLayout(nodes, edges)
   let settings = loadSettings()
-
-  // Scene setup
-  const scene = new THREE.Scene()
-  const camera = new THREE.PerspectiveCamera(
-    60,
-    container.clientWidth / container.clientHeight,
-    0.1,
-    200,
-  )
-  camera.position.set(0, 0, 35)
-
-  const isMobile = window.innerWidth < 768
-  const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true })
-  renderer.setSize(container.clientWidth, container.clientHeight)
-  renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2))
-  container.appendChild(renderer.domElement)
-
-  const controls = new OrbitControls(camera, renderer.domElement)
-  controls.autoRotate = true
-  controls.autoRotateSpeed = 0.3
-  controls.enableDamping = true
-
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.1)
-  scene.add(ambientLight)
-
-  // --- Build nodes ---
-
-  const sphereGeo = new THREE.SphereGeometry(1, 24, 24)
-  const nodeMeshes: THREE.Mesh[] = []
-  const nodeMaterials: THREE.MeshBasicMaterial[] = []
-  const glowSprites: THREE.Sprite[] = []
-  const glowMaterials: THREE.SpriteMaterial[] = []
-  const labelSprites: THREE.Sprite[] = []
-
-  // Glow texture (radial gradient on canvas)
-  const glowCanvas = document.createElement('canvas')
-  glowCanvas.width = 64
-  glowCanvas.height = 64
-  const ctx = glowCanvas.getContext('2d')!
-  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32)
-  gradient.addColorStop(0, 'rgba(255,255,255,0.6)')
-  gradient.addColorStop(0.4, 'rgba(255,255,255,0.15)')
-  gradient.addColorStop(1, 'rgba(255,255,255,0)')
-  ctx.fillStyle = gradient
-  ctx.fillRect(0, 0, 64, 64)
-  const glowTexture = new THREE.CanvasTexture(glowCanvas)
-
-  function getNodeColor(i: number): THREE.Color {
-    if (settings.colorMode === 'language') {
-      return new THREE.Color(nodes[i].color)
-    }
-    return getBaseColor()
-  }
-
-  for (let i = 0; i < nodes.length; i++) {
-    const cfg = MATURITY_CONFIG[nodes[i].maturity]
-    const color = getNodeColor(i)
-    const mat = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: cfg.opacity,
-    })
-    const mesh = new THREE.Mesh(sphereGeo, mat)
-    mesh.position.copy(positions[i])
-    mesh.scale.setScalar(cfg.radius)
-    mesh.userData = { index: i }
-    scene.add(mesh)
-    nodeMeshes.push(mesh)
-    nodeMaterials.push(mat)
-
-    // Glow sprite behind node
-    const glowMat = new THREE.SpriteMaterial({
-      map: glowTexture,
-      color,
-      transparent: true,
-      opacity: cfg.opacity * 0.5,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    })
-    const glow = new THREE.Sprite(glowMat)
-    glow.position.copy(positions[i])
-    glow.scale.setScalar(cfg.radius * 4)
-    scene.add(glow)
-    glowSprites.push(glow)
-    glowMaterials.push(glowMat)
-
-    // Label sprite (hidden by default)
-    const labelCanvas = document.createElement('canvas')
-    labelCanvas.width = 256
-    labelCanvas.height = 64
-    const lctx = labelCanvas.getContext('2d')!
-    lctx.font = 'bold 24px monospace'
-    lctx.fillStyle = '#ffffff'
-    lctx.textAlign = 'center'
-    lctx.fillText(nodes[i].name, 128, 40)
-    const labelTexture = new THREE.CanvasTexture(labelCanvas)
-    const labelMat = new THREE.SpriteMaterial({ map: labelTexture, transparent: true, opacity: 0.8, depthWrite: false })
-    const label = new THREE.Sprite(labelMat)
-    label.position.copy(positions[i])
-    label.position.y += cfg.radius * 1.8
-    label.scale.set(5, 1.25, 1)
-    label.visible = settings.showLabels
-    scene.add(label)
-    labelSprites.push(label)
-  }
-
-  // --- Build tendrils ---
-
-  interface TendrilData {
-    line: THREE.Line
-    material: THREE.LineBasicMaterial
-    curve: THREE.QuadraticBezierCurve3
-    edge: ProjectEdge
-  }
-
-  const tendrils: TendrilData[] = []
-
-  for (const edge of edges) {
-    const start = positions[edge.source]
-    const end = positions[edge.target]
-    const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5)
-    mid.x += (Math.random() - 0.5) * 3
-    mid.y += (Math.random() - 0.5) * 3
-    mid.z += (Math.random() - 0.5) * 3
-
-    const curve = new THREE.QuadraticBezierCurve3(start.clone(), mid, end.clone())
-    const curvePoints = curve.getPoints(30)
-    const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints)
-
-    const baseColor = getBaseColor()
-    const opacity = tendrilOpacity(edge.weight)
-    const material = new THREE.LineBasicMaterial({
-      color: baseColor,
-      transparent: true,
-      opacity,
-    })
-
-    const line = new THREE.Line(geometry, material)
-    scene.add(line)
-    tendrils.push({ line, material, curve, edge })
-  }
-
-  // --- Build particles ---
-
-  interface ParticleSet {
-    points: THREE.Points
-    material: THREE.PointsMaterial
-    progresses: number[]
-    curve: THREE.QuadraticBezierCurve3
-    speed: number
-  }
-
-  const particleSets: ParticleSet[] = []
-
-  for (const tendril of tendrils) {
-    const sourceSpeed = MATURITY_CONFIG[nodes[tendril.edge.source].maturity].particleSpeed
-    const targetSpeed = MATURITY_CONFIG[nodes[tendril.edge.target].maturity].particleSpeed
-    const speed = Math.max(sourceSpeed, targetSpeed)
-    if (speed === 0) continue
-
-    const count = 3
-    const progresses = Array.from({ length: count }, () => Math.random())
-    const particlePositions = new Float32Array(count * 3)
-
-    for (let i = 0; i < count; i++) {
-      const pt = tendril.curve.getPoint(progresses[i])
-      particlePositions[i * 3] = pt.x
-      particlePositions[i * 3 + 1] = pt.y
-      particlePositions[i * 3 + 2] = pt.z
-    }
-
-    const geo = new THREE.BufferGeometry()
-    geo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3))
-
-    const particleColor = settings.colorMode === 'language'
-      ? new THREE.Color(nodes[tendril.edge.source].color)
-      : getBaseColor()
-    const mat = new THREE.PointsMaterial({
-      color: particleColor,
-      size: 0.2,
-      transparent: true,
-      opacity: 0.6,
-      sizeAttenuation: true,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    })
-
-    const points = new THREE.Points(geo, mat)
-    scene.add(points)
-    particleSets.push({ points, material: mat, progresses, curve: tendril.curve, speed })
-  }
-
-  // --- Raycaster / Interaction ---
-
-  const raycaster = new THREE.Raycaster()
-  const mouse = new THREE.Vector2()
+  let dpr = Math.min(window.devicePixelRatio, 2)
+  let width = container.clientWidth
+  let height = container.clientHeight
   let hoveredIndex: number | null = null
-  let isAnimatingClick = false
+  let animId: number
 
-  // Adjacency map for highlight
+  // ── Canvas setup ───────────────────────────────────
+  const canvas = document.createElement('canvas')
+  canvas.style.width = '100%'
+  canvas.style.height = '100%'
+  canvas.style.display = 'block'
+  canvas.style.cursor = 'grab'
+  container.appendChild(canvas)
+  const ctx = canvas.getContext('2d')!
+
+  function resizeCanvas() {
+    width = container.clientWidth
+    height = container.clientHeight
+    dpr = Math.min(window.devicePixelRatio, 2)
+    canvas.width = width * dpr
+    canvas.height = height * dpr
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  }
+  resizeCanvas()
+
+  // ── Build graph data ───────────────────────────────
+  const nodes: GraphNode[] = data.nodes.map((n, i) => {
+    const cfg = MATURITY[n.maturity]
+    return {
+      index: i,
+      node: n,
+      radius: cfg.radius,
+      opacity: cfg.opacity,
+      x: width / 2 + (Math.random() - 0.5) * 100,
+      y: height / 2 + (Math.random() - 0.5) * 100,
+    }
+  })
+
+  const links: GraphLink[] = data.edges.map((e) => ({
+    source: nodes[e.source],
+    target: nodes[e.target],
+    weight: e.weight,
+  }))
+
+  // ── Adjacency for hover ────────────────────────────
   const adjacency = new Map<number, Set<number>>()
-  for (const edge of edges) {
-    if (!adjacency.has(edge.source)) adjacency.set(edge.source, new Set())
-    if (!adjacency.has(edge.target)) adjacency.set(edge.target, new Set())
-    adjacency.get(edge.source)!.add(edge.target)
-    adjacency.get(edge.target)!.add(edge.source)
+  for (const e of data.edges) {
+    if (!adjacency.has(e.source)) adjacency.set(e.source, new Set())
+    if (!adjacency.has(e.target)) adjacency.set(e.target, new Set())
+    adjacency.get(e.source)!.add(e.target)
+    adjacency.get(e.target)!.add(e.source)
+  }
+
+  // ── D3 force simulation ────────────────────────────
+  const simulation = forceSimulation(nodes)
+    .force('link', forceLink<GraphNode, GraphLink>(links)
+      .distance(120)
+      .strength((d) => 0.3 * d.weight))
+    .force('charge', forceManyBody().strength(-400))
+    .force('center', forceCenter(width / 2, height / 2))
+    .force('collide', forceCollide<GraphNode>().radius((d) => d.radius + 8))
+    .alphaDecay(0.02)
+    .on('tick', () => {}) // we draw in our own loop
+
+  // Let simulation settle
+  for (let i = 0; i < 200; i++) simulation.tick()
+  simulation.stop()
+
+  // ── Color helpers ──────────────────────────────────
+  function nodeColor(i: number, alpha = 1): string {
+    if (settings.colorMode === 'language') {
+      const hex = nodes[i].node.color
+      const r = parseInt(hex.slice(1, 3), 16)
+      const g = parseInt(hex.slice(3, 5), 16)
+      const b = parseInt(hex.slice(5, 7), 16)
+      return `rgba(${r},${g},${b},${alpha})`
+    }
+    const c = monoColor()
+    if (alpha === 1) return c
+    const r = parseInt(c.slice(1, 3), 16)
+    const g = parseInt(c.slice(3, 5), 16)
+    const b = parseInt(c.slice(5, 7), 16)
+    return `rgba(${r},${g},${b},${alpha})`
+  }
+
+  // ── Draw ───────────────────────────────────────────
+  const startTime = performance.now()
+
+  function draw() {
+    const elapsed = (performance.now() - startTime) / 1000
+    ctx.clearRect(0, 0, width, height)
+
+    const connected = hoveredIndex !== null
+      ? (adjacency.get(hoveredIndex) ?? new Set())
+      : null
+
+    // Draw links
+    for (const link of links) {
+      const s = link.source as GraphNode
+      const t = link.target as GraphNode
+
+      const isHighlighted = hoveredIndex !== null &&
+        (s.index === hoveredIndex || t.index === hoveredIndex)
+      const isDimmed = hoveredIndex !== null && !isHighlighted
+
+      if (settings.colorMode === 'language') {
+        // Gradient colored connection
+        const grad = ctx.createLinearGradient(s.x!, s.y!, t.x!, t.y!)
+        const alphaBase = isDimmed ? 0.04 : isHighlighted ? 0.6 : 0.2
+        const alpha = alphaBase + link.weight * 0.05
+        grad.addColorStop(0, nodeColor(s.index, alpha))
+        grad.addColorStop(1, nodeColor(t.index, alpha))
+        ctx.strokeStyle = grad
+      } else {
+        const alpha = isDimmed ? 0.04 : isHighlighted ? 0.5 : 0.15
+        ctx.strokeStyle = nodeColor(s.index, alpha + link.weight * 0.05)
+      }
+
+      ctx.lineWidth = isHighlighted ? 1.5 + link.weight * 0.5 : 0.8 + link.weight * 0.3
+      ctx.beginPath()
+      ctx.moveTo(s.x!, s.y!)
+
+      // Slight curve for organic feel
+      const mx = (s.x! + t.x!) / 2 + (s.index - t.index) * 2
+      const my = (s.y! + t.y!) / 2 + (t.index - s.index) * 2
+      ctx.quadraticCurveTo(mx, my, t.x!, t.y!)
+      ctx.stroke()
+    }
+
+    // Draw nodes
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i]
+      const cfg = MATURITY[n.node.maturity]
+      const isHovered = hoveredIndex === i
+      const isConnected = connected?.has(i) ?? false
+      const isDimmed = hoveredIndex !== null && !isHovered && !isConnected
+
+      let alpha = isDimmed ? 0.12 : n.opacity
+      let radius = n.radius
+
+      // Pulse for thriving/healthy
+      if (cfg.pulseAmp > 0 && !isDimmed) {
+        radius += Math.sin(elapsed * 1.5 + i * 0.7) * cfg.pulseAmp
+      }
+
+      if (isHovered) {
+        radius *= 1.15
+        alpha = 1
+      }
+
+      // Glow
+      if (!isDimmed) {
+        const glowGrad = ctx.createRadialGradient(n.x!, n.y!, radius * 0.5, n.x!, n.y!, cfg.glowRadius)
+        glowGrad.addColorStop(0, nodeColor(i, alpha * 0.35))
+        glowGrad.addColorStop(1, nodeColor(i, 0))
+        ctx.fillStyle = glowGrad
+        ctx.beginPath()
+        ctx.arc(n.x!, n.y!, cfg.glowRadius, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      // Node circle
+      ctx.fillStyle = nodeColor(i, alpha)
+      ctx.beginPath()
+      ctx.arc(n.x!, n.y!, radius, 0, Math.PI * 2)
+      ctx.fill()
+
+      // Inner highlight
+      if (!isDimmed) {
+        const innerGrad = ctx.createRadialGradient(
+          n.x! - radius * 0.3, n.y! - radius * 0.3, 0,
+          n.x!, n.y!, radius,
+        )
+        innerGrad.addColorStop(0, `rgba(255,255,255,${alpha * 0.3})`)
+        innerGrad.addColorStop(1, `rgba(255,255,255,0)`)
+        ctx.fillStyle = innerGrad
+        ctx.beginPath()
+        ctx.arc(n.x!, n.y!, radius, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      // Label
+      if (settings.showLabels && !isDimmed) {
+        ctx.font = `bold ${isHovered ? 13 : 11}px monospace`
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'top'
+
+        // Text shadow for readability
+        const textY = n.y! + radius + 6
+        ctx.fillStyle = bgColor()
+        ctx.fillText(n.node.name, n.x! + 1, textY + 1)
+        ctx.fillStyle = nodeColor(i, isDimmed ? 0.3 : 0.9)
+        ctx.fillText(n.node.name, n.x!, textY)
+      }
+    }
+
+    animId = requestAnimationFrame(draw)
+  }
+
+  draw()
+
+  // ── Interaction ────────────────────────────────────
+  function getNodeAtPoint(cx: number, cy: number): number | null {
+    // Check in reverse (topmost first)
+    for (let i = nodes.length - 1; i >= 0; i--) {
+      const n = nodes[i]
+      const dx = cx - n.x!
+      const dy = cy - n.y!
+      if (dx * dx + dy * dy <= n.radius * n.radius) return i
+    }
+    return null
   }
 
   function onPointerMove(event: PointerEvent) {
-    const rect = renderer.domElement.getBoundingClientRect()
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+    const rect = canvas.getBoundingClientRect()
+    const cx = event.clientX - rect.left
+    const cy = event.clientY - rect.top
+    const idx = getNodeAtPoint(cx, cy)
 
-    raycaster.setFromCamera(mouse, camera)
-    const intersects = raycaster.intersectObjects(nodeMeshes)
+    hoveredIndex = idx
 
-    if (intersects.length > 0) {
-      const idx = intersects[0].object.userData.index as number
-      hoveredIndex = idx
-      renderer.domElement.style.cursor = 'pointer'
+    if (idx !== null) {
+      canvas.style.cursor = 'pointer'
+      const node = nodes[idx].node
 
-      const node = nodes[idx]
       tooltip.textContent = ''
       const nameEl = document.createElement('strong')
       nameEl.textContent = node.name
@@ -333,233 +302,124 @@ export function initMycelium(
       if (node.language) {
         tooltip.appendChild(document.createElement('br'))
         const langEl = document.createElement('span')
+        langEl.style.opacity = '0.7'
         langEl.textContent = node.language
         tooltip.appendChild(langEl)
       }
       if (node.description) {
         tooltip.appendChild(document.createElement('br'))
         const descEl = document.createElement('em')
-        descEl.textContent = node.description.length > 80 ? node.description.slice(0, 77) + '...' : node.description
+        descEl.style.opacity = '0.6'
+        descEl.textContent = node.description.length > 80
+          ? node.description.slice(0, 77) + '...'
+          : node.description
         tooltip.appendChild(descEl)
       }
       tooltip.appendChild(document.createElement('br'))
       const matEl = document.createElement('span')
+      matEl.style.opacity = '0.4'
       matEl.style.textTransform = 'capitalize'
+      matEl.style.fontSize = '0.8em'
       matEl.textContent = node.maturity
       tooltip.appendChild(matEl)
-      tooltip.style.left = `${event.clientX - rect.left + 12}px`
-      tooltip.style.top = `${event.clientY - rect.top - 12}px`
+
+      tooltip.style.left = `${cx + 16}px`
+      tooltip.style.top = `${cy - 10}px`
       tooltip.style.display = 'block'
     } else {
-      hoveredIndex = null
-      renderer.domElement.style.cursor = 'grab'
+      canvas.style.cursor = 'grab'
       tooltip.style.display = 'none'
     }
   }
 
-  function onClick(event: MouseEvent) {
-    if (isAnimatingClick) return
-
-    const rect = renderer.domElement.getBoundingClientRect()
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
-
-    raycaster.setFromCamera(mouse, camera)
-    const intersects = raycaster.intersectObjects(nodeMeshes)
-    if (intersects.length === 0) return
-
-    const idx = intersects[0].object.userData.index as number
-    const node = nodes[idx]
-    const targetPos = positions[idx].clone()
-
-    // Lerp camera toward node
-    isAnimatingClick = true
-    const startPos = camera.position.clone()
-    const direction = new THREE.Vector3().subVectors(targetPos, startPos).normalize()
-    const endPos = targetPos.clone().sub(direction.multiplyScalar(5))
-    const duration = 500
-    const startTime = performance.now()
-
-    function animateZoom() {
-      const elapsed = performance.now() - startTime
-      const t = Math.min(elapsed / duration, 1)
-      const e = easeInOut(t)
-      camera.position.lerpVectors(startPos, endPos, e)
-      camera.lookAt(targetPos)
-
-      if (t < 1) {
-        requestAnimationFrame(animateZoom)
-      } else {
-        // Pause then open URL and ease back
-        setTimeout(() => {
-          window.open(node.url, '_blank')
-          const returnStart = performance.now()
-          function animateReturn() {
-            const elapsed2 = performance.now() - returnStart
-            const t2 = Math.min(elapsed2 / duration, 1)
-            const e2 = easeInOut(t2)
-            camera.position.lerpVectors(endPos, startPos, e2)
-            camera.lookAt(new THREE.Vector3(0, 0, 0))
-            if (t2 < 1) {
-              requestAnimationFrame(animateReturn)
-            } else {
-              isAnimatingClick = false
-            }
-          }
-          requestAnimationFrame(animateReturn)
-        }, 300)
-      }
-    }
-    requestAnimationFrame(animateZoom)
-  }
-
-  renderer.domElement.addEventListener('pointermove', onPointerMove)
-  renderer.domElement.addEventListener('click', onClick)
-
-  // --- Color management ---
-
-  function applyColors() {
-    for (let i = 0; i < nodes.length; i++) {
-      const color = getNodeColor(i)
-      nodeMaterials[i].color.copy(color)
-      glowMaterials[i].color.copy(color)
-    }
-    const tendrilColor = getBaseColor()
-    for (const tendril of tendrils) {
-      tendril.material.color.copy(tendrilColor)
-    }
-    for (let pi = 0; pi < particleSets.length; pi++) {
-      const ps = particleSets[pi]
-      if (settings.colorMode === 'language') {
-        // Find the source edge to get node color
-        const edge = tendrils[pi]?.edge
-        if (edge) ps.material.color.copy(new THREE.Color(nodes[edge.source].color))
-      } else {
-        ps.material.color.copy(getBaseColor())
-      }
-    }
-    for (const label of labelSprites) {
-      label.visible = settings.showLabels
+  function onClick() {
+    if (hoveredIndex !== null) {
+      window.open(nodes[hoveredIndex].node.url, '_blank')
     }
   }
 
-  function updateSettings(newSettings: MyceliumSettings) {
-    settings = newSettings
-    saveSettings(settings)
-    applyColors()
+  canvas.addEventListener('pointermove', onPointerMove)
+  canvas.addEventListener('click', onClick)
+
+  // ── Drag ───────────────────────────────────────────
+  let dragNode: GraphNode | null = null
+
+  canvas.addEventListener('pointerdown', (e) => {
+    const rect = canvas.getBoundingClientRect()
+    const idx = getNodeAtPoint(e.clientX - rect.left, e.clientY - rect.top)
+    if (idx !== null) {
+      dragNode = nodes[idx]
+      dragNode.fx = dragNode.x
+      dragNode.fy = dragNode.y
+      simulation.alphaTarget(0.3).restart()
+      canvas.style.cursor = 'grabbing'
+    }
+  })
+
+  canvas.addEventListener('pointermove', (e) => {
+    if (dragNode) {
+      const rect = canvas.getBoundingClientRect()
+      dragNode.fx = e.clientX - rect.left
+      dragNode.fy = e.clientY - rect.top
+    }
+  })
+
+  function onPointerUp() {
+    if (dragNode) {
+      dragNode.fx = null
+      dragNode.fy = null
+      dragNode = null
+      simulation.alphaTarget(0)
+      canvas.style.cursor = 'grab'
+    }
   }
 
+  canvas.addEventListener('pointerup', onPointerUp)
+  canvas.addEventListener('pointerleave', onPointerUp)
+
+  // ── Dark mode observer ─────────────────────────────
   const observer = new MutationObserver(() => {
-    applyColors()
+    // Colors recompute on next draw() frame automatically
   })
   observer.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['class'],
   })
 
-  // --- Resize handler ---
-
+  // ── Resize ─────────────────────────────────────────
   function onResize() {
-    camera.aspect = container.clientWidth / container.clientHeight
-    camera.updateProjectionMatrix()
-    renderer.setSize(container.clientWidth, container.clientHeight)
+    const oldW = width
+    const oldH = height
+    resizeCanvas()
+    // Re-center simulation
+    simulation.force('center', forceCenter(width / 2, height / 2))
+    // Shift all nodes proportionally
+    for (const n of nodes) {
+      n.x = (n.x! / oldW) * width
+      n.y = (n.y! / oldH) * height
+    }
+    simulation.alpha(0.3).restart()
+    setTimeout(() => simulation.stop(), 1000)
   }
   window.addEventListener('resize', onResize)
 
-  // --- Animation loop ---
-
-  let animFrameId: number
-  const startTime = performance.now()
-
-  function animate() {
-    animFrameId = requestAnimationFrame(animate)
-    const elapsed = (performance.now() - startTime) / 1000
-
-    // Pulse nodes
-    for (let i = 0; i < nodes.length; i++) {
-      const cfg = MATURITY_CONFIG[nodes[i].maturity]
-      const mesh = nodeMeshes[i]
-      const isHovered = hoveredIndex === i
-
-      if (cfg.pulse) {
-        const pulseScale = cfg.radius * (1 + Math.sin(elapsed * cfg.pulseSpeed * Math.PI * 2) * 0.08)
-        mesh.scale.setScalar(isHovered ? pulseScale * 1.3 : pulseScale)
-      } else {
-        mesh.scale.setScalar(isHovered ? cfg.radius * 1.3 : cfg.radius)
-      }
-    }
-
-    // Hover dimming
-    if (hoveredIndex !== null) {
-      const connected = adjacency.get(hoveredIndex) ?? new Set()
-      for (let i = 0; i < nodes.length; i++) {
-        const cfg = MATURITY_CONFIG[nodes[i].maturity]
-        if (i === hoveredIndex || connected.has(i)) {
-          nodeMaterials[i].opacity = cfg.opacity
-        } else {
-          nodeMaterials[i].opacity = 0.08
-        }
-      }
-      for (const tendril of tendrils) {
-        const { source, target, weight } = tendril.edge
-        if (source === hoveredIndex || target === hoveredIndex) {
-          tendril.material.opacity = tendrilOpacity(weight)
-        } else {
-          tendril.material.opacity = 0.05
-        }
-      }
-    } else {
-      for (let i = 0; i < nodes.length; i++) {
-        nodeMaterials[i].opacity = MATURITY_CONFIG[nodes[i].maturity].opacity
-      }
-      for (const tendril of tendrils) {
-        tendril.material.opacity = tendrilOpacity(tendril.edge.weight)
-      }
-    }
-
-    // Animate particles
-    for (const ps of particleSets) {
-      const posAttr = ps.points.geometry.getAttribute('position') as THREE.BufferAttribute
-      for (let i = 0; i < ps.progresses.length; i++) {
-        ps.progresses[i] = (ps.progresses[i] + ps.speed) % 1
-        const pt = ps.curve.getPoint(ps.progresses[i])
-        posAttr.setXYZ(i, pt.x, pt.y, pt.z)
-      }
-      posAttr.needsUpdate = true
-    }
-
-    controls.update()
-    renderer.render(scene, camera)
+  // ── Settings ───────────────────────────────────────
+  function updateSettings(newSettings: MyceliumSettings) {
+    settings = newSettings
+    saveSettings(settings)
   }
 
-  animate()
-
-  // --- Dispose ---
-
+  // ── Dispose ────────────────────────────────────────
   function dispose() {
-    cancelAnimationFrame(animFrameId)
-    renderer.domElement.removeEventListener('pointermove', onPointerMove)
-    renderer.domElement.removeEventListener('click', onClick)
+    cancelAnimationFrame(animId)
+    canvas.removeEventListener('pointermove', onPointerMove)
+    canvas.removeEventListener('click', onClick)
+    canvas.removeEventListener('pointerup', onPointerUp)
+    canvas.removeEventListener('pointerleave', onPointerUp)
     window.removeEventListener('resize', onResize)
     observer.disconnect()
-    controls.dispose()
-    renderer.dispose()
-
-    // Clean up geometries and materials
-    scene.traverse((obj) => {
-      if (obj instanceof THREE.Mesh || obj instanceof THREE.Line || obj instanceof THREE.Points) {
-        obj.geometry.dispose()
-        if (Array.isArray(obj.material)) {
-          obj.material.forEach((m) => m.dispose())
-        } else {
-          obj.material.dispose()
-        }
-      }
-    })
-
-    if (renderer.domElement.parentElement) {
-      renderer.domElement.parentElement.removeChild(renderer.domElement)
-    }
+    simulation.stop()
+    canvas.remove()
   }
 
   return { dispose, updateSettings }
