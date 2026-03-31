@@ -13,7 +13,7 @@ Three phases take the site from a bare scaffold to a fully deployed personal bra
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation and Layout** - Scaffold, tooling, content schemas, base layout, dark mode
-- [x] **Phase 2: Content Sections** - Blog, Projects, Films, and Photos — all content pages live (completed 2026-03-31)
+- [ ] **Phase 2: Content Sections** - Blog, Projects, Films, and Photos — all content pages live
 - [ ] **Phase 3: Pages and SEO** - Home page, About page, sitemap, and meta tag finalization
 
 ## Phase Details
@@ -44,13 +44,14 @@ Plans:
   3. Visiting `/projects` shows project cards with tech stack, description, and external links
   4. Visiting `/films` lists all films; clicking one loads a full case study with embedded video, written description, credits section, and behind-the-scenes section
   5. Visiting `/photos` shows all curated photo sets as expandable sections with optimized images
-**Plans**: 4 plans
+**Plans**: 5 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Blog index, post pages, tag system, OG meta infrastructure
-- [ ] 02-02-PLAN.md — Projects cards page with seed data
-- [ ] 02-03-PLAN.md — Films index, case study pages with video embed, credits, BTS
-- [ ] 02-04-PLAN.md — Photos gallery with expandable sets and optimized images
+- [x] 02-01-PLAN.md — Blog index, post pages, tag system, OG meta infrastructure
+- [x] 02-02-PLAN.md — Projects cards page with seed data
+- [x] 02-03-PLAN.md — Films index, case study pages with video embed, credits, BTS
+- [x] 02-04-PLAN.md — Photos gallery with expandable sets and optimized images
+- [ ] 02-05-PLAN.md — Gap closure: fix broken og:image override and stale BLOG-03 requirement text
 
 ### Phase 3: Pages and SEO
 **Goal**: The site is complete and discoverable — home page, about page, sitemap, and meta tags on every page
@@ -74,5 +75,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation and Layout | 2/2 | Complete | 2026-03-31 |
-| 2. Content Sections | 4/4 | Complete   | 2026-03-31 |
+| 2. Content Sections | 4/5 | Gap closure pending | - |
 | 3. Pages and SEO | 0/1 | Not started | - |
