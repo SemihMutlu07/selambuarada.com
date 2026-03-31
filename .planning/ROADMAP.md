@@ -62,10 +62,10 @@ Plans:
   2. The about page at `/about` contains bio and personal information
   3. Every page has accurate title, description, and OG image meta tags
   4. `sitemap.xml` is generated at the production URL and includes all routes
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 03-01: Home page, About page, and SEO finalization
+- [ ] 03-01-PLAN.md — Home page hero, about page bio, sitemap integration, meta tag audit
 
 ## Progress
 
