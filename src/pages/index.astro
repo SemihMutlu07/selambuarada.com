@@ -1,7 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Parker Mutsuz">
+<BaseLayout title="Parker Mutsuz" description="Developer, filmmaker, and photographer. Building things across code, film, and photography.">
   <h1 class="text-5xl md:text-7xl font-bold tracking-tight">Parker Mutsuz</h1>
   <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">Developer. Filmmaker. Photographer.</p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-12">
+    <a
+      href="/blog"
+      class="border-2 border-neutral-900 dark:border-neutral-100 p-6 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
+    >
+      <span class="text-xl font-bold">Blog</span>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-2">Writing on code, film, and photography</p>
+    </a>
+
+    <a
+      href="/projects"
+      class="border-2 border-neutral-900 dark:border-neutral-100 p-6 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
+    >
+      <span class="text-xl font-bold">Projects</span>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-2">Software I've built and shipped</p>
+    </a>
+
+    <a
+      href="/films"
+      class="border-2 border-neutral-900 dark:border-neutral-100 p-6 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
+    >
+      <span class="text-xl font-bold">Films</span>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-2">Short films and video work</p>
+    </a>
+
+    <a
+      href="/photos"
+      class="border-2 border-neutral-900 dark:border-neutral-100 p-6 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
+    >
+      <span class="text-xl font-bold">Photos</span>
+      <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-2">Curated photo sets</p>
+    </a>
+  </div>
 </BaseLayout>

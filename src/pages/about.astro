@@ -1,7 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="About">
+<BaseLayout title="About" description="About Parker Mutsuz — developer, filmmaker, and photographer.">
   <h1 class="text-5xl md:text-7xl font-bold tracking-tight">About</h1>
-  <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">Who I am and what I do.</p>
+
+  <div class="mt-8 max-w-prose space-y-6">
+    <p class="text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+      I'm a developer, filmmaker, and photographer working at the edges of code and image.
+      My work spans software products, short documentary films, and long-form photography — each discipline
+      informing the others in ways I'm still figuring out.
+    </p>
+
+    <p class="text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+      On the software side, I build tools that prioritise clarity and directness — products where the
+      interface gets out of the way and lets people do the thing they came to do. On film, I'm drawn to
+      quiet subjects: makers, craft, the unglamorous hours before the interesting part happens.
+      Photography is where I slow down; a single image has to carry everything a video gets to distribute
+      across time.
+    </p>
+
+    <p class="text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+      This site is a single place for all of it — writing, projects, films, and photos — without one
+      practice being subordinated to another.
+    </p>
+
+    <p class="mt-8">
+      <a href="mailto:parker@parkermutsuz.com" class="font-bold underline">Get in touch</a>
+    </p>
+  </div>
 </BaseLayout>

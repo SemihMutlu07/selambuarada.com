@@ -16,7 +16,7 @@ const { posts } = Astro.props;
 posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<BaseLayout title={`Posts tagged: ${tag}`}>
+<BaseLayout title={`Posts tagged: ${tag}`} description={`Posts tagged with ${tag}.`}>
   <div class="mb-8">
     <a href="/blog/tags" class="text-sm font-bold uppercase hover:underline text-neutral-500 dark:text-neutral-400">
       All tags

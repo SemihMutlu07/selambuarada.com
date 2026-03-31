@@ -12,7 +12,7 @@ posts.forEach(post => {
 const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
-<BaseLayout title="Tags">
+<BaseLayout title="Tags" description="All blog tags.">
   <h1 class="text-5xl md:text-7xl font-bold tracking-tight">Tags</h1>
   {tags.length === 0 ? (
     <p class="mt-8 text-neutral-600 dark:text-neutral-400">No tags yet.</p>
