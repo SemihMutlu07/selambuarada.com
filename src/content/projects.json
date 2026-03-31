@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "id": "sample-project-1",
+    "title": "CLI Tool",
+    "description": "A command-line utility for batch processing files. Built to learn Rust's ownership model.",
+    "tech": ["Rust", "Clap", "Serde"],
+    "url": "https://example.com/cli-tool",
+    "github": "https://github.com/example/cli-tool"
+  },
+  {
+    "id": "sample-project-2",
+    "title": "Photo Gallery",
+    "description": "A static photo gallery generator with automatic image optimization.",
+    "tech": ["TypeScript", "Astro", "Sharp"],
+    "github": "https://github.com/example/photo-gallery"
+  }
+]
