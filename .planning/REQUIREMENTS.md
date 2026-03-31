@@ -48,10 +48,10 @@
 
 ### Photos
 
-- [ ] **PHOT-01**: Single photo gallery page at `/photos` with all curated sets
-- [ ] **PHOT-02**: Each photo set is an expandable section with title and description
-- [ ] **PHOT-03**: Images optimized via Astro `<Image>` component (src/assets, not public)
-- [ ] **PHOT-04**: Photo sets content collection (JSON) with typed schema
+- [x] **PHOT-01**: Single photo gallery page at `/photos` with all curated sets
+- [x] **PHOT-02**: Each photo set is an expandable section with title and description
+- [x] **PHOT-03**: Images optimized via Astro `<Image>` component (src/assets, not public)
+- [x] **PHOT-04**: Photo sets content collection (JSON) with typed schema
 
 ### Pages
 
@@ -131,10 +131,10 @@
 | FILM-04 | Phase 2 | Complete |
 | FILM-05 | Phase 2 | Complete |
 | FILM-06 | Phase 2 | Complete |
-| PHOT-01 | Phase 2 | Pending |
-| PHOT-02 | Phase 2 | Pending |
-| PHOT-03 | Phase 2 | Pending |
-| PHOT-04 | Phase 2 | Pending |
+| PHOT-01 | Phase 2 | Complete |
+| PHOT-02 | Phase 2 | Complete |
+| PHOT-03 | Phase 2 | Complete |
+| PHOT-04 | Phase 2 | Complete |
 | PAGE-01 | Phase 3 | Pending |
 | PAGE-02 | Phase 3 | Pending |
 | SEO-01 | Phase 3 | Pending |

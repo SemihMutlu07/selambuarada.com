@@ -13,7 +13,7 @@ Three phases take the site from a bare scaffold to a fully deployed personal bra
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation and Layout** - Scaffold, tooling, content schemas, base layout, dark mode
-- [ ] **Phase 2: Content Sections** - Blog, Projects, Films, and Photos — all content pages live
+- [x] **Phase 2: Content Sections** - Blog, Projects, Films, and Photos — all content pages live (completed 2026-03-31)
 - [ ] **Phase 3: Pages and SEO** - Home page, About page, sitemap, and meta tag finalization
 
 ## Phase Details
@@ -74,5 +74,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation and Layout | 2/2 | Complete | 2026-03-31 |
-| 2. Content Sections | 3/4 | In Progress|  |
+| 2. Content Sections | 4/4 | Complete   | 2026-03-31 |
 | 3. Pages and SEO | 0/1 | Not started | - |
