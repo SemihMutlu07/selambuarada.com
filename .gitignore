@@ -8,9 +8,19 @@ node_modules/
 # Environment
 .env
 .env.*
+.env.local
+
+# Planning docs (internal, not for public repo)
+.planning/
 
 # Superpowers brainstorm sessions
 .superpowers/
 
+# Editor
+*.swp
+*.swo
+*~
+
 # OS
 .DS_Store
+Thumbs.db
