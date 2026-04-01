@@ -16,6 +16,9 @@ node_modules/
 # Superpowers brainstorm sessions
 .superpowers/
 
+# Internal docs
+docs/
+
 # Editor
 *.swp
 *.swo
