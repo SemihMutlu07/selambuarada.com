@@ -33,7 +33,7 @@ const { title, description, ogImage = '/og-image.png' } = Astro.props;
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
   </head>
-  <body class="font-sans bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 min-h-screen flex flex-col">
+  <body class="font-sans bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 min-h-dvh flex flex-col">
     <Header />
     <main class="mx-auto w-full max-w-5xl px-4 py-8 md:py-12 flex-1">
       <slot />
