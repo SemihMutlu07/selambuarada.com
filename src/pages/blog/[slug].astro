@@ -20,19 +20,19 @@ const { Content } = await render(post);
 >
   <article>
     <header class="mb-8">
-      <h1 class="text-5xl md:text-7xl font-bold tracking-tight">{post.data.title}</h1>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight">{post.data.title}</h1>
       <time
         datetime={post.data.date.toISOString()}
-        class="block text-sm text-neutral-500 dark:text-neutral-400 mt-4"
+        class="block text-xs md:text-sm text-neutral-500 dark:text-neutral-400 mt-3 md:mt-4"
       >
         {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
       </time>
       {post.data.tags.length > 0 && (
-        <div class="flex flex-wrap gap-3 mt-3">
+        <div class="flex flex-wrap gap-2 md:gap-3 mt-2 md:mt-3">
           {post.data.tags.map(tag => (
             <a
               href={`/blog/tags/${tag}`}
-              class="text-sm font-bold uppercase hover:underline text-neutral-700 dark:text-neutral-300"
+              class="text-xs md:text-sm font-bold uppercase hover:underline text-neutral-700 dark:text-neutral-300"
             >
               {tag}
             </a>
@@ -40,7 +40,7 @@ const { Content } = await render(post);
         </div>
       )}
     </header>
-    <div class="max-w-prose space-y-6 text-neutral-800 dark:text-neutral-200 leading-relaxed">
+    <div class="max-w-prose space-y-4 md:space-y-6 text-sm md:text-base text-neutral-800 dark:text-neutral-200 leading-relaxed">
       <Content />
     </div>
   </article>
