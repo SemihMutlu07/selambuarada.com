@@ -6,22 +6,39 @@ const films = await getCollection('films');
 films.sort((a, b) => b.data.year - a.data.year);
 ---
 <BaseLayout title="Films" description="Short films and video work.">
-  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight">Films</h1>
-  <p class="mt-3 md:mt-4 text-base md:text-lg text-neutral-600 dark:text-neutral-400">Short films and video work.</p>
+
+  <!-- Primary -->
+  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white">
+    Films
+  </h1>
 
   {films.length === 0 ? (
-    <p class="mt-8 md:mt-12 text-neutral-500">No films yet.</p>
+    <p class="mt-12 font-mono text-[11px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666]">
+      [ No films yet ]
+    </p>
   ) : (
-    <ul class="space-y-4 md:space-y-6 mt-8 md:mt-12">
-      {films.map(film => (
-        <li>
-          <a href={`/films/${film.id}`} class="group block">
-            <span class="text-xl md:text-2xl font-bold group-hover:underline">{film.data.title}</span>
-            <span class="ml-2 md:ml-3 text-sm md:text-base text-neutral-500">{film.data.year}</span>
-            <p class="mt-1 text-xs md:text-sm uppercase tracking-wider text-neutral-600 dark:text-neutral-400">{film.data.role}</p>
+    <ul class="mt-10 md:mt-14 list-none p-0">
+      {films.map((film, i) => (
+        <li class:list={['border-t border-[#e8e8e8] dark:border-[#222222]', i === films.length - 1 && 'border-b']}>
+          <a href={`/films/${film.id}`} class="block group py-5 md:py-6">
+            <div class="flex items-baseline justify-between gap-4">
+              <!-- Secondary: title -->
+              <span class="text-base md:text-lg font-semibold text-black dark:text-white group-hover:underline underline-offset-4">
+                {film.data.title}
+              </span>
+              <!-- Tertiary: year -->
+              <span class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0">
+                {film.data.year}
+              </span>
+            </div>
+            <!-- Tertiary: role -->
+            <p class="mt-1 font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]">
+              {film.data.role}
+            </p>
           </a>
         </li>
       ))}
     </ul>
   )}
+
 </BaseLayout>

@@ -14,14 +14,21 @@ const { film } = Astro.props;
 const { title, year, role, embedUrl, description, credits, bts } = film.data;
 ---
 <BaseLayout title={title} description={description}>
-  <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight">{title}</h1>
-  <p class="mt-2 md:mt-3 text-sm md:text-base text-neutral-500">
-    <span>{year}</span>
-    <span class="mx-1 md:mx-2">—</span>
-    <span class="text-xs md:text-sm uppercase tracking-wider">{role}</span>
-  </p>
 
-  <div class="mt-6 md:mt-8 aspect-video w-full">
+  <!-- Tertiary: metadata -->
+  <div class="flex items-center gap-3 mb-5">
+    <span class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]">{year}</span>
+    <span class="font-mono text-[10px] text-[#cccccc] dark:text-[#333333]">—</span>
+    <span class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]">{role}</span>
+  </div>
+
+  <!-- Primary: title -->
+  <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-black dark:text-white">
+    {title}
+  </h1>
+
+  <!-- Primary: video -->
+  <div class="mt-8 md:mt-10 aspect-video w-full border border-[#cccccc] dark:border-[#333333]">
     <iframe
       src={embedUrl}
       class="w-full h-full"
@@ -32,27 +39,32 @@ const { title, year, role, embedUrl, description, credits, bts } = film.data;
     ></iframe>
   </div>
 
-  <section class="mt-8 md:mt-12">
-    <h2 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">About</h2>
-    <p class="text-sm md:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed">{description}</p>
+  <!-- Secondary: about -->
+  <section class="mt-10 md:mt-14">
+    <p class="font-mono text-[11px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] mb-3">About</p>
+    <p class="text-base leading-relaxed text-[#1a1a1a] dark:text-[#e8e8e8] max-w-prose">{description}</p>
   </section>
 
-  <section class="mt-8 md:mt-12">
-    <h2 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Credits</h2>
-    <dl class="space-y-2">
-      {credits.map(c => (
-        <div class="flex flex-col sm:flex-row sm:gap-2">
-          <dt class="font-bold text-sm md:text-base sm:min-w-[140px]">{c.role}</dt>
-          <dd class="text-sm md:text-base text-neutral-600 dark:text-neutral-400">{c.name}</dd>
+  <!-- Tertiary: credits -->
+  <section class="mt-10 md:mt-14">
+    <p class="font-mono text-[11px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] mb-4">Credits</p>
+    <dl class="space-y-0">
+      {credits.map((c: { role: string; name: string }, i: number) => (
+        <div class:list={['flex gap-6 py-3 border-t border-[#e8e8e8] dark:border-[#222222]', i === credits.length - 1 && 'border-b']}>
+          <dt class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] min-w-[120px] shrink-0 pt-px">
+            {c.role}
+          </dt>
+          <dd class="text-sm text-[#1a1a1a] dark:text-[#e8e8e8]">{c.name}</dd>
         </div>
       ))}
     </dl>
   </section>
 
   {bts && (
-    <section class="mt-8 md:mt-12">
-      <h2 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Behind the Scenes</h2>
-      <p class="text-sm md:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed">{bts}</p>
+    <section class="mt-10 md:mt-14">
+      <p class="font-mono text-[11px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] mb-3">Behind the Scenes</p>
+      <p class="text-base leading-relaxed text-[#1a1a1a] dark:text-[#e8e8e8] max-w-prose">{bts}</p>
     </section>
   )}
+
 </BaseLayout>

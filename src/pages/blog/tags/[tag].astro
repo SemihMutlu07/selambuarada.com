@@ -13,30 +13,47 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params;
 const { posts } = Astro.props;
-posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+posts.sort((a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout title={`Posts tagged: ${tag}`} description={`Posts tagged with ${tag}.`}>
-  <div class="mb-6 md:mb-8">
-    <a href="/blog/tags" class="text-xs md:text-sm font-bold uppercase hover:underline text-neutral-500 dark:text-neutral-400">
-      All tags
-    </a>
-  </div>
-  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight">{tag}</h1>
-  <ul class="mt-8 md:mt-12 space-y-6 md:space-y-8 list-none p-0">
-    {posts.map(post => (
-      <li>
-        <a href={`/blog/${post.id}`} class="block group">
-          <span class="text-lg md:text-xl font-bold group-hover:underline">{post.data.title}</span>
+
+  <!-- Tertiary: back link -->
+  <a
+    href="/blog/tags"
+    class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
+  >
+    ← All Tags
+  </a>
+
+  <!-- Primary: tag name -->
+  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white mt-5">
+    {tag}
+  </h1>
+
+  <ul class="mt-10 md:mt-14 list-none p-0">
+    {posts.map((post: any, i: number) => (
+      <li class:list={['border-t border-[#e8e8e8] dark:border-[#222222]', i === posts.length - 1 && 'border-b']}>
+        <a href={`/blog/${post.id}`} class="block group py-5 md:py-6">
+          <div class="flex items-baseline justify-between gap-4">
+            <span class="text-base md:text-lg font-semibold text-black dark:text-white group-hover:underline underline-offset-4 leading-snug">
+              {post.data.title}
+            </span>
+            <time
+              datetime={post.data.date.toISOString()}
+              class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0"
+            >
+              {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+            </time>
+          </div>
+          {post.data.description && (
+            <p class="mt-1 text-sm text-[#666666] dark:text-[#666666] leading-relaxed">
+              {post.data.description}
+            </p>
+          )}
         </a>
-        <time
-          datetime={post.data.date.toISOString()}
-          class="block text-xs md:text-sm text-neutral-500 dark:text-neutral-400 mt-1"
-        >
-          {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-        </time>
-        <p class="mt-1 md:mt-2 text-sm md:text-base text-neutral-600 dark:text-neutral-400">{post.data.description}</p>
       </li>
     ))}
   </ul>
+
 </BaseLayout>

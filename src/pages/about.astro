@@ -3,16 +3,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="About" description="About Parker Mutsuz — developer, filmmaker, and photographer.">
   <div class="flex flex-col justify-center min-h-[calc(100dvh-10rem)]">
-    <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight">About</h1>
 
-    <div class="mt-6 md:mt-8 max-w-prose space-y-4 md:space-y-6">
-      <p class="text-base md:text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+    <!-- Tertiary -->
+    <p class="font-mono text-[11px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] mb-5">
+      About
+    </p>
+
+    <!-- Primary -->
+    <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white">
+      Parker Mutsuz
+    </h1>
+
+    <!-- Secondary: bio -->
+    <div class="mt-8 md:mt-12 max-w-prose space-y-5">
+      <p class="text-base leading-relaxed text-[#1a1a1a] dark:text-[#e8e8e8]">
         I'm a developer, filmmaker, and photographer working at the edges of code and image.
         My work spans software products, short documentary films, and long-form photography — each discipline
         informing the others in ways I'm still figuring out.
       </p>
 
-      <p class="text-base md:text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+      <p class="text-base leading-relaxed text-[#1a1a1a] dark:text-[#e8e8e8]">
         On the software side, I build tools that prioritise clarity and directness — products where the
         interface gets out of the way and lets people do the thing they came to do. On film, I'm drawn to
         quiet subjects: makers, craft, the unglamorous hours before the interesting part happens.
@@ -20,14 +30,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         across time.
       </p>
 
-      <p class="text-base md:text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+      <p class="text-base leading-relaxed text-[#1a1a1a] dark:text-[#e8e8e8]">
         This site is a single place for all of it — writing, projects, films, and photos — without one
         practice being subordinated to another.
       </p>
-
-      <p class="mt-6 md:mt-8">
-        <a href="mailto:hello@selambuarada.com" class="font-bold underline">Get in touch</a>
-      </p>
     </div>
+
+    <!-- Tertiary: contact -->
+    <p class="mt-10 md:mt-12">
+      <a
+        href="mailto:hello@selambuarada.com"
+        class="font-mono text-[11px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors underline underline-offset-4"
+      >
+        hello@selambuarada.com
+      </a>
+    </p>
+
   </div>
 </BaseLayout>

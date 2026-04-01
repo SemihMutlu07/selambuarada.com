@@ -3,41 +3,41 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Parker Mutsuz" description="Developer, filmmaker, and photographer. Building things across code, film, and photography.">
   <div class="flex flex-col justify-center min-h-[calc(100dvh-10rem)]">
-    <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">Parker Mutsuz</h1>
-    <p class="mt-3 md:mt-4 text-base md:text-lg text-neutral-600 dark:text-neutral-400">Developer. Filmmaker. Photographer.</p>
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mt-8 md:mt-12">
-      <a
-        href="/blog"
-        class="border-2 border-neutral-900 dark:border-neutral-100 p-4 md:p-6 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
-      >
-        <span class="text-base md:text-xl font-bold">Blog</span>
-        <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400 mt-1 md:mt-2">Writing on code, film, and photography</p>
-      </a>
+    <!-- Tertiary label -->
+    <p class="font-mono text-[11px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] mb-5">
+      selambuarada.com
+    </p>
 
-      <a
-        href="/projects"
-        class="border-2 border-neutral-900 dark:border-neutral-100 p-4 md:p-6 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
-      >
-        <span class="text-base md:text-xl font-bold">Projects</span>
-        <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400 mt-1 md:mt-2">Software I've built and shipped</p>
-      </a>
+    <!-- Primary: name -->
+    <h1 class="text-5xl sm:text-6xl md:text-8xl lg:text-[96px] font-bold tracking-tight leading-none text-black dark:text-white">
+      Parker Mutsuz
+    </h1>
 
-      <a
-        href="/films"
-        class="border-2 border-neutral-900 dark:border-neutral-100 p-4 md:p-6 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
-      >
-        <span class="text-base md:text-xl font-bold">Films</span>
-        <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400 mt-1 md:mt-2">Short films and video work</p>
-      </a>
+    <!-- Secondary: tagline -->
+    <p class="mt-4 md:mt-6 text-base md:text-lg text-[#666666] dark:text-[#999999]">
+      Developer. Filmmaker. Photographer.
+    </p>
 
-      <a
-        href="/photos"
-        class="border-2 border-neutral-900 dark:border-neutral-100 p-4 md:p-6 hover:bg-neutral-900 hover:text-white dark:hover:bg-neutral-100 dark:hover:text-neutral-900 transition-colors"
-      >
-        <span class="text-base md:text-xl font-bold">Photos</span>
-        <p class="text-xs md:text-sm text-neutral-600 dark:text-neutral-400 mt-1 md:mt-2">Curated photo sets</p>
-      </a>
+    <!-- Tertiary: nav cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mt-10 md:mt-14">
+      {[
+        { href: '/blog', label: 'Blog', desc: 'Writing on code, film, and photography' },
+        { href: '/projects', label: 'Projects', desc: 'Software I\'ve built and shipped' },
+        { href: '/films', label: 'Films', desc: 'Short films and video work' },
+        { href: '/photos', label: 'Photos', desc: 'Curated photo sets' },
+      ].map(({ href, label, desc }) => (
+        <a
+          href={href}
+          class="border border-[#cccccc] dark:border-[#333333] p-4 md:p-5 hover:border-[#1a1a1a] dark:hover:border-[#999999] transition-colors group"
+        >
+          <span class="font-mono text-[11px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] group-hover:text-black dark:group-hover:text-white transition-colors">
+            {label}
+          </span>
+          <p class="mt-2 text-xs text-[#666666] dark:text-[#666666]">{desc}</p>
+        </a>
+      ))}
     </div>
+
   </div>
 </BaseLayout>

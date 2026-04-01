@@ -11,10 +11,11 @@ const navLinks = [
 ];
 ---
 
-<header class="w-full border-b-4 border-neutral-900 dark:border-neutral-100">
+<header class="w-full border-b border-[#cccccc] dark:border-[#333333]">
   <div class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between">
+
     <!-- Desktop nav -->
-    <nav class="hidden md:flex gap-x-6">
+    <nav class="hidden md:flex items-center gap-x-7">
       {navLinks.map(({ href, label }) => {
         const isActive = href === '/'
           ? pathname === '/'
@@ -23,47 +24,49 @@ const navLinks = [
           <a
             href={href}
             class:list={[
-              'text-sm font-bold uppercase tracking-widest transition-colors',
+              'font-mono text-[11px] tracking-[0.08em] uppercase transition-colors',
               isActive
-                ? 'text-neutral-900 dark:text-neutral-100 underline underline-offset-4'
-                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100',
+                ? 'text-black dark:text-white'
+                : 'text-[#999999] dark:text-[#666666] hover:text-[#1a1a1a] dark:hover:text-[#e8e8e8]',
             ]}
           >
-            {label}
+            {isActive ? `[ ${label.toUpperCase()} ]` : label.toUpperCase()}
           </a>
         );
       })}
     </nav>
 
-    <!-- Mobile: hamburger + theme toggle -->
-    <div class="flex items-center gap-4 md:hidden">
-      <button
-        id="menu-toggle"
-        aria-label="Toggle menu"
-        class="text-neutral-900 dark:text-neutral-100"
-      >
-        <svg id="menu-icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-          <path stroke-linecap="square" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg id="menu-icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-          <path stroke-linecap="square" d="M6 6l12 12M6 18L18 6" />
-        </svg>
-      </button>
+    <!-- Mobile: site name + menu button -->
+    <div class="flex md:hidden items-center gap-4">
+      <a href="/" class="font-mono text-[11px] tracking-[0.08em] uppercase text-black dark:text-white">
+        Parker Mutsuz
+      </a>
     </div>
 
-    <button
-      id="theme-toggle"
-      aria-label="Toggle dark mode"
-      class="text-sm font-bold uppercase tracking-widest text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-    >
-      <span class="dark:hidden">◑ Dark</span>
-      <span class="hidden dark:inline">◐ Light</span>
-    </button>
+    <div class="flex items-center gap-4">
+      <!-- Mobile menu toggle -->
+      <button
+        id="menu-toggle"
+        class="md:hidden font-mono text-[11px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
+        aria-label="Toggle menu"
+      >
+        <span id="menu-label">MENU</span>
+      </button>
+
+      <!-- 3-way theme cycle -->
+      <button
+        id="theme-toggle"
+        aria-label="Toggle theme"
+        class="font-mono text-[11px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
+      >
+        <span id="theme-label">◆ DARK</span>
+      </button>
+    </div>
   </div>
 
   <!-- Mobile menu -->
-  <nav id="mobile-menu" class="hidden md:hidden border-t-2 border-neutral-900 dark:border-neutral-100">
-    <div class="mx-auto max-w-5xl px-4 py-4 flex flex-col gap-4">
+  <nav id="mobile-menu" class="hidden md:hidden border-t border-[#cccccc] dark:border-[#333333]">
+    <div class="mx-auto max-w-5xl px-4 py-5 flex flex-col gap-4">
       {navLinks.map(({ href, label }) => {
         const isActive = href === '/'
           ? pathname === '/'
@@ -72,13 +75,13 @@ const navLinks = [
           <a
             href={href}
             class:list={[
-              'text-sm font-bold uppercase tracking-widest transition-colors',
+              'font-mono text-[11px] tracking-[0.08em] uppercase transition-colors',
               isActive
-                ? 'text-neutral-900 dark:text-neutral-100 underline underline-offset-4'
-                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100',
+                ? 'text-black dark:text-white'
+                : 'text-[#999999] dark:text-[#666666]',
             ]}
           >
-            {label}
+            {isActive ? `[ ${label.toUpperCase()} ]` : label.toUpperCase()}
           </a>
         );
       })}
@@ -87,25 +90,60 @@ const navLinks = [
 </header>
 
 <script>
-  const themeBtn = document.getElementById('theme-toggle');
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
+  function getThemeState(): 'dark' | 'light' | 'system' {
+    const t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') return t;
+    return 'system';
   }
 
+  function applyTheme(state: 'dark' | 'light' | 'system') {
+    if (state === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else if (state === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', prefersDark);
+    }
+  }
+
+  function updateThemeLabel(state: 'dark' | 'light' | 'system') {
+    const el = document.getElementById('theme-label');
+    if (!el) return;
+    const labels = { dark: '◆ DARK', light: '◇ LIGHT', system: '◎ SYSTEM' } as const;
+    el.textContent = labels[state];
+  }
+
+  function cycleTheme() {
+    const current = getThemeState();
+    const next: 'dark' | 'light' | 'system' =
+      current === 'system' ? 'dark' : current === 'dark' ? 'light' : 'system';
+    if (next === 'system') {
+      localStorage.removeItem('theme');
+    } else {
+      localStorage.setItem('theme', next);
+    }
+    applyTheme(next);
+    updateThemeLabel(next);
+  }
+
+  // Init label on load
+  updateThemeLabel(getThemeState());
+
+  document.getElementById('theme-toggle')?.addEventListener('click', cycleTheme);
+
+  // Reflect system changes when in system mode
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (getThemeState() === 'system') applyTheme('system');
+  });
+
+  // Mobile menu
   const menuBtn = document.getElementById('menu-toggle');
+  const menuLabel = document.getElementById('menu-label');
   const mobileMenu = document.getElementById('mobile-menu');
-  const iconOpen = document.getElementById('menu-icon-open');
-  const iconClose = document.getElementById('menu-icon-close');
 
-  if (menuBtn && mobileMenu && iconOpen && iconClose) {
-    menuBtn.addEventListener('click', () => {
-      const isOpen = !mobileMenu.classList.contains('hidden');
-      mobileMenu.classList.toggle('hidden');
-      iconOpen.classList.toggle('hidden');
-      iconClose.classList.toggle('hidden');
-    });
-  }
+  menuBtn?.addEventListener('click', () => {
+    const isOpen = mobileMenu?.classList.toggle('hidden') === false;
+    if (menuLabel) menuLabel.textContent = isOpen ? 'CLOSE' : 'MENU';
+  });
 </script>

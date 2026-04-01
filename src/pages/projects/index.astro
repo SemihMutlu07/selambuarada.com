@@ -8,42 +8,47 @@ const projects = await getCollection('projects');
 ---
 
 <BaseLayout title="Projects" description="Software I've built and shipped.">
-  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight">Projects</h1>
-  <p class="mt-3 md:mt-4 text-base md:text-lg text-neutral-600 dark:text-neutral-400">Software I've built and shipped.</p>
+  <!-- Primary -->
+  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white">
+    Projects
+  </h1>
+  <p class="mt-3 md:mt-4 text-sm text-[#666666] dark:text-[#666666]">
+    Software I've built and shipped.
+  </p>
 
-  <div id="mycelium-container" class="relative mt-6 md:mt-12 w-full" style="height: calc(100dvh - 14rem);min-height: 400px;">
-    <p id="mycelium-loading" class="absolute inset-0 flex items-center justify-center text-neutral-400 font-mono text-sm">
-      Loading network...
+  <div id="mycelium-container" class="relative mt-8 md:mt-12 w-full border border-[#cccccc] dark:border-[#333333]" style="height: calc(100dvh - 14rem);min-height: 400px;">
+    <p id="mycelium-loading" class="absolute inset-0 flex items-center justify-center font-mono text-[11px] tracking-[0.06em] uppercase text-[#666666] dark:text-[#666666]">
+      [ Loading network... ]
     </p>
     <div
       id="project-tooltip"
-      class="absolute z-10 hidden pointer-events-none px-3 py-2 border-2 border-neutral-900 dark:border-neutral-100 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-mono text-sm max-w-xs"
+      class="absolute z-10 hidden pointer-events-none px-3 py-2 border border-[#cccccc] dark:border-[#333333] bg-[#f5f5f5] dark:bg-[#111111] text-[#1a1a1a] dark:text-[#e8e8e8] font-mono text-[11px] tracking-[0.04em] max-w-xs"
     ></div>
 
     <!-- Settings drawer -->
     <div id="settings-drawer" class="absolute top-3 right-3 z-20">
       <button
         id="settings-toggle"
-        class="w-8 h-8 flex items-center justify-center border-2 border-neutral-400 dark:border-neutral-600 bg-white dark:bg-neutral-950 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+        class="w-8 h-8 flex items-center justify-center border border-[#cccccc] dark:border-[#333333] bg-[#f5f5f5] dark:bg-black text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
         aria-label="Toggle settings"
       >
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
           <path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
         </svg>
       </button>
-      <div id="settings-panel" class="hidden absolute top-10 right-0 w-44 border-2 border-neutral-900 dark:border-neutral-100 bg-white dark:bg-neutral-950 p-3 font-mono text-xs">
-        <div class="font-bold uppercase tracking-wider text-neutral-900 dark:text-neutral-100 mb-2">Settings</div>
-        <label class="flex items-center gap-2 cursor-pointer py-1 text-neutral-700 dark:text-neutral-300">
-          <input type="radio" name="colorMode" value="language" class="accent-blue-500" checked />
+      <div id="settings-panel" class="hidden absolute top-10 right-0 w-44 border border-[#cccccc] dark:border-[#333333] bg-[#f5f5f5] dark:bg-[#111111] p-3 font-mono text-[11px] tracking-[0.06em]">
+        <div class="uppercase text-black dark:text-white mb-3">Settings</div>
+        <label class="flex items-center gap-2 cursor-pointer py-1 text-[#666666] dark:text-[#999999]">
+          <input type="radio" name="colorMode" value="language" class="accent-[#5b9bf6]" checked />
           Color by language
         </label>
-        <label class="flex items-center gap-2 cursor-pointer py-1 text-neutral-700 dark:text-neutral-300">
-          <input type="radio" name="colorMode" value="mono" class="accent-blue-500" />
+        <label class="flex items-center gap-2 cursor-pointer py-1 text-[#666666] dark:text-[#999999]">
+          <input type="radio" name="colorMode" value="mono" class="accent-[#5b9bf6]" />
           Monochrome
         </label>
-        <div class="border-t border-neutral-300 dark:border-neutral-700 my-2"></div>
-        <label class="flex items-center gap-2 cursor-pointer py-1 text-neutral-700 dark:text-neutral-300">
-          <input type="checkbox" id="showLabels" class="accent-blue-500" />
+        <div class="border-t border-[#e8e8e8] dark:border-[#222222] my-2"></div>
+        <label class="flex items-center gap-2 cursor-pointer py-1 text-[#666666] dark:text-[#999999]">
+          <input type="checkbox" id="showLabels" class="accent-[#5b9bf6]" />
           Show labels
         </label>
       </div>
@@ -52,26 +57,32 @@ const projects = await getCollection('projects');
 
   <noscript>
     {projects.length === 0 ? (
-      <p class="mt-12 text-neutral-600 dark:text-neutral-400">No projects yet.</p>
+      <p class="mt-12 font-mono text-[11px] tracking-[0.08em] uppercase text-[#666666]">
+        [ No projects yet ]
+      </p>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
         {projects.map((project) => (
-          <div class="border-2 border-neutral-900 dark:border-neutral-100 p-6">
-            <h2 class="text-2xl font-bold">{project.data.title}</h2>
-            <p class="mt-2 text-neutral-600 dark:text-neutral-400">{project.data.description}</p>
+          <div class="border border-[#cccccc] dark:border-[#333333] p-6">
+            <h2 class="text-lg font-bold text-black dark:text-white">{project.data.title}</h2>
+            <p class="mt-2 text-sm text-[#666666] dark:text-[#666666]">{project.data.description}</p>
             <div class="flex flex-wrap gap-2 mt-4">
-              {project.data.tech.map((item) => (
-                <span class="text-xs font-bold uppercase tracking-wider border border-neutral-400 dark:border-neutral-600 px-2 py-1">
+              {project.data.tech.map((item: string) => (
+                <span class="font-mono text-[10px] tracking-[0.06em] uppercase border border-[#cccccc] dark:border-[#333333] px-2 py-1 text-[#999999] dark:text-[#666666]">
                   {item}
                 </span>
               ))}
             </div>
             <div class="flex gap-4 mt-4">
               {project.data.url && (
-                <a href={project.data.url} target="_blank" rel="noopener" class="text-sm font-bold uppercase underline">Visit</a>
+                <a href={project.data.url} target="_blank" rel="noopener" class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white underline underline-offset-4 transition-colors">
+                  Visit
+                </a>
               )}
               {project.data.github && (
-                <a href={project.data.github} target="_blank" rel="noopener" class="text-sm font-bold uppercase underline">GitHub</a>
+                <a href={project.data.github} target="_blank" rel="noopener" class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white underline underline-offset-4 transition-colors">
+                  GitHub
+                </a>
               )}
             </div>
           </div>
@@ -114,7 +125,6 @@ const projects = await getCollection('projects');
       panel.classList.toggle('hidden')
     })
 
-    // Close panel when clicking outside
     document.addEventListener('click', (e) => {
       if (!panel.contains(e.target as Node) && e.target !== toggle) {
         panel.classList.add('hidden')
