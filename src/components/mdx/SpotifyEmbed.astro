@@ -1,0 +1,30 @@
+---
+interface Props {
+  url: string;
+}
+
+const { url } = Astro.props;
+
+function getSpotifyEmbedUrl(input: string): string | null {
+  const match = input.match(/open\.spotify\.com\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)/);
+  if (!match) return null;
+  return `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator&theme=0`;
+}
+
+const embedUrl = getSpotifyEmbedUrl(url);
+---
+
+{embedUrl ? (
+  <div class="not-prose my-6 border border-white/10 bg-[#1a1a1a] overflow-hidden">
+    <iframe
+      src={embedUrl}
+      width="100%"
+      height="152"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      style="border: 0;"
+    ></iframe>
+  </div>
+) : (
+  <p class="font-mono text-[11px] text-[#d71921]">[ Invalid Spotify URL ]</p>
+)}

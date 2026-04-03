@@ -27,3 +27,5 @@ docs/
 # OS
 .DS_Store
 Thumbs.db
+.aidesigner/*
+!.aidesigner/.gitkeep

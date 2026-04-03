@@ -1,0 +1,33 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  layout?: 'hero' | 'left' | 'right' | 'full' | 'inline';
+  caption?: string;
+}
+
+const { src, alt, layout = 'inline', caption } = Astro.props;
+
+const layoutClasses: Record<string, string> = {
+  hero: 'w-full mb-8',
+  full: 'w-full my-6',
+  left: 'float-left mr-6 mb-4 w-1/2 max-w-xs',
+  right: 'float-right ml-6 mb-4 w-1/2 max-w-xs',
+  inline: 'mx-auto my-6 max-w-[640px]',
+};
+---
+
+<figure class={`${layoutClasses[layout]} not-prose`}>
+  <img
+    src={src}
+    alt={alt}
+    class="w-full h-auto border border-white/10"
+    loading="lazy"
+    decoding="async"
+  />
+  {caption && (
+    <figcaption class="mt-2 font-mono text-[11px] tracking-[0.04em] text-[#999999] dark:text-[#666666]">
+      {caption}
+    </figcaption>
+  )}
+</figure>

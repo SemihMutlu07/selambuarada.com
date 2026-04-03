@@ -1,0 +1,39 @@
+---
+interface Props {
+  url: string;
+}
+
+const { url } = Astro.props;
+
+function getYouTubeId(input: string): string | null {
+  const patterns = [
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+  ];
+  for (const pattern of patterns) {
+    const match = input.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+}
+
+const videoId = getYouTubeId(url);
+---
+
+{videoId ? (
+  <div class="not-prose my-6 w-full border border-white/10">
+    <iframe
+      src={`https://www.youtube-nocookie.com/embed/${videoId}`}
+      title="YouTube video"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+      loading="lazy"
+      class="w-full aspect-video"
+      style="border: 0;"
+    ></iframe>
+  </div>
+) : (
+  <p class="font-mono text-[11px] text-[#d71921]">[ Invalid YouTube URL ]</p>
+)}
