@@ -30,10 +30,10 @@ export interface MyceliumSettings {
 // ── Constants ──────────────────────────────────────────
 
 const MATURITY = {
-  thriving: { radius: 28, opacity: 1.0, glowRadius: 50, pulseAmp: 3 },
-  healthy:  { radius: 20, opacity: 0.9, glowRadius: 36, pulseAmp: 2 },
-  dormant:  { radius: 14, opacity: 0.7, glowRadius: 24, pulseAmp: 0 },
-  seedling: { radius: 9,  opacity: 0.5, glowRadius: 14, pulseAmp: 0 },
+  thriving: { radius: 24, opacity: 1.0, glowRadius: 42, pulseAmp: 3 },
+  healthy:  { radius: 17, opacity: 0.9, glowRadius: 30, pulseAmp: 2 },
+  dormant:  { radius: 12, opacity: 0.7, glowRadius: 20, pulseAmp: 0 },
+  seedling: { radius: 8,  opacity: 0.5, glowRadius: 12, pulseAmp: 0 },
 } as const
 
 // ── Helpers ────────────────────────────────────────────
@@ -43,7 +43,7 @@ function loadSettings(): MyceliumSettings {
     const raw = localStorage.getItem('mycelium-settings')
     if (raw) return JSON.parse(raw)
   } catch { /* ignore */ }
-  return { colorMode: 'language', showLabels: true }
+  return { colorMode: 'language', showLabels: false }
 }
 
 function saveSettings(s: MyceliumSettings) {
@@ -126,11 +126,11 @@ export function initMycelium(
   // ── D3 force simulation ────────────────────────────
   const simulation = forceSimulation(nodes)
     .force('link', forceLink<GraphNode, GraphLink>(links)
-      .distance(120)
+      .distance(180)
       .strength((d) => 0.3 * d.weight))
-    .force('charge', forceManyBody().strength(-400))
+    .force('charge', forceManyBody().strength(-600))
     .force('center', forceCenter(width / 2, height / 2))
-    .force('collide', forceCollide<GraphNode>().radius((d) => d.radius + 8))
+    .force('collide', forceCollide<GraphNode>().radius((d) => d.radius + 14))
     .alphaDecay(0.02)
     .on('tick', () => {}) // we draw in our own loop
 

@@ -77,7 +77,7 @@ function computeEdges(nodes: ProjectNode[]): ProjectEdge[] {
     for (let j = i + 1; j < nodes.length; j++) {
       const langsB = Object.keys(nodes[j].languages)
       const shared = langsA.filter((l) => langsB.includes(l))
-      if (shared.length > 0) {
+      if (shared.length >= 2) {
         edges.push({ source: i, target: j, weight: shared.length })
       }
     }
