@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 
+export const prerender = false;
+
 const SITE_ORIGIN = 'https://selambuarada.com';
 
 function getCookie(request: Request, name: string): string | null {
