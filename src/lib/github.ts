@@ -32,15 +32,8 @@ export interface ProjectNode {
   maturity: 'thriving' | 'healthy' | 'dormant' | 'seedling'
 }
 
-export interface ProjectEdge {
-  source: number
-  target: number
-  weight: number
-}
-
-export interface ProjectGraph {
+export interface ProjectList {
   nodes: ProjectNode[]
-  edges: ProjectEdge[]
 }
 
 interface GithubRepo {
@@ -70,22 +63,7 @@ function computeMaturity(
   return 'dormant'
 }
 
-function computeEdges(nodes: ProjectNode[]): ProjectEdge[] {
-  const edges: ProjectEdge[] = []
-  for (let i = 0; i < nodes.length; i++) {
-    const langsA = Object.keys(nodes[i].languages)
-    for (let j = i + 1; j < nodes.length; j++) {
-      const langsB = Object.keys(nodes[j].languages)
-      const shared = langsA.filter((l) => langsB.includes(l))
-      if (shared.length >= 2) {
-        edges.push({ source: i, target: j, weight: shared.length })
-      }
-    }
-  }
-  return edges
-}
-
-export async function fetchProjectGraph(): Promise<ProjectGraph> {
+export async function fetchProjects(): Promise<ProjectList> {
   const headers: Record<string, string> = {
     Accept: 'application/vnd.github.v3+json',
   }
@@ -125,5 +103,5 @@ export async function fetchProjectGraph(): Promise<ProjectGraph> {
     }),
   )
 
-  return { nodes, edges: computeEdges(nodes) }
+  return { nodes }
 }
