@@ -1,29 +1,37 @@
 [
   {
-    "id": "sample-short",
-    "title": "Sample Short Film",
-    "year": 2025,
-    "role": "Director / Editor",
-    "embedUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    "description": "A sample short film entry to verify the films pipeline works. This description would contain the filmmaker's writeup about the project, its inspiration, and the creative process.",
+    "id": "bilet",
+    "title": "Bilet",
+    "year": 2026,
+    "role": "Yönetmen / Yapımcı / Kurgucu",
+    "embedUrl": "https://www.youtube.com/embed/1_pcAwZl-c4",
+    "description": "Rutinden sıkılmış genç bir adam, yeni yazışmaya başladığı bir kızın evine gitmeye karar verir. Hızlı ve geçici bir şey ararken karşılaştığı şey de en az aradığı kadar belirsiz çıkar. Film, modern ilişkilerdeki hız, belirsizlik ve sınırların aynı anda var olmasını kendine has bir şekilde ele alıyor.",
     "credits": [
-      { "role": "Director", "name": "Sample Creator" },
-      { "role": "Cinematographer", "name": "Sample DP" },
-      { "role": "Editor", "name": "Sample Creator" }
+      { "role": "Yönetmen", "name": "Semih Mutlu" },
+      { "role": "Yapımcı", "name": "Semih Mutlu" },
+      { "role": "Görüntü Yönetmeni", "name": "Enes Akyol" },
+      { "role": "Kurgu", "name": "Semih Mutlu" },
+      { "role": "Oyuncu (E)", "name": "Semih Mutlu" },
+      { "role": "Oyuncu (K)", "name": "Damla Nur Tanrısevdi" },
+      { "role": "Oyuncu (Taksici)", "name": "Berke Akbulut" }
     ],
-    "bts": "Behind the scenes of this sample project. This section covers the production process, challenges faced, and lessons learned during filming."
+    "bts": "Bu film, sinemayı yaparak öğrenme motivasyonuyla ortaya çıktı. Kendi yaratıcı sınırlarımı keşfetmek, filmin her aşamasını bizzat deneyimlemek istedim. 21 dakikalık bu kısa film, ilk yönetmenlik deneyimim oldu."
   },
   {
-    "id": "sample-doc",
-    "title": "Sample Documentary",
-    "year": 2024,
-    "role": "Cinematographer",
-    "embedUrl": "https://player.vimeo.com/video/148751763",
-    "description": "A sample documentary entry demonstrating the Vimeo embed format. No behind-the-scenes section for this entry.",
+    "id": "esirgenenler",
+    "title": "Esirgenenler",
+    "year": 2026,
+    "role": "Set Koordinatörü",
+    "embedUrl": "https://www.youtube.com/embed/DEHyIhloXFE",
+    "description": "Birinden hayat, diğerinden sevgi esirgenmiştir. 11 dakikalık bu kısa film, zamanın geçişini ve insan ilişkilerinde paylaşılmadan kalanları uzun planlar ve melankolik bir renk paletiyle ele alıyor.",
     "credits": [
-      { "role": "Director", "name": "Collaborator Name" },
-      { "role": "Cinematographer", "name": "Sample Creator" },
-      { "role": "Sound", "name": "Audio Person" }
+      { "role": "Yönetmen", "name": "Emir Ermiş" },
+      { "role": "Senarist", "name": "Emir Ermiş" },
+      { "role": "Kurgu", "name": "Emir Ermiş" },
+      { "role": "Ses", "name": "Ege Büyükkardeşler" },
+      { "role": "Set Koordinatörü", "name": "Semih Mutlu" },
+      { "role": "Oyuncu (Esra)", "name": "İrem Öncel" },
+      { "role": "Oyuncu (Semih)", "name": "Ege Büyükkardeşler" }
     ]
   }
 ]

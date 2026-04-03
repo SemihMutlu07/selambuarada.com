@@ -2,148 +2,82 @@
 const pathname = Astro.url.pathname;
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/films', label: 'Films' },
-  { href: '/photos', label: 'Photos' },
-  { href: '/about', label: 'About' },
+  { href: '/about', label: 'Hakkımda' },
+  { href: '/blog', label: 'Yazılar' },
+  { href: 'mailto:semihmutlu220@gmail.com', label: 'İletişim' },
 ];
 ---
 
-<header class="w-full border-b border-[#cccccc] dark:border-[#333333]">
-  <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-
-    <!-- Desktop nav -->
-    <nav class="hidden md:flex items-center gap-x-7">
-      {navLinks.map(({ href, label }) => {
-        const isActive = href === '/'
-          ? pathname === '/'
-          : pathname.startsWith(href);
-        return (
-          <a
-            href={href}
-            class:list={[
-              'font-mono text-[13px] tracking-[0.08em] uppercase transition-colors',
-              isActive
-                ? 'text-black dark:text-white'
-                : 'text-[#999999] dark:text-[#666666] hover:text-[#1a1a1a] dark:hover:text-[#e8e8e8]',
-            ]}
-          >
-            {isActive ? `[ ${label.toUpperCase()} ]` : label.toUpperCase()}
-          </a>
-        );
-      })}
-    </nav>
-
-    <!-- Mobile: site name + menu button -->
-    <div class="flex md:hidden items-center gap-4">
-      <a href="/" class="font-mono text-[13px] tracking-[0.08em] uppercase text-black dark:text-white">
-        Parker Mutsuz
+<header class="w-full">
+  <!-- Dark navbar -->
+  <nav class="bg-[#1a1a1a]">
+    <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
+      <a href="/" class="font-serif text-lg font-bold text-white tracking-tight">
+        Semih Mutlu
       </a>
-    </div>
 
-    <div class="flex items-center gap-4">
-      <!-- Mobile menu toggle -->
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center gap-7">
+        {navLinks.map(({ href, label }) => {
+          const isActive = href === '/'
+            ? pathname === '/'
+            : pathname.startsWith(href);
+          return (
+            <a
+              href={href}
+              class:list={[
+                'text-sm transition-colors',
+                isActive
+                  ? 'text-white'
+                  : 'text-[#999] hover:text-white',
+              ]}
+            >
+              {label}
+            </a>
+          );
+        })}
+      </div>
+
+      <!-- Mobile menu button -->
       <button
         id="menu-toggle"
-        class="md:hidden font-mono text-[13px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
-        aria-label="Toggle menu"
+        class="md:hidden text-[#999] hover:text-white transition-colors"
+        aria-label="Menü"
       >
-        <span id="menu-label">MENU</span>
+        <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
       </button>
-
-      <!-- 3-way theme cycle -->
-      <button
-        id="theme-toggle"
-        aria-label="Toggle theme"
-        class="font-mono text-[13px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
-      >
-        <span id="theme-label">◆ DARK</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Mobile menu -->
-  <nav id="mobile-menu" class="hidden md:hidden border-t border-[#cccccc] dark:border-[#333333]">
-    <div class="mx-auto max-w-6xl px-4 py-5 flex flex-col gap-4">
-      {navLinks.map(({ href, label }) => {
-        const isActive = href === '/'
-          ? pathname === '/'
-          : pathname.startsWith(href);
-        return (
-          <a
-            href={href}
-            class:list={[
-              'font-mono text-[13px] tracking-[0.08em] uppercase transition-colors',
-              isActive
-                ? 'text-black dark:text-white'
-                : 'text-[#999999] dark:text-[#666666]',
-            ]}
-          >
-            {isActive ? `[ ${label.toUpperCase()} ]` : label.toUpperCase()}
-          </a>
-        );
-      })}
     </div>
   </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-[#1a1a1a] border-t border-[#333]">
+    <div class="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-3">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class="text-sm text-[#999] hover:text-white transition-colors"
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+  </div>
 </header>
 
 <script>
-  function getThemeState(): 'dark' | 'light' | 'system' {
-    const t = localStorage.getItem('theme');
-    if (t === 'dark' || t === 'light') return t;
-    return 'system';
-  }
-
-  function applyTheme(state: 'dark' | 'light' | 'system') {
-    if (state === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else if (state === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.toggle('dark', prefersDark);
-    }
-  }
-
-  function updateThemeLabel(state: 'dark' | 'light' | 'system') {
-    const el = document.getElementById('theme-label');
-    if (!el) return;
-    const labels = { dark: '◆ DARK', light: '◇ LIGHT', system: '◎ SYSTEM' } as const;
-    el.textContent = labels[state];
-  }
-
-  function cycleTheme() {
-    const current = getThemeState();
-    const next: 'dark' | 'light' | 'system' =
-      current === 'system' ? 'dark' : current === 'dark' ? 'light' : 'system';
-    if (next === 'system') {
-      localStorage.removeItem('theme');
-    } else {
-      localStorage.setItem('theme', next);
-    }
-    applyTheme(next);
-    updateThemeLabel(next);
-  }
-
-  // Init label on load
-  updateThemeLabel(getThemeState());
-
-  document.getElementById('theme-toggle')?.addEventListener('click', cycleTheme);
-
-  // Reflect system changes when in system mode
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (getThemeState() === 'system') applyTheme('system');
-  });
-
-  // Mobile menu
   const menuBtn = document.getElementById('menu-toggle');
-  const menuLabel = document.getElementById('menu-label');
   const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
 
   menuBtn?.addEventListener('click', () => {
     const isOpen = mobileMenu?.classList.toggle('hidden') === false;
-    if (menuLabel) menuLabel.textContent = isOpen ? 'CLOSE' : 'MENU';
+    iconOpen?.classList.toggle('hidden', isOpen);
+    iconClose?.classList.toggle('hidden', !isOpen);
   });
 </script>

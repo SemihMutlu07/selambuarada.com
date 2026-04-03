@@ -15,20 +15,26 @@ const { title, year, role, embedUrl, description, credits, bts } = film.data;
 ---
 <BaseLayout title={title} description={description}>
 
-  <!-- Tertiary: metadata -->
-  <div class="flex items-center gap-3 mb-5">
-    <span class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]">{year}</span>
-    <span class="font-mono text-[12px] text-[#cccccc] dark:text-[#333333]">—</span>
-    <span class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]">{role}</span>
+  <a
+    href="/films"
+    class="text-sm text-[#999] hover:text-[#1a1a1a] transition-colors"
+  >
+    &larr; Tüm filmler
+  </a>
+
+  <!-- Meta -->
+  <div class="flex items-center gap-3 mt-4 mb-4">
+    <span class="text-sm text-[#999]">{year}</span>
+    <span class="text-[#e0e0e0]">&middot;</span>
+    <span class="text-sm text-[#999]">{role}</span>
   </div>
 
-  <!-- Primary: title -->
-  <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-black dark:text-white">
+  <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a1a1a]">
     {title}
   </h1>
 
-  <!-- Primary: video -->
-  <div class="mt-8 md:mt-10 aspect-video w-full border border-[#cccccc] dark:border-[#333333]">
+  <!-- Video -->
+  <div class="mt-8 md:mt-10 aspect-video w-full border border-[#e0e0e0]">
     <iframe
       src={embedUrl}
       class="w-full h-full"
@@ -39,31 +45,31 @@ const { title, year, role, embedUrl, description, credits, bts } = film.data;
     ></iframe>
   </div>
 
-  <!-- Secondary: about -->
-  <section class="mt-10 md:mt-14">
-    <p class="font-mono text-[13px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] mb-3">About</p>
-    <p class="text-base leading-relaxed text-[#1a1a1a] dark:text-[#e8e8e8] max-w-prose">{description}</p>
+  <!-- About -->
+  <section class="mt-10 md:mt-12 max-w-2xl">
+    <h2 class="text-lg font-bold text-[#1a1a1a] mb-3">Hakkında</h2>
+    <p class="text-base leading-relaxed text-[#444]">{description}</p>
   </section>
 
-  <!-- Tertiary: credits -->
-  <section class="mt-10 md:mt-14">
-    <p class="font-mono text-[13px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] mb-4">Credits</p>
+  <!-- Credits -->
+  <section class="mt-10 md:mt-12">
+    <h2 class="text-lg font-bold text-[#1a1a1a] mb-4">Ekip</h2>
     <dl class="space-y-0">
       {credits.map((c: { role: string; name: string }, i: number) => (
-        <div class:list={['flex gap-6 py-3 border-t border-[#e8e8e8] dark:border-[#222222]', i === credits.length - 1 && 'border-b']}>
-          <dt class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] min-w-[120px] shrink-0 pt-px">
+        <div class:list={['flex gap-6 py-3 border-t border-[#e0e0e0]', i === credits.length - 1 && 'border-b']}>
+          <dt class="text-sm text-[#999] min-w-[120px] shrink-0 pt-px">
             {c.role}
           </dt>
-          <dd class="text-base text-[#1a1a1a] dark:text-[#e8e8e8]">{c.name}</dd>
+          <dd class="text-base text-[#1a1a1a]">{c.name}</dd>
         </div>
       ))}
     </dl>
   </section>
 
   {bts && (
-    <section class="mt-10 md:mt-14">
-      <p class="font-mono text-[13px] tracking-[0.08em] uppercase text-[#999999] dark:text-[#666666] mb-3">Behind the Scenes</p>
-      <p class="text-base leading-relaxed text-[#1a1a1a] dark:text-[#e8e8e8] max-w-prose">{bts}</p>
+    <section class="mt-10 md:mt-12 max-w-2xl">
+      <h2 class="text-lg font-bold text-[#1a1a1a] mb-3">Kamera Arkası</h2>
+      <p class="text-base leading-relaxed text-[#444]">{bts}</p>
     </section>
   )}
 

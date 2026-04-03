@@ -14,40 +14,45 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 const { posts } = Astro.props;
 posts.sort((a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf());
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('tr-TR', {
+    year: 'numeric',
+    month: 'short',
+  });
+}
 ---
 
-<BaseLayout title={`Posts tagged: ${tag}`} description={`Posts tagged with ${tag}.`}>
+<BaseLayout title={`${tag} etiketli yazılar`} description={`${tag} etiketli yazılar.`}>
 
-  <!-- Tertiary: back link -->
   <a
     href="/blog/tags"
-    class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
+    class="text-sm text-[#999] hover:text-[#1a1a1a] transition-colors"
   >
-    ← All Tags
+    &larr; Tüm etiketler
   </a>
 
-  <!-- Primary: tag name -->
-  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white mt-5">
+  <h1 class="text-3xl md:text-4xl font-bold text-[#1a1a1a] mt-4">
     {tag}
   </h1>
 
-  <ul class="mt-10 md:mt-14 list-none p-0">
+  <ul class="mt-8 md:mt-10 list-none p-0">
     {posts.map((post: any, i: number) => (
-      <li class:list={['border-t border-[#e8e8e8] dark:border-[#222222]', i === posts.length - 1 && 'border-b']}>
+      <li class:list={['border-t border-[#e0e0e0]', i === posts.length - 1 && 'border-b']}>
         <a href={`/blog/${post.id}`} class="block group py-5 md:py-6">
           <div class="flex items-baseline justify-between gap-4">
-            <span class="text-base md:text-lg font-semibold text-black dark:text-white group-hover:underline underline-offset-4 leading-snug">
+            <span class="text-base md:text-lg font-semibold text-[#1a1a1a] group-hover:underline underline-offset-4 leading-snug font-serif">
               {post.data.title}
             </span>
             <time
               datetime={post.data.date.toISOString()}
-              class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0"
+              class="text-sm text-[#999] shrink-0"
             >
-              {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+              {formatDate(post.data.date)}
             </time>
           </div>
           {post.data.description && (
-            <p class="mt-1 text-base text-[#666666] dark:text-[#666666] leading-relaxed">
+            <p class="mt-1.5 text-sm text-[#666] leading-relaxed">
               {post.data.description}
             </p>
           )}

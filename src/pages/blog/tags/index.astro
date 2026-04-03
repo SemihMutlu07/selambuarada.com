@@ -12,34 +12,26 @@ posts.forEach(post => {
 const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 ---
 
-<BaseLayout title="Tags" description="All blog tags.">
+<BaseLayout title="Etiketler" description="Tüm blog etiketleri.">
 
-  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white">
-    Tags
+  <h1 class="text-3xl md:text-4xl font-bold text-[#1a1a1a]">
+    Etiketler
   </h1>
 
   {tags.length === 0 ? (
-    <p class="mt-12 font-mono text-[13px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666]">
-      [ No tags yet ]
-    </p>
+    <p class="mt-12 text-[#999]">Henüz etiket yok.</p>
   ) : (
-    <ul class="mt-10 md:mt-14 list-none p-0">
-      {tags.map(([tag, count], i) => (
-        <li class:list={['border-t border-[#e8e8e8] dark:border-[#222222]', i === tags.length - 1 && 'border-b']}>
-          <a
-            href={`/blog/tags/${tag}`}
-            class="flex items-baseline justify-between gap-4 py-4 group"
-          >
-            <span class="font-mono text-[13px] tracking-[0.08em] uppercase text-black dark:text-white group-hover:underline underline-offset-4">
-              {tag}
-            </span>
-            <span class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0">
-              {count}
-            </span>
-          </a>
-        </li>
+    <div class="mt-8 md:mt-10 flex flex-wrap gap-3">
+      {tags.map(([tag, count]) => (
+        <a
+          href={`/blog/tags/${tag}`}
+          class="flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666] hover:border-[#1a1a1a] hover:text-[#1a1a1a] transition-colors"
+        >
+          <span>{tag}</span>
+          <span class="text-xs text-[#999]">{count}</span>
+        </a>
       ))}
-    </ul>
+    </div>
   )}
 
 </BaseLayout>

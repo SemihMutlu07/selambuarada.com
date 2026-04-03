@@ -5,34 +5,28 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const films = await getCollection('films');
 films.sort((a, b) => b.data.year - a.data.year);
 ---
-<BaseLayout title="Films" description="Short films and video work.">
+<BaseLayout title="Filmler" description="Kısa filmler ve video çalışmaları.">
 
-  <!-- Primary -->
-  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white">
-    Films
+  <h1 class="text-3xl md:text-4xl font-bold text-[#1a1a1a]">
+    Filmler
   </h1>
 
   {films.length === 0 ? (
-    <p class="mt-12 font-mono text-[13px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666]">
-      [ No films yet ]
-    </p>
+    <p class="mt-12 text-[#999]">Henüz film yok.</p>
   ) : (
-    <ul class="mt-10 md:mt-14 list-none p-0">
+    <ul class="mt-8 md:mt-10 list-none p-0">
       {films.map((film, i) => (
-        <li class:list={['border-t border-[#e8e8e8] dark:border-[#222222]', i === films.length - 1 && 'border-b']}>
+        <li class:list={['border-t border-[#e0e0e0]', i === films.length - 1 && 'border-b']}>
           <a href={`/films/${film.id}`} class="block group py-5 md:py-6">
             <div class="flex items-baseline justify-between gap-4">
-              <!-- Secondary: title -->
-              <span class="text-base md:text-lg font-semibold text-black dark:text-white group-hover:underline underline-offset-4">
+              <span class="text-base md:text-lg font-semibold text-[#1a1a1a] group-hover:underline underline-offset-4 font-serif">
                 {film.data.title}
               </span>
-              <!-- Tertiary: year -->
-              <span class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0">
+              <span class="text-sm text-[#999] shrink-0">
                 {film.data.year}
               </span>
             </div>
-            <!-- Tertiary: role -->
-            <p class="mt-1 font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]">
+            <p class="mt-1 text-sm text-[#666]">
               {film.data.role}
             </p>
           </a>

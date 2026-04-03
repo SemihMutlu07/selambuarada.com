@@ -19,6 +19,14 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const ogImage = post.data.og_image || '/og-image.png';
 const metaDesc = post.data.meta_description || post.data.description;
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('tr-TR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
 ---
 
 <BaseLayout
@@ -26,23 +34,23 @@ const metaDesc = post.data.meta_description || post.data.description;
   description={metaDesc}
   ogImage={ogImage}
 >
-  <article>
-    <header class="mb-10 md:mb-14">
-      <!-- Tertiary: date + tags -->
-      <div class="flex flex-wrap items-center gap-3 mb-4 md:mb-6">
+  <article class="max-w-2xl">
+    <header class="mb-8 md:mb-10">
+      <!-- Meta: date + tags -->
+      <div class="flex flex-wrap items-center gap-3 mb-4">
         <time
           datetime={post.data.date.toISOString()}
-          class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]"
+          class="text-sm text-[#999]"
         >
-          {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {formatDate(post.data.date)}
         </time>
         {post.data.tags.length > 0 && (
           <>
-            <span class="font-mono text-[12px] text-[#cccccc] dark:text-[#333333]">—</span>
+            <span class="text-[#e0e0e0]">&middot;</span>
             {post.data.tags.map(tag => (
               <a
                 href={`/blog/tags/${tag}`}
-                class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
+                class="text-xs px-2 py-0.5 bg-[#f0f0f0] text-[#666] hover:bg-[#e0e0e0] transition-colors"
               >
                 {tag}
               </a>
@@ -51,15 +59,23 @@ const metaDesc = post.data.meta_description || post.data.description;
         )}
       </div>
 
-      <!-- Primary: title -->
-      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-black dark:text-white">
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a1a1a]">
         {post.data.title}
       </h1>
     </header>
 
-    <!-- Secondary: content -->
-    <div class="prose-nd max-w-prose">
+    <div class="prose-nd">
       <Content components={{ BlogImage, SpotifyEmbed, YouTubeEmbed }} />
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-12 pt-6 border-t border-[#e0e0e0]">
+      <a
+        href="/blog"
+        class="text-sm text-[#999] hover:text-[#1a1a1a] transition-colors"
+      >
+        &larr; Tüm yazılar
+      </a>
     </div>
   </article>
 </BaseLayout>

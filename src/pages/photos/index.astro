@@ -11,35 +11,30 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
 );
 ---
 
-<BaseLayout title="Photos" description="Photography and visual work.">
+<BaseLayout title="Fotoğraflar" description="Fotoğraf çalışmaları ve görsel işler.">
 
-  <!-- Primary -->
-  <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight text-black dark:text-white">
-    Photos
+  <h1 class="text-3xl md:text-4xl font-bold text-[#1a1a1a]">
+    Fotoğraflar
   </h1>
 
   {photosets.length === 0 ? (
-    <p class="mt-12 font-mono text-[13px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666]">
-      [ No photo sets yet ]
-    </p>
+    <p class="mt-12 text-[#999]">Henüz fotoğraf seti yok.</p>
   ) : (
-    <div class="mt-10 md:mt-14">
+    <div class="mt-8 md:mt-10">
       {photosets.map((set, i) => (
-        <details class:list={['group border-t border-[#e8e8e8] dark:border-[#222222]', i === photosets.length - 1 && 'border-b']}>
+        <details class:list={['group border-t border-[#e0e0e0]', i === photosets.length - 1 && 'border-b']}>
           <summary class="flex items-baseline justify-between gap-4 py-5 cursor-pointer select-none list-none">
-            <!-- Secondary: set title -->
-            <span class="text-base md:text-lg font-semibold text-black dark:text-white group-open:underline underline-offset-4">
+            <span class="text-base md:text-lg font-semibold text-[#1a1a1a] group-open:underline underline-offset-4 font-serif">
               {set.data.title}
             </span>
-            <!-- Tertiary: photo count -->
-            <span class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0">
-              {set.data.images.length} photos
+            <span class="text-sm text-[#999] shrink-0">
+              {set.data.images.length} fotoğraf
             </span>
           </summary>
 
           <div class="pb-6 md:pb-8">
             {set.data.description && (
-              <p class="mb-5 text-base text-[#666666] dark:text-[#666666] leading-relaxed">
+              <p class="mb-5 text-sm text-[#666] leading-relaxed">
                 {set.data.description}
               </p>
             )}
@@ -55,8 +50,8 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 ) : (
-                  <p class="font-mono text-[12px] uppercase text-[#d71921]">
-                    [ Image not found: {img.src} ]
+                  <p class="text-sm text-red-600">
+                    Görsel bulunamadı: {img.src}
                   </p>
                 );
               })}

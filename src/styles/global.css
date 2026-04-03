@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 @theme inline {
   --font-sans: 'Space Grotesk Variable', 'DM Sans', system-ui, sans-serif;
+  --font-serif: 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
   --font-mono: 'Space Mono', 'JetBrains Mono', 'SF Mono', monospace;
   --font-display: 'Doto', 'Space Mono', monospace;
 }
@@ -14,16 +13,14 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    line-height: 1.05;
-    letter-spacing: -0.02em;
+    font-family: var(--font-serif);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
   }
 
   /* Article prose */
   .prose-nd {
     color: #1a1a1a;
-  }
-  .dark .prose-nd {
-    color: #e8e8e8;
   }
   .prose-nd h2 {
     font-size: 1.5rem;
@@ -31,20 +28,14 @@
     letter-spacing: -0.01em;
     margin-top: 2.5rem;
     margin-bottom: 0.75rem;
-    color: #000;
-  }
-  .dark .prose-nd h2 {
-    color: #fff;
+    color: #1a1a1a;
   }
   .prose-nd h3 {
     font-size: 1.125rem;
     font-weight: 700;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
-    color: #000;
-  }
-  .dark .prose-nd h3 {
-    color: #fff;
+    color: #1a1a1a;
   }
   .prose-nd p {
     margin-bottom: 1.25rem;
@@ -52,30 +43,28 @@
     font-size: 1.125rem;
   }
   .prose-nd a {
-    color: #007aff;
+    color: #1a1a1a;
     text-decoration: underline;
+    text-underline-offset: 3px;
   }
-  .dark .prose-nd a {
-    color: #5b9bf6;
+  .prose-nd a:hover {
+    color: #666;
   }
   .prose-nd code {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    background: #e8e8e8;
+    background: #f0f0f0;
     padding: 0.1em 0.35em;
-  }
-  .dark .prose-nd code {
-    background: #1a1a1a;
   }
   .prose-nd pre {
     font-family: var(--font-mono);
     font-size: 0.875rem;
-    background: #111111;
+    background: #1a1a1a;
     color: #e8e8e8;
     padding: 1.25rem;
     overflow-x: auto;
     margin-bottom: 1.5rem;
-    border: 1px solid #333333;
+    border: 1px solid #e0e0e0;
   }
   .prose-nd pre code {
     background: transparent;
@@ -83,15 +72,11 @@
     font-size: 1em;
   }
   .prose-nd blockquote {
-    border-left: 2px solid #cccccc;
+    border-left: 2px solid #e0e0e0;
     padding-left: 1rem;
-    color: #666666;
+    color: #666;
     margin-left: 0;
     font-style: italic;
-  }
-  .dark .prose-nd blockquote {
-    border-left-color: #333333;
-    color: #999999;
   }
   .prose-nd ul, .prose-nd ol {
     padding-left: 1.5rem;
@@ -103,17 +88,11 @@
   }
   .prose-nd hr {
     border: none;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid #e0e0e0;
     margin: 2.5rem 0;
-  }
-  .dark .prose-nd hr {
-    border-top-color: #222222;
   }
   .prose-nd strong {
     font-weight: 700;
-    color: #000;
-  }
-  .dark .prose-nd strong {
-    color: #fff;
+    color: #1a1a1a;
   }
 }
