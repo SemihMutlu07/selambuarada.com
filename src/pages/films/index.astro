@@ -13,7 +13,7 @@ films.sort((a, b) => b.data.year - a.data.year);
   </h1>
 
   {films.length === 0 ? (
-    <p class="mt-12 font-mono text-[11px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666]">
+    <p class="mt-12 font-mono text-[13px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666]">
       [ No films yet ]
     </p>
   ) : (
@@ -27,12 +27,12 @@ films.sort((a, b) => b.data.year - a.data.year);
                 {film.data.title}
               </span>
               <!-- Tertiary: year -->
-              <span class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0">
+              <span class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0">
                 {film.data.year}
               </span>
             </div>
             <!-- Tertiary: role -->
-            <p class="mt-1 font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]">
+            <p class="mt-1 font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666]">
               {film.data.role}
             </p>
           </a>

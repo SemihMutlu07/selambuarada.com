@@ -19,7 +19,7 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
   </h1>
 
   {photosets.length === 0 ? (
-    <p class="mt-12 font-mono text-[11px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666]">
+    <p class="mt-12 font-mono text-[13px] tracking-[0.08em] uppercase text-[#666666] dark:text-[#666666]">
       [ No photo sets yet ]
     </p>
   ) : (
@@ -32,14 +32,14 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
               {set.data.title}
             </span>
             <!-- Tertiary: photo count -->
-            <span class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0">
+            <span class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0">
               {set.data.images.length} photos
             </span>
           </summary>
 
           <div class="pb-6 md:pb-8">
             {set.data.description && (
-              <p class="mb-5 text-sm text-[#666666] dark:text-[#666666] leading-relaxed">
+              <p class="mb-5 text-base text-[#666666] dark:text-[#666666] leading-relaxed">
                 {set.data.description}
               </p>
             )}
@@ -55,7 +55,7 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 ) : (
-                  <p class="font-mono text-[10px] uppercase text-[#d71921]">
+                  <p class="font-mono text-[12px] uppercase text-[#d71921]">
                     [ Image not found: {img.src} ]
                   </p>
                 );

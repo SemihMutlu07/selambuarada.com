@@ -26,7 +26,7 @@
     color: #e8e8e8;
   }
   .prose-nd h2 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.01em;
     margin-top: 2.5rem;
@@ -37,7 +37,7 @@
     color: #fff;
   }
   .prose-nd h3 {
-    font-size: 1rem;
+    font-size: 1.125rem;
     font-weight: 700;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
@@ -49,7 +49,7 @@
   .prose-nd p {
     margin-bottom: 1.25rem;
     line-height: 1.7;
-    font-size: 1rem;
+    font-size: 1.125rem;
   }
   .prose-nd a {
     color: #007aff;

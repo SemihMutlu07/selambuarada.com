@@ -21,7 +21,7 @@ posts.sort((a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf());
   <!-- Tertiary: back link -->
   <a
     href="/blog/tags"
-    class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
+    class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] hover:text-black dark:hover:text-white transition-colors"
   >
     ← All Tags
   </a>
@@ -41,13 +41,13 @@ posts.sort((a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf());
             </span>
             <time
               datetime={post.data.date.toISOString()}
-              class="font-mono text-[10px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0"
+              class="font-mono text-[12px] tracking-[0.06em] uppercase text-[#999999] dark:text-[#666666] shrink-0"
             >
               {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
             </time>
           </div>
           {post.data.description && (
-            <p class="mt-1 text-sm text-[#666666] dark:text-[#666666] leading-relaxed">
+            <p class="mt-1 text-base text-[#666666] dark:text-[#666666] leading-relaxed">
               {post.data.description}
             </p>
           )}
