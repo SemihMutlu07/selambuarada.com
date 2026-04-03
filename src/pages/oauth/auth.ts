@@ -7,16 +7,21 @@ export const GET: APIRoute = async ({ request }) => {
     return new Response('GITHUB_CLIENT_ID is not configured', { status: 500 });
   }
 
+  const state = crypto.randomUUID();
   const redirectUri = new URL('/oauth/callback', request.url).toString();
 
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
     scope: 'repo,user',
+    state,
   });
 
-  return Response.redirect(
-    `https://github.com/login/oauth/authorize?${params}`,
-    302,
-  );
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: `https://github.com/login/oauth/authorize?${params}`,
+      'Set-Cookie': `oauth_state=${state}; HttpOnly; Secure; SameSite=Lax; Path=/oauth; Max-Age=600`,
+    },
+  });
 };

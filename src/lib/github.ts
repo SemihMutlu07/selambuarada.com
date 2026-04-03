@@ -71,37 +71,54 @@ export async function fetchProjects(): Promise<ProjectList> {
     headers.Authorization = `Bearer ${import.meta.env.GITHUB_TOKEN}`
   }
 
-  const reposRes = await fetch(
-    `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,
-    { headers },
-  )
-  const repos: GithubRepo[] = await reposRes.json()
+  try {
+    const reposRes = await fetch(
+      `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,
+      { headers },
+    )
 
-  const filtered = repos.filter((r) => !r.fork)
+    if (!reposRes.ok) {
+      console.error(`GitHub API error: ${reposRes.status} ${reposRes.statusText}`)
+      return { nodes: [] }
+    }
 
-  const nodes: ProjectNode[] = await Promise.all(
-    filtered.map(async (repo) => {
-      const langRes = await fetch(
-        `https://api.github.com/repos/${GITHUB_USER}/${repo.name}/languages`,
-        { headers },
-      )
-      const languages: Record<string, number> = await langRes.json()
-      const totalBytes = Object.values(languages).reduce((a, b) => a + b, 0)
+    const repos: GithubRepo[] = await reposRes.json()
+    const filtered = repos.filter((r) => !r.fork)
 
-      return {
-        name: repo.name,
-        description: repo.description,
-        url: repo.html_url,
-        language: repo.language,
-        color: (repo.language && LANGUAGE_COLORS[repo.language]) || DEFAULT_COLOR,
-        languages,
-        stars: repo.stargazers_count,
-        updatedAt: repo.updated_at,
-        archived: repo.archived,
-        maturity: computeMaturity(totalBytes, repo.updated_at),
-      }
-    }),
-  )
+    const nodes: ProjectNode[] = await Promise.all(
+      filtered.map(async (repo) => {
+        let languages: Record<string, number> = {}
+        try {
+          const langRes = await fetch(
+            `https://api.github.com/repos/${GITHUB_USER}/${repo.name}/languages`,
+            { headers },
+          )
+          if (langRes.ok) {
+            languages = await langRes.json()
+          }
+        } catch {
+          // Individual language fetch failure is non-fatal
+        }
+        const totalBytes = Object.values(languages).reduce((a, b) => a + b, 0)
 
-  return { nodes }
+        return {
+          name: repo.name,
+          description: repo.description,
+          url: repo.html_url,
+          language: repo.language,
+          color: (repo.language && LANGUAGE_COLORS[repo.language]) || DEFAULT_COLOR,
+          languages,
+          stars: repo.stargazers_count,
+          updatedAt: repo.updated_at,
+          archived: repo.archived,
+          maturity: computeMaturity(totalBytes, repo.updated_at),
+        }
+      }),
+    )
+
+    return { nodes }
+  } catch (error) {
+    console.error('Failed to fetch projects from GitHub:', error)
+    return { nodes: [] }
+  }
 }
