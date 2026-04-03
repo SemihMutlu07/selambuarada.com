@@ -19,6 +19,9 @@ node_modules/
 # Internal docs
 docs/
 
+# Wrangler
+.wrangler/
+
 # Editor
 *.swp
 *.swo
@@ -27,5 +30,6 @@ docs/
 # OS
 .DS_Store
 Thumbs.db
-.aidesigner/*
-!.aidesigner/.gitkeep
+
+# Misc
+npm
