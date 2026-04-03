@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "postinstall": "node scripts/patch-cloudflare-adapter.mjs",
-    "build": "astro build",
+    "build": "astro build && node scripts/fix-wrangler-config.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

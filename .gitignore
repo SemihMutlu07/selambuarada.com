@@ -7,8 +7,10 @@ node_modules/
 
 # Environment
 .env
-.env.*
 .env.local
+.env.production
+.env.*.local
+!.env.example
 
 # Planning docs (internal, not for public repo)
 .planning/
