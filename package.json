@@ -1,5 +1,5 @@
 {
-  "name": "astro-scaffold",
+  "name": "selambuarada",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -26,7 +26,6 @@
     "@fontsource/space-mono": "^5.2.9",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.2",
-    "gsap": "^3.14.2",
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {

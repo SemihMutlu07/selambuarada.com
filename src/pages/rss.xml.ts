@@ -7,8 +7,8 @@ export async function GET(context: APIContext) {
   posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   return rss({
-    title: 'Parker Mutsuz',
-    description: 'Writing on code, film, and photography.',
+    title: 'Semih Mutlu',
+    description: 'Teknoloji, bilim ve hayat üzerine yazılar.',
     site: context.site!,
     items: posts.map((post) => ({
       title: post.data.title,

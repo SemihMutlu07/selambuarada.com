@@ -1,13 +1,1 @@
-[
-  {
-    "id": "sample-set",
-    "title": "Sample Photo Set",
-    "description": "A sample photo set to verify the gallery pipeline works. Replace with real photo sets before shipping.",
-    "images": [
-      {
-        "src": "/src/assets/photos/sample-set/sample.jpg",
-        "alt": "Sample placeholder image"
-      }
-    ]
-  }
-]
+[]
