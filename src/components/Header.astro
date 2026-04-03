@@ -132,10 +132,17 @@ const navLinks = [
 
   document.getElementById('theme-toggle')?.addEventListener('click', cycleTheme);
 
-  // Reflect system changes when in system mode
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  // Reflect system changes when in system mode, including older Safari/WebKit.
+  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const handleSystemThemeChange = () => {
     if (getThemeState() === 'system') applyTheme('system');
-  });
+  };
+
+  if (typeof colorSchemeQuery.addEventListener === 'function') {
+    colorSchemeQuery.addEventListener('change', handleSystemThemeChange);
+  } else if (typeof colorSchemeQuery.addListener === 'function') {
+    colorSchemeQuery.addListener(handleSystemThemeChange);
+  }
 
   // Mobile menu
   const menuBtn = document.getElementById('menu-toggle');
