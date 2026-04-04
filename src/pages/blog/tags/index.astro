@@ -14,21 +14,21 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
 
 <BaseLayout title="Etiketler" description="Tüm blog etiketleri.">
 
-  <h1 class="text-3xl md:text-4xl font-bold text-[#1a1a1a]">
+  <h1 class="text-3xl md:text-4xl font-bold text-[var(--c-text)]">
     Etiketler
   </h1>
 
   {tags.length === 0 ? (
-    <p class="mt-12 text-[#999]">Henüz etiket yok.</p>
+    <p class="mt-12 text-[var(--c-text-faint)]">Henüz etiket yok.</p>
   ) : (
     <div class="mt-8 md:mt-10 flex flex-wrap gap-3">
       {tags.map(([tag, count]) => (
         <a
           href={`/blog/tags/${tag}`}
-          class="flex items-center gap-2 px-4 py-2 border border-[#e0e0e0] text-sm text-[#666] hover:border-[#1a1a1a] hover:text-[#1a1a1a] transition-colors"
+          class="flex items-center gap-2 px-4 py-2 border border-[var(--c-border)] text-sm text-[var(--c-text-soft)] hover:underline underline-offset-4"
         >
           <span>{tag}</span>
-          <span class="text-xs text-[#999]">{count}</span>
+          <span class="text-xs text-[var(--c-text-faint)]">{count}</span>
         </a>
       ))}
     </div>

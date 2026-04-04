@@ -1,15 +1,44 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: 'Space Grotesk Variable', 'DM Sans', system-ui, sans-serif;
-  --font-serif: 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'Space Mono', 'JetBrains Mono', 'SF Mono', monospace;
-  --font-display: 'Doto', 'Space Mono', monospace;
+}
+
+:root {
+  --c-bg: #e8ddd0;
+  --c-surface: #FFF8F0;
+  --c-text: #4B2E2B;
+  --c-text-soft: #8C5A3C;
+  --c-text-faint: #8C5A3C;
+  --c-border: #C08552;
+  --c-accent: #C08552;
+  --c-nav: #4B2E2B;
+  --c-nav-text: #FFF8F0;
+  --c-code-bg: #4B2E2B;
+  --c-code-text: #FFF8F0;
 }
 
 @layer base {
   html {
     font-size: 20.8px; /* 16px × 1.3 = 30% increase */
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-accent) var(--c-bg);
+  }
+
+  /* Webkit scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--c-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--c-accent);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--c-text);
   }
 
   * {
@@ -24,7 +53,7 @@
 
   /* Article prose */
   .prose-nd {
-    color: #1a1a1a;
+    color: var(--c-text);
   }
   .prose-nd h2 {
     font-size: 1.5rem;
@@ -32,14 +61,14 @@
     letter-spacing: -0.01em;
     margin-top: 2.5rem;
     margin-bottom: 0.75rem;
-    color: #1a1a1a;
+    color: var(--c-text);
   }
   .prose-nd h3 {
     font-size: 1.125rem;
     font-weight: 700;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
-    color: #1a1a1a;
+    color: var(--c-text);
   }
   .prose-nd p {
     margin-bottom: 1.25rem;
@@ -47,28 +76,28 @@
     font-size: 1.125rem;
   }
   .prose-nd a {
-    color: #1a1a1a;
+    color: var(--c-text);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
   .prose-nd a:hover {
-    color: #666;
+    text-decoration: none;
   }
   .prose-nd code {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    background: #f0f0f0;
+    background: var(--c-surface);
     padding: 0.1em 0.35em;
   }
   .prose-nd pre {
     font-family: var(--font-mono);
     font-size: 0.875rem;
-    background: #1a1a1a;
-    color: #e8e8e8;
+    background: var(--c-code-bg);
+    color: var(--c-code-text);
     padding: 1.25rem;
     overflow-x: auto;
     margin-bottom: 1.5rem;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--c-border);
   }
   .prose-nd pre code {
     background: transparent;
@@ -76,9 +105,9 @@
     font-size: 1em;
   }
   .prose-nd blockquote {
-    border-left: 2px solid #e0e0e0;
+    border-left: 2px solid var(--c-accent);
     padding-left: 1rem;
-    color: #666;
+    color: var(--c-text-soft);
     margin-left: 0;
     font-style: italic;
   }
@@ -92,11 +121,11 @@
   }
   .prose-nd hr {
     border: none;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--c-border);
     margin: 2.5rem 0;
   }
   .prose-nd strong {
     font-weight: 700;
-    color: #1a1a1a;
+    color: var(--c-text);
   }
 }

@@ -7,14 +7,6 @@ import profileImg from '../assets/profile.png';
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const categories = [
-  { slug: 'tumu', label: 'Tümü' },
-  { slug: 'teknoloji', label: 'Teknoloji' },
-  { slug: 'bilim', label: 'Bilim' },
-  { slug: 'hayat', label: 'Hayat' },
-  { slug: 'notlar', label: 'Notlar' },
-];
-
 const featuredPosts = posts.slice(0, 3);
 
 function formatDate(date: Date): string {
@@ -29,9 +21,8 @@ function formatDate(date: Date): string {
 <BaseLayout title="Semih Mutlu" description="Okur, yazar, bozar, yapar. Teknoloji, bilim ve hayat üzerine yazılar.">
 
   <!-- Hero Section -->
-  <section class="py-10 md:py-14 border-b border-[#e0e0e0]">
+  <section class="py-10 md:py-14 border-b border-[var(--c-border)]">
     <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
-      <!-- Profile photo -->
       <Image
         src={profileImg}
         alt="Semih Mutlu"
@@ -41,74 +32,43 @@ function formatDate(date: Date): string {
       />
 
       <div class="text-center sm:text-left">
-        <h1 class="font-serif text-3xl md:text-4xl font-bold tracking-tight text-[#1a1a1a]">
+        <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-[var(--c-text)]">
           Semih Mutlu
         </h1>
-        <p class="mt-2 text-[#666] italic">
+        <p class="mt-2 text-[var(--c-text-soft)] italic">
           okur, yazar, bozar, yapar.
         </p>
-        <p class="mt-3 text-[#444] leading-relaxed max-w-lg">
+        <p class="mt-3 text-[var(--c-text-soft)] leading-relaxed max-w-lg">
           Teknoloji, bilim ve hayat üzerine düşüncelerimi paylaştığım kişisel blog.
           Yazılım geliştirici, meraklı okur, ara sıra filmci.
         </p>
-
       </div>
     </div>
   </section>
-
-  <!-- Category Bar -->
-  <nav class="py-4 border-b border-[#e0e0e0] flex items-center gap-2 overflow-x-auto">
-    {categories.map(({ slug, label }) => (
-      <button
-        data-category={slug}
-        class:list={[
-          'category-btn px-4 py-1.5 text-sm whitespace-nowrap transition-colors',
-          slug === 'tumu'
-            ? 'bg-[#1a1a1a] text-white'
-            : 'bg-[#f0f0f0] text-[#666] hover:bg-[#e0e0e0] hover:text-[#1a1a1a]',
-        ]}
-      >
-        {label}
-      </button>
-    ))}
-  </nav>
 
   <!-- Two Column Layout -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 py-8 md:py-12">
 
     <!-- Main: Post List -->
     <div class="lg:col-span-2">
-      <h2 class="font-serif text-xl font-bold text-[#1a1a1a] mb-6">Son Yazılar</h2>
+      <h2 class="text-xl font-bold text-[var(--c-text)] mb-6">Son Yazılar</h2>
 
       {posts.length === 0 && (
-        <p class="text-[#999]">Henüz yazı yok.</p>
+        <p class="text-[var(--c-text-faint)]">Henüz yazı yok.</p>
       )}
 
-      <div id="post-list" class="flex flex-col divide-y divide-[#e0e0e0]">
+      <div class="flex flex-col divide-y divide-[var(--c-border)]">
         {posts.map((post) => (
-          <article
-            class="post-item py-6 first:pt-0"
-            data-tags={post.data.tags.join(',')}
-          >
-            <div class="flex items-center gap-3 mb-2">
-              <time class="text-sm text-[#999]" datetime={post.data.date.toISOString()}>
-                {formatDate(post.data.date)}
-              </time>
-              {post.data.tags.slice(0, 2).map((tag) => (
-                <a
-                  href={`/blog/tags/${tag}`}
-                  class="text-xs px-2 py-0.5 bg-[#f0f0f0] text-[#666] hover:bg-[#e0e0e0] transition-colors"
-                >
-                  {tag}
-                </a>
-              ))}
-            </div>
-            <h3 class="font-serif text-lg md:text-xl font-bold text-[#1a1a1a] hover:text-[#444] transition-colors">
-              <a href={`/blog/${post.id}`}>
+          <article class="py-6 first:pt-0">
+            <time class="text-sm text-[var(--c-text-faint)]" datetime={post.data.date.toISOString()}>
+              {formatDate(post.data.date)}
+            </time>
+            <h3 class="mt-1 text-lg md:text-xl font-bold text-[var(--c-text)]">
+              <a href={`/blog/${post.id}`} class="hover:underline underline-offset-4">
                 {post.data.title}
               </a>
             </h3>
-            <p class="mt-2 text-[#666] text-sm leading-relaxed line-clamp-2">
+            <p class="mt-2 text-[var(--c-text-soft)] text-sm leading-relaxed line-clamp-2">
               {post.data.description}
             </p>
           </article>
@@ -118,28 +78,25 @@ function formatDate(date: Date): string {
 
     <!-- Sidebar -->
     <aside class="space-y-8">
-
-      <!-- Hakkımda -->
-      <div class="border border-[#e0e0e0] p-5">
-        <h3 class="font-serif text-base font-bold text-[#1a1a1a] mb-3">Hakkımda</h3>
-        <p class="text-sm text-[#666] leading-relaxed">
+      <div class="border border-[var(--c-border)] p-5">
+        <h3 class="text-base font-bold text-[var(--c-text)] mb-3">Hakkımda</h3>
+        <p class="text-sm text-[var(--c-text-soft)] leading-relaxed">
           Yazılım geliştirici, meraklı okur, filmci. Teknoloji ve bilim arasında
           köprü kurmaya çalışıyor, arada hayata dair notlar düşüyorum.
         </p>
-        <a href="/about" class="inline-block mt-3 text-sm text-[#1a1a1a] font-medium hover:text-[#666] transition-colors">
+        <a href="/about" class="inline-block mt-3 text-sm text-[var(--c-text)] font-medium hover:underline underline-offset-4">
           Devamını oku &rarr;
         </a>
       </div>
 
-      <!-- Öne Çıkanlar -->
-      <div class="border border-[#e0e0e0] p-5">
-        <h3 class="font-serif text-base font-bold text-[#1a1a1a] mb-3">Öne Çıkanlar</h3>
+      <div class="border border-[var(--c-border)] p-5">
+        <h3 class="text-base font-bold text-[var(--c-text)] mb-3">Öne Çıkanlar</h3>
         <ul class="space-y-2">
           {featuredPosts.map((post) => (
             <li>
               <a
                 href={`/blog/${post.id}`}
-                class="text-sm text-[#666] hover:text-[#1a1a1a] transition-colors leading-snug block"
+                class="text-sm text-[var(--c-text-soft)] hover:underline underline-offset-4 leading-snug block"
               >
                 {post.data.title}
               </a>
@@ -147,37 +104,7 @@ function formatDate(date: Date): string {
           ))}
         </ul>
       </div>
-
     </aside>
   </div>
 
 </BaseLayout>
-
-<script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.category-btn');
-  const posts = document.querySelectorAll<HTMLElement>('.post-item');
-
-  buttons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const category = btn.dataset.category;
-
-      // Update active button style
-      buttons.forEach((b) => {
-        b.classList.remove('bg-[#1a1a1a]', 'text-white');
-        b.classList.add('bg-[#f0f0f0]', 'text-[#666]');
-      });
-      btn.classList.remove('bg-[#f0f0f0]', 'text-[#666]');
-      btn.classList.add('bg-[#1a1a1a]', 'text-white');
-
-      // Filter posts
-      posts.forEach((post) => {
-        const tags = post.dataset.tags?.split(',') ?? [];
-        if (category === 'tumu' || tags.includes(category ?? '')) {
-          post.style.display = '';
-        } else {
-          post.style.display = 'none';
-        }
-      });
-    });
-  });
-</script>

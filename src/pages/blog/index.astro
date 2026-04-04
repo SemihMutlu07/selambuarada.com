@@ -17,41 +17,32 @@ function formatDate(date: Date): string {
 
 <BaseLayout title="Yazılar" description="Kod, film ve fotoğraf üzerine yazılar.">
 
-  <h1 class="text-3xl md:text-4xl font-bold text-[#1a1a1a]">
+  <h1 class="text-3xl md:text-4xl font-bold text-[var(--c-text)]">
     Yazılar
   </h1>
 
   {posts.length === 0 ? (
-    <p class="mt-12 text-[#999]">Henüz yazı yok.</p>
+    <p class="mt-12 text-[var(--c-text-faint)]">Henüz yazı yok.</p>
   ) : (
     <ul class="mt-8 md:mt-10 list-none p-0">
       {posts.map((post, i) => (
-        <li class:list={['border-t border-[#e0e0e0]', i === posts.length - 1 && 'border-b']}>
+        <li class:list={['border-t border-[var(--c-border)]', i === posts.length - 1 && 'border-b']}>
           <a href={`/blog/${post.id}`} class="block group py-5 md:py-6">
             <div class="flex items-baseline justify-between gap-4">
-              <span class="text-base md:text-lg font-semibold text-[#1a1a1a] group-hover:underline underline-offset-4 leading-snug font-serif">
+              <span class="text-base md:text-lg font-semibold text-[var(--c-text)] group-hover:underline underline-offset-4 leading-snug">
                 {post.data.title}
               </span>
               <time
                 datetime={post.data.date.toISOString()}
-                class="text-sm text-[#999] shrink-0"
+                class="text-sm text-[var(--c-text-faint)] shrink-0"
               >
                 {formatDate(post.data.date)}
               </time>
             </div>
             {post.data.description && (
-              <p class="mt-1.5 text-sm text-[#666] leading-relaxed">
+              <p class="mt-1.5 text-sm text-[var(--c-text-soft)] leading-relaxed">
                 {post.data.description}
               </p>
-            )}
-            {post.data.tags.length > 0 && (
-              <div class="mt-2 flex flex-wrap gap-2">
-                {post.data.tags.map((tag) => (
-                  <span class="text-xs px-2 py-0.5 bg-[#f0f0f0] text-[#666]">
-                    {tag}
-                  </span>
-                ))}
-              </div>
             )}
           </a>
         </li>

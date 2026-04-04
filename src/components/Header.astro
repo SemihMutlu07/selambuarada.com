@@ -10,11 +10,11 @@ const navLinks = [
 ];
 ---
 
-<header class="w-full">
-  <!-- Dark navbar -->
-  <nav class="bg-[#1a1a1a]">
+<div class="pt-5"></div>
+<header class="sticky top-0 z-50 w-full">
+  <nav class="bg-[var(--c-nav)]">
     <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-      <a href="/" class="font-serif text-lg font-bold text-white tracking-tight">
+      <a href="/" class="text-lg font-extrabold text-[var(--c-accent)] tracking-tight hover:underline underline-offset-4">
         Semih Mutlu
       </a>
 
@@ -28,10 +28,10 @@ const navLinks = [
             <a
               href={href}
               class:list={[
-                'text-sm transition-colors',
+                'text-sm font-semibold hover:underline underline-offset-4 transition-colors',
                 isActive
-                  ? 'text-white'
-                  : 'text-[#999] hover:text-white',
+                  ? 'text-[var(--c-nav-text)]'
+                  : 'text-[var(--c-text-faint)] hover:text-[var(--c-nav-text)]',
               ]}
             >
               {label}
@@ -43,7 +43,7 @@ const navLinks = [
       <!-- Mobile menu button -->
       <button
         id="menu-toggle"
-        class="md:hidden text-[#999] hover:text-white transition-colors"
+        class="md:hidden text-[var(--c-text-faint)] hover:text-[var(--c-nav-text)] transition-colors"
         aria-label="Menü"
       >
         <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -57,12 +57,12 @@ const navLinks = [
   </nav>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-[#1a1a1a] border-t border-[#333]">
+  <div id="mobile-menu" class="hidden md:hidden bg-[var(--c-nav)] border-t border-[var(--c-border)]">
     <div class="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-3">
       {navLinks.map(({ href, label }) => (
         <a
           href={href}
-          class="text-sm text-[#999] hover:text-white transition-colors"
+          class="text-sm font-semibold text-[var(--c-text-faint)] hover:text-[var(--c-nav-text)] hover:underline underline-offset-4 transition-colors"
         >
           {label}
         </a>

@@ -36,30 +36,14 @@ function formatDate(date: Date): string {
 >
   <article class="max-w-2xl">
     <header class="mb-8 md:mb-10">
-      <!-- Meta: date + tags -->
-      <div class="flex flex-wrap items-center gap-3 mb-4">
-        <time
-          datetime={post.data.date.toISOString()}
-          class="text-sm text-[#999]"
-        >
-          {formatDate(post.data.date)}
-        </time>
-        {post.data.tags.length > 0 && (
-          <>
-            <span class="text-[#e0e0e0]">&middot;</span>
-            {post.data.tags.map(tag => (
-              <a
-                href={`/blog/tags/${tag}`}
-                class="text-xs px-2 py-0.5 bg-[#f0f0f0] text-[#666] hover:bg-[#e0e0e0] transition-colors"
-              >
-                {tag}
-              </a>
-            ))}
-          </>
-        )}
-      </div>
+      <time
+        datetime={post.data.date.toISOString()}
+        class="text-sm text-[var(--c-text-faint)]"
+      >
+        {formatDate(post.data.date)}
+      </time>
 
-      <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a1a1a]">
+      <h1 class="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--c-text)]">
         {post.data.title}
       </h1>
     </header>
@@ -68,11 +52,10 @@ function formatDate(date: Date): string {
       <Content components={{ BlogImage, SpotifyEmbed, YouTubeEmbed }} />
     </div>
 
-    <!-- Back link -->
-    <div class="mt-12 pt-6 border-t border-[#e0e0e0]">
+    <div class="mt-12 pt-6 border-t border-[var(--c-border)]">
       <a
         href="/blog"
-        class="text-sm text-[#999] hover:text-[#1a1a1a] transition-colors"
+        class="text-sm text-[var(--c-text-faint)] hover:underline underline-offset-4"
       >
         &larr; Tüm yazılar
       </a>

@@ -17,24 +17,22 @@ const { title, year, role, embedUrl, description, credits, bts } = film.data;
 
   <a
     href="/films"
-    class="text-sm text-[#999] hover:text-[#1a1a1a] transition-colors"
+    class="text-sm text-[var(--c-text-faint)] hover:underline underline-offset-4"
   >
     &larr; Tüm filmler
   </a>
 
-  <!-- Meta -->
   <div class="flex items-center gap-3 mt-4 mb-4">
-    <span class="text-sm text-[#999]">{year}</span>
-    <span class="text-[#e0e0e0]">&middot;</span>
-    <span class="text-sm text-[#999]">{role}</span>
+    <span class="text-sm text-[var(--c-text-faint)]">{year}</span>
+    <span class="text-[var(--c-border)]">&middot;</span>
+    <span class="text-sm text-[var(--c-text-faint)]">{role}</span>
   </div>
 
-  <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a1a1a]">
+  <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--c-text)]">
     {title}
   </h1>
 
-  <!-- Video -->
-  <div class="mt-8 md:mt-10 aspect-video w-full border border-[#e0e0e0]">
+  <div class="mt-8 md:mt-10 aspect-video w-full border border-[var(--c-border)]">
     <iframe
       src={embedUrl}
       class="w-full h-full"
@@ -45,22 +43,20 @@ const { title, year, role, embedUrl, description, credits, bts } = film.data;
     ></iframe>
   </div>
 
-  <!-- About -->
   <section class="mt-10 md:mt-12 max-w-2xl">
-    <h2 class="text-lg font-bold text-[#1a1a1a] mb-3">Hakkında</h2>
-    <p class="text-base leading-relaxed text-[#444]">{description}</p>
+    <h2 class="text-lg font-bold text-[var(--c-text)] mb-3">Hakkında</h2>
+    <p class="text-base leading-relaxed text-[var(--c-text-soft)]">{description}</p>
   </section>
 
-  <!-- Credits -->
   <section class="mt-10 md:mt-12">
-    <h2 class="text-lg font-bold text-[#1a1a1a] mb-4">Ekip</h2>
+    <h2 class="text-lg font-bold text-[var(--c-text)] mb-4">Ekip</h2>
     <dl class="space-y-0">
       {credits.map((c: { role: string; name: string }, i: number) => (
-        <div class:list={['flex gap-6 py-3 border-t border-[#e0e0e0]', i === credits.length - 1 && 'border-b']}>
-          <dt class="text-sm text-[#999] min-w-[120px] shrink-0 pt-px">
+        <div class:list={['flex gap-6 py-3 border-t border-[var(--c-border)]', i === credits.length - 1 && 'border-b']}>
+          <dt class="text-sm text-[var(--c-text-faint)] min-w-[120px] shrink-0 pt-px">
             {c.role}
           </dt>
-          <dd class="text-base text-[#1a1a1a]">{c.name}</dd>
+          <dd class="text-base text-[var(--c-text)]">{c.name}</dd>
         </div>
       ))}
     </dl>
@@ -68,8 +64,8 @@ const { title, year, role, embedUrl, description, credits, bts } = film.data;
 
   {bts && (
     <section class="mt-10 md:mt-12 max-w-2xl">
-      <h2 class="text-lg font-bold text-[#1a1a1a] mb-3">Kamera Arkası</h2>
-      <p class="text-base leading-relaxed text-[#444]">{bts}</p>
+      <h2 class="text-lg font-bold text-[var(--c-text)] mb-3">Kamera Arkası</h2>
+      <p class="text-base leading-relaxed text-[var(--c-text-soft)]">{bts}</p>
     </section>
   )}
 
