@@ -10,59 +10,51 @@ const navLinks = [
 ];
 ---
 
-<div class="pt-5"></div>
-<header class="sticky top-0 z-50 w-full">
-  <nav class="bg-[var(--c-nav)]">
-    <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-      <a href="/" class="text-lg font-extrabold text-[var(--c-accent)] tracking-tight hover:underline underline-offset-4">
-        Semih Mutlu
-      </a>
+<header class="w-full border-b border-[var(--c-border)]">
+  <div class="mx-auto max-w-2xl px-4 py-4 flex items-center justify-between">
+    <a href="/" class="font-bold text-[var(--c-text)]">
+      Semih Mutlu
+    </a>
 
-      <!-- Desktop nav -->
-      <div class="hidden md:flex items-center gap-7">
-        {navLinks.map(({ href, label }) => {
-          const isActive = href === '/'
-            ? pathname === '/'
-            : pathname.startsWith(href);
-          return (
-            <a
-              href={href}
-              class:list={[
-                'text-sm font-semibold hover:underline underline-offset-4 transition-colors',
-                isActive
-                  ? 'text-[var(--c-nav-text)]'
-                  : 'text-[var(--c-text-faint)] hover:text-[var(--c-nav-text)]',
-              ]}
-            >
-              {label}
-            </a>
-          );
-        })}
-      </div>
-
-      <!-- Mobile menu button -->
-      <button
-        id="menu-toggle"
-        class="md:hidden text-[var(--c-text-faint)] hover:text-[var(--c-nav-text)] transition-colors"
-        aria-label="Menü"
-      >
-        <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+    <div class="hidden md:flex items-center gap-6">
+      {navLinks.map(({ href, label }) => {
+        const isActive = href === '/'
+          ? pathname === '/'
+          : pathname.startsWith(href);
+        return (
+          <a
+            href={href}
+            class:list={[
+              'text-sm hover:underline underline-offset-4',
+              isActive ? 'text-[var(--c-text)]' : 'text-[var(--c-text-faint)]',
+            ]}
+          >
+            {label}
+          </a>
+        );
+      })}
     </div>
-  </nav>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-[var(--c-nav)] border-t border-[var(--c-border)]">
-    <div class="mx-auto max-w-6xl px-4 py-4 flex flex-col gap-3">
+    <button
+      id="menu-toggle"
+      class="md:hidden text-[var(--c-text-faint)]"
+      aria-label="Menü"
+    >
+      <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--c-border)]">
+    <div class="mx-auto max-w-2xl px-4 py-3 flex flex-col gap-2">
       {navLinks.map(({ href, label }) => (
         <a
           href={href}
-          class="text-sm font-semibold text-[var(--c-text-faint)] hover:text-[var(--c-nav-text)] hover:underline underline-offset-4 transition-colors"
+          class="text-sm text-[var(--c-text-faint)] hover:text-[var(--c-text)] py-1"
         >
           {label}
         </a>

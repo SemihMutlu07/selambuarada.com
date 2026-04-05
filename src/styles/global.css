@@ -7,38 +7,22 @@
 }
 
 :root {
-  --c-bg: #e8ddd0;
-  --c-surface: #FFF8F0;
-  --c-text: #4B2E2B;
-  --c-text-soft: #8C5A3C;
-  --c-text-faint: #A8704E;
-  --c-border: #C08552;
-  --c-accent: #C08552;
-  --c-nav: #4B2E2B;
-  --c-nav-text: #FFF8F0;
-  --c-code-bg: #4B2E2B;
-  --c-code-text: #FFF8F0;
+  --c-bg: #ffffff;
+  --c-surface: #ffffff;
+  --c-text: #111111;
+  --c-text-soft: #555555;
+  --c-text-faint: #999999;
+  --c-border: #e0e0e0;
+  --c-accent: #111111;
+  --c-nav: #ffffff;
+  --c-nav-text: #111111;
+  --c-code-bg: #f5f5f5;
+  --c-code-text: #111111;
 }
 
 @layer base {
   html {
-    font-size: 20.8px; /* 16px × 1.3 = 30% increase */
-    scrollbar-width: thin;
-    scrollbar-color: var(--c-accent) var(--c-bg);
-  }
-
-  /* Webkit scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--c-bg);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--c-accent);
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--c-text);
+    font-size: 18px;
   }
 
   * {
@@ -47,36 +31,30 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
-    line-height: 1.15;
+    line-height: 1.2;
     letter-spacing: -0.01em;
   }
 
-  /* Article prose */
   .prose-nd {
     color: var(--c-text);
   }
   .prose-nd h2 {
     font-size: 1.5rem;
     font-weight: 700;
-    letter-spacing: -0.01em;
     margin-top: 2.5rem;
     margin-bottom: 0.75rem;
-    color: var(--c-text);
   }
   .prose-nd h3 {
     font-size: 1.125rem;
     font-weight: 700;
     margin-top: 2rem;
     margin-bottom: 0.5rem;
-    color: var(--c-text);
   }
   .prose-nd p {
     margin-bottom: 1.25rem;
     line-height: 1.7;
-    font-size: 1.125rem;
   }
   .prose-nd a {
-    color: var(--c-text);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
@@ -86,7 +64,7 @@
   .prose-nd code {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    background: var(--c-surface);
+    background: var(--c-code-bg);
     padding: 0.1em 0.35em;
   }
   .prose-nd pre {
@@ -105,7 +83,7 @@
     font-size: 1em;
   }
   .prose-nd blockquote {
-    border-left: 2px solid var(--c-accent);
+    border-left: 2px solid var(--c-border);
     padding-left: 1rem;
     color: var(--c-text-soft);
     margin-left: 0;
@@ -126,6 +104,5 @@
   }
   .prose-nd strong {
     font-weight: 700;
-    color: var(--c-text);
   }
 }

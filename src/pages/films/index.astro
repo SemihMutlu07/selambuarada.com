@@ -7,28 +7,24 @@ films.sort((a, b) => b.data.year - a.data.year);
 ---
 <BaseLayout title="Filmler" description="Kısa filmler ve video çalışmaları.">
 
-  <h1 class="text-3xl md:text-4xl font-bold text-[var(--c-text)]">
-    Filmler
-  </h1>
+  <h1 class="text-2xl font-bold">Filmler</h1>
 
   {films.length === 0 ? (
-    <p class="mt-12 text-[var(--c-text-faint)]">Henüz film yok.</p>
+    <p class="mt-6 text-[var(--c-text-faint)]">Henüz film yok.</p>
   ) : (
-    <ul class="mt-8 md:mt-10 list-none p-0">
+    <ul class="mt-8 list-none p-0">
       {films.map((film, i) => (
         <li class:list={['border-t border-[var(--c-border)]', i === films.length - 1 && 'border-b']}>
-          <a href={`/films/${film.id}`} class="block group py-5 md:py-6">
+          <a href={`/films/${film.id}`} class="block py-4 group">
             <div class="flex items-baseline justify-between gap-4">
-              <span class="text-base md:text-lg font-semibold text-[var(--c-text)] group-hover:underline underline-offset-4">
+              <span class="text-[var(--c-text)] group-hover:underline underline-offset-4">
                 {film.data.title}
               </span>
               <span class="text-sm text-[var(--c-text-faint)] shrink-0">
                 {film.data.year}
               </span>
             </div>
-            <p class="mt-1 text-sm text-[var(--c-text-soft)]">
-              {film.data.role}
-            </p>
+            <p class="mt-1 text-sm text-[var(--c-text-faint)]">{film.data.role}</p>
           </a>
         </li>
       ))}
