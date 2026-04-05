@@ -27,13 +27,25 @@ function formatDate(date: Date): string {
     day: 'numeric',
   });
 }
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: metaDesc,
+  datePublished: post.data.date.toISOString(),
+  author: { '@type': 'Person', name: 'Semih Mutlu' },
+  image: new URL(ogImage, Astro.site).toString(),
+});
 ---
 
 <BaseLayout
   title={post.data.title}
   description={metaDesc}
   ogImage={ogImage}
+  ogType="article"
 >
+  <script type="application/ld+json" set:html={jsonLd} />
   <article class="max-w-2xl">
     <header class="mb-8 md:mb-10">
       <time
