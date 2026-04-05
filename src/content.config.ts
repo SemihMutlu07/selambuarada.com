@@ -42,16 +42,4 @@ const films = defineCollection({
   }),
 });
 
-const photosets = defineCollection({
-  loader: file('./src/content/photosets.json'),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    images: z.array(z.object({
-      src: z.string(),
-      alt: z.string(),
-    })),
-  }),
-});
-
-export const collections = { blog, projects, films, photosets };
+export const collections = { blog, projects, films };
