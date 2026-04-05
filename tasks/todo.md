@@ -40,20 +40,15 @@ Durum: Tarama tamamlandı, sırayla ilerlenecek
 
 ## C. Teknik Temizlik
 
-### C1. Vercel header'ları yapılandır
-- [ ] `vercel.json` oluştur, security header'ları taşı
-- [ ] Cache-Control: `/_astro/*` için immutable
-- [ ] YouTube embed için doğru CSP frame-src
+### C1. ~~Vercel header'ları yapılandır~~ DONE (A2'de yapıldı)
+- [x] `vercel.json` oluşturuldu, security header'lar + cache + CSP taşındı
 
-### C2. projects.json boş collection uyarısı
-- [ ] Build'de "The collection 'projects' does not exist or is empty" uyarısı var
-- Noscript fallback için var ama gerçek veri GitHub API'den geliyor
-- Uyarıyı susturmak için noscript kısmını ve boş JSON'ı kaldırabiliriz
+### C2. ~~projects.json boş collection uyarısı~~ DONE
+- [x] Boş projects collection, JSON ve noscript fallback kaldırıldı
+- [x] Build warning tamamen gitti
 
-### C3. Typecheck ve lint script'leri eksik
-- [ ] `package.json`'a `"typecheck": "astro check"` ekle
-- [ ] ESLint veya Biome ekle (opsiyonel)
-- `@astrojs/check` ve `typescript` zaten devDependencies'de var ama script yok
+### C3. ~~Typecheck script'i eksik~~ DONE
+- [x] `"typecheck": "astro check"` eklendi
 
 ---
 

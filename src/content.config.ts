@@ -15,17 +15,6 @@ const blog = defineCollection({
   }),
 });
 
-const projects = defineCollection({
-  loader: file('./src/content/projects.json'),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    tech: z.array(z.string()),
-    url: z.string().url().optional(),
-    github: z.string().url().optional(),
-  }),
-});
-
 const films = defineCollection({
   loader: file('./src/content/films.json'),
   schema: z.object({
@@ -42,4 +31,4 @@ const films = defineCollection({
   }),
 });
 
-export const collections = { blog, projects, films };
+export const collections = { blog, films };

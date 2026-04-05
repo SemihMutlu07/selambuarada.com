@@ -1,10 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { fetchProjects } from '../../lib/github';
 
 const { nodes: githubProjects } = await fetchProjects();
-const projects = await getCollection('projects');
 
 const maturityOrder = { thriving: 0, healthy: 1, dormant: 2, seedling: 3 };
 const sorted = [...githubProjects].sort((a, b) => {
@@ -51,38 +49,4 @@ const sorted = [...githubProjects].sort((a, b) => {
       </a>
     ))}
   </div>
-
-  <noscript>
-    {projects.length === 0 ? (
-      <p class="mt-12 text-[var(--c-text-faint)]">Henüz proje yok.</p>
-    ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
-        {projects.map((project) => (
-          <div class="border border-[var(--c-border)] p-6">
-            <h2 class="text-lg font-bold text-[var(--c-text)]">{project.data.title}</h2>
-            <p class="mt-2 text-sm text-[var(--c-text-soft)]">{project.data.description}</p>
-            <div class="flex flex-wrap gap-2 mt-4">
-              {project.data.tech.map((item: string) => (
-                <span class="text-xs border border-[var(--c-border)] px-2 py-1 text-[var(--c-text-faint)]">
-                  {item}
-                </span>
-              ))}
-            </div>
-            <div class="flex gap-4 mt-4">
-              {project.data.url && (
-                <a href={project.data.url} target="_blank" rel="noopener" class="text-sm text-[var(--c-text-faint)] hover:underline underline-offset-4">
-                  Ziyaret et
-                </a>
-              )}
-              {project.data.github && (
-                <a href={project.data.github} target="_blank" rel="noopener" class="text-sm text-[var(--c-text-faint)] hover:underline underline-offset-4">
-                  GitHub
-                </a>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    )}
-  </noscript>
 </BaseLayout>
