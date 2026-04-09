@@ -1,4 +1,4 @@
-export const LANGUAGE_COLORS: Record<string, string> = {
+const LANGUAGE_COLORS: Record<string, string> = {
   TypeScript: '#3178C6',
   JavaScript: '#F1E05A',
   Python: '#3572A5',
@@ -19,7 +19,7 @@ export const LANGUAGE_COLORS: Record<string, string> = {
 
 const DEFAULT_COLOR = '#888888'
 
-export interface ProjectNode {
+interface ProjectNode {
   name: string
   description: string | null
   url: string
@@ -32,7 +32,7 @@ export interface ProjectNode {
   maturity: 'thriving' | 'healthy' | 'dormant' | 'seedling'
 }
 
-export interface ProjectList {
+interface ProjectList {
   nodes: ProjectNode[]
 }
 

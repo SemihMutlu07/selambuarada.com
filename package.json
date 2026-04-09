@@ -19,8 +19,13 @@
     "@astrojs/vercel": "^10.0.4",
     "@fontsource/space-mono": "^5.2.9",
     "@tailwindcss/vite": "^4.2.2",
+    "@tiptap/core": "^3.22.2",
+    "@tiptap/extension-placeholder": "^3.22.2",
+    "@tiptap/extension-typography": "^3.22.2",
+    "@tiptap/starter-kit": "^3.22.2",
     "astro": "^6.1.2",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.2",
+    "tiptap-markdown": "^0.9.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",

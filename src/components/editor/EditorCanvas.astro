@@ -1,0 +1,147 @@
+---
+import '../../styles/editor.css';
+
+interface InitMeta {
+  title?: string;
+  subtitle?: string;
+  slug?: string;
+  date?: string;
+  tags?: string[];
+  draft?: boolean;
+  og_image?: string;
+  meta_description?: string;
+}
+
+interface Props {
+  initData: {
+    meta: InitMeta;
+    body: string;
+    originalSlug: string | null;
+  };
+}
+
+const { initData } = Astro.props;
+const initJson = JSON.stringify(initData).replace(/</g, '\\u003c');
+---
+
+<div class="editor-shell">
+  <div class="editor-statusbar">
+    <div class="editor-statusbar__keys" aria-label="Editor commands"></div>
+    <div class="editor-statusbar__state" aria-live="polite"></div>
+  </div>
+
+  <div class="editor-canvas">
+    <div class="editor-meta-row">
+      <span>selambuarada · editor</span>
+      <a href="/api/auth/logout" class="editor-meta-row__logout">log out</a>
+    </div>
+
+    <textarea
+      id="editor-title"
+      class="editor-title-input"
+      rows="1"
+      placeholder="Yazının başlığı"
+      autocomplete="off"
+      spellcheck="false"
+    ></textarea>
+
+    <textarea
+      id="editor-subtitle"
+      class="editor-subtitle-input"
+      rows="1"
+      placeholder="Alt başlık — istersen boş bırak"
+      autocomplete="off"
+      spellcheck="false"
+    ></textarea>
+
+    <hr class="editor-divider" />
+
+    <div class="editor-body-wrap">
+      <div id="editor-body-ghost" class="editor-body-ghost prose-nd" aria-hidden="true">
+        <p>
+          Buraya yazının gövdesi gelecek. Yayınlanan haliyle birebir aynı
+          tipografi, aynı genişlik. Yazmaya başladığın an bu yer işaretleri
+          kaybolur.
+        </p>
+        <p>
+          Bir şeyler <strong>kalın</strong>, bir şeyler <em>italik</em>:
+          kelimeleri seç, üstünde küçük bir menü belirir. Yeni bir satırda
+          <code>/</code> yaz, blok menüsü açılır — başlık, alıntı, kod, liste,
+          resim, ayraç.
+        </p>
+        <p>
+          Resim eklemek için sürükle-bırak, yapıştır ya da <code>/</code> →
+          <em>Image</em>. Metadata için <code>Ctrl K</code>, önizleme için
+          <code>Ctrl P</code>, taslak kaydı için <code>Ctrl S</code>, yayın için
+          <code>Ctrl Shift P</code>.
+        </p>
+      </div>
+      <div id="editor-body" class="editor-body"></div>
+    </div>
+  </div>
+
+  <div id="editor-bubblemenu" class="editor-bubblemenu"></div>
+
+  <div id="editor-slashmenu" class="editor-slashmenu">
+    <div class="editor-slashmenu__hint">insert</div>
+    <ul class="editor-slashmenu__list"></ul>
+  </div>
+
+  <div id="editor-sheet-backdrop" class="editor-sheet-backdrop"></div>
+
+  <aside id="editor-sheet" class="editor-sheet" aria-label="Post metadata">
+    <header class="editor-sheet__header">
+      <span class="editor-sheet__title">metadata</span>
+      <button id="editor-sheet-close" type="button" class="editor-sheet__close" aria-label="Close">×</button>
+    </header>
+
+    <div class="editor-sheet__body">
+      <div class="editor-field">
+        <label for="meta-slug" class="editor-field__label">slug</label>
+        <input id="meta-slug" type="text" autocomplete="off" />
+        <span class="editor-field__hint">/blog/&lt;slug&gt;</span>
+      </div>
+
+      <div class="editor-field">
+        <label for="meta-date" class="editor-field__label">date</label>
+        <input id="meta-date" type="date" />
+      </div>
+
+      <div class="editor-field">
+        <label class="editor-field__label">tags</label>
+        <div id="meta-tags" class="editor-tags">
+          <input id="meta-tag-input" type="text" placeholder="add a tag and press enter" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="editor-field">
+        <label for="meta-description" class="editor-field__label">meta description</label>
+        <textarea id="meta-description" rows="3"></textarea>
+        <span class="editor-field__hint">override the subtitle for SEO</span>
+      </div>
+
+      <div class="editor-field">
+        <label for="meta-ogimage" class="editor-field__label">og image url</label>
+        <input id="meta-ogimage" type="text" autocomplete="off" placeholder="/og-image.png" />
+      </div>
+
+      <div class="editor-field">
+        <label class="editor-field__toggle">
+          <input id="meta-draft" type="checkbox" />
+          <span>keep as draft</span>
+        </label>
+      </div>
+    </div>
+
+    <footer class="editor-sheet__footer">
+      <button id="editor-sheet-done" type="button">done</button>
+    </footer>
+  </aside>
+</div>
+
+<script type="application/json" id="editor-init" is:inline set:html={initJson}></script>
+
+<script>
+  import { initEditor } from './editor.client.ts';
+  initEditor();
+</script>

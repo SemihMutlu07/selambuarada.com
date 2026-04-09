@@ -1,0 +1,74 @@
+---
+import EditorCanvas from '../../components/editor/EditorCanvas.astro';
+import { getFile } from '../../lib/github-content';
+import { parseMdx } from '../../lib/frontmatter';
+
+export const prerender = false;
+
+const slug = Astro.params.slug;
+if (!slug || typeof slug !== 'string') {
+  return Astro.redirect('/write');
+}
+
+let initData = {
+  meta: {
+    title: '',
+    subtitle: '',
+    slug,
+    date: new Date().toISOString().slice(0, 10),
+    tags: [] as string[],
+    draft: true,
+    og_image: '',
+    meta_description: '',
+  },
+  body: '',
+  originalSlug: slug,
+};
+
+let loadError: string | null = null;
+
+try {
+  const file = await getFile(`src/content/blog/${slug}.mdx`);
+  if (file) {
+    const { meta, body } = parseMdx(file.content);
+    initData = {
+      meta: {
+        title: meta.title,
+        subtitle: meta.description,
+        slug,
+        date: meta.date,
+        tags: meta.tags,
+        draft: meta.draft,
+        og_image: meta.og_image || '',
+        meta_description: meta.meta_description || '',
+      },
+      body,
+      originalSlug: slug,
+    };
+  } else {
+    loadError = `Post "${slug}" not found in repo.`;
+  }
+} catch (err) {
+  loadError = err instanceof Error ? err.message : 'failed to load post';
+}
+---
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>edit · {slug} — selambuarada</title>
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    {loadError ? (
+      <main style="max-width:42rem;margin:14vh auto;padding:0 1.5rem;font-family:system-ui,sans-serif;">
+        <p style="color:#c33;font-size:14px;">{loadError}</p>
+        <p style="margin-top:1rem;"><a href="/write" style="color:#111;">← new post</a></p>
+      </main>
+    ) : (
+      <EditorCanvas initData={initData} />
+    )}
+  </body>
+</html>

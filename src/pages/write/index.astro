@@ -1,0 +1,33 @@
+---
+import EditorCanvas from '../../components/editor/EditorCanvas.astro';
+
+export const prerender = false;
+
+const initData = {
+  meta: {
+    title: '',
+    subtitle: '',
+    slug: '',
+    date: new Date().toISOString().slice(0, 10),
+    tags: [] as string[],
+    draft: true,
+    og_image: '',
+    meta_description: '',
+  },
+  body: '',
+  originalSlug: null,
+};
+---
+
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>editor — selambuarada</title>
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <EditorCanvas initData={initData} />
+  </body>
+</html>
