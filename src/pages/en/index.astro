@@ -1,9 +1,9 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { useTranslations } from '../i18n/utils';
-import { personJsonLd, websiteJsonLd } from '../lib/seo';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+import { personJsonLd, websiteJsonLd } from '../../lib/seo';
 
-const t = useTranslations('tr');
+const t = useTranslations('en');
 ---
 
 <BaseLayout title={t('home.title')} description={t('home.description')}>
@@ -13,7 +13,7 @@ const t = useTranslations('tr');
 
   <h1 class="text-2xl font-bold">{t('home.title')}</h1>
   <p class="mt-2 text-[var(--c-text-soft)]">
-    Yazılım geliştirici, meraklı okur, ara sıra filmci.
+    Software developer, curious reader, occasional filmmaker.
   </p>
 
 </BaseLayout>

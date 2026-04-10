@@ -1,0 +1,27 @@
+---
+import { languages, type Lang } from '../i18n/translations';
+import { getLangFromUrl, switchLangUrl } from '../i18n/utils';
+
+const currentLang = getLangFromUrl(Astro.url);
+---
+
+<div class="flex items-center gap-1 text-sm">
+  {Object.entries(languages).map(([code, _label], i) => {
+    const isActive = code === currentLang;
+    return (
+      <>
+        {i > 0 && <span class="text-[var(--c-text-faint)]">&middot;</span>}
+        <a
+          href={switchLangUrl(Astro.url, code as Lang)}
+          class:list={[
+            'hover:underline underline-offset-4',
+            isActive ? 'text-[var(--c-text)]' : 'text-[var(--c-text-faint)]',
+          ]}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          {code.toUpperCase()}
+        </a>
+      </>
+    );
+  })}
+</div>

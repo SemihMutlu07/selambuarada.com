@@ -1,19 +1,19 @@
 ---
 import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import BlogImage from '../../components/mdx/BlogImage.astro';
-import SpotifyEmbed from '../../components/mdx/SpotifyEmbed.astro';
-import YouTubeEmbed from '../../components/mdx/YouTubeEmbed.astro';
-import { useTranslations, getDateLocale, localePath, getSlugFromId } from '../../i18n/utils';
-import { siteUrl } from '../../lib/seo';
-import type { Lang } from '../../i18n/translations';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogImage from '../../../components/mdx/BlogImage.astro';
+import SpotifyEmbed from '../../../components/mdx/SpotifyEmbed.astro';
+import YouTubeEmbed from '../../../components/mdx/YouTubeEmbed.astro';
+import { useTranslations, getDateLocale, localePath, getSlugFromId } from '../../../i18n/utils';
+import { siteUrl } from '../../../lib/seo';
+import type { Lang } from '../../../i18n/translations';
 
-const lang: Lang = 'tr';
+const lang: Lang = 'en';
 const t = useTranslations(lang);
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => {
-    return data.lang === 'tr' && (import.meta.env.PROD ? !data.draft : true);
+    return data.lang === 'en' && (import.meta.env.PROD ? !data.draft : true);
   });
   return posts.map(post => ({
     params: { slug: getSlugFromId(post.id) },
@@ -83,7 +83,7 @@ const breadcrumbJsonLd = JSON.stringify({
 
     <div class="mt-8 pt-4 border-t border-[var(--c-border)]">
       <p class="text-sm text-[var(--c-text-faint)]">
-        Yazan: <a href={localePath(lang, '/about')} class="hover:underline underline-offset-4">Semih Mutlu</a>
+        By: <a href={localePath(lang, '/about')} class="hover:underline underline-offset-4">Semih Mutlu</a>
       </p>
     </div>
 

@@ -1,10 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { useTranslations, getLangFromUrl, localePath } from '../../i18n/utils';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { useTranslations, localePath } from '../../../i18n/utils';
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = useTranslations('fr');
 
 const films = await getCollection('films');
 films.sort((a, b) => b.data.year - a.data.year);
@@ -19,7 +18,7 @@ films.sort((a, b) => b.data.year - a.data.year);
     <ul class="mt-8 list-none p-0">
       {films.map((film, i) => (
         <li class:list={['border-t border-[var(--c-border)]', i === films.length - 1 && 'border-b']}>
-          <a href={localePath(lang, `/films/${film.id}`)} class="block py-4 group">
+          <a href={localePath('fr', `/films/${film.id}`)} class="block py-4 group">
             <div class="flex items-baseline justify-between gap-4">
               <span class="text-[var(--c-text)] group-hover:underline underline-offset-4">
                 {film.data.title}

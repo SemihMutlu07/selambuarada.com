@@ -1,9 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
----
-<BaseLayout title="Hakkımda" description="Semih Mutlu — yazılım geliştirici, filmci.">
+import { useTranslations } from '../i18n/utils';
 
-  <h1 class="text-2xl font-bold">Hakkımda</h1>
+const t = useTranslations('tr');
+---
+<BaseLayout title={t('about.title')} description={t('about.description')}>
+
+  <h1 class="text-2xl font-bold">{t('about.title')}</h1>
 
   <div class="mt-6 space-y-4 text-[var(--c-text-soft)] leading-relaxed">
     <p>

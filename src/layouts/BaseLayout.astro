@@ -3,6 +3,8 @@ import '../styles/global.css';
 import '@fontsource/space-mono/latin-400.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { getLangFromUrl, localePath, getOgLocale, contactPath } from '../i18n/utils';
+import { defaultLang, type Lang } from '../i18n/translations';
 
 interface Props {
   title: string;
@@ -12,25 +14,74 @@ interface Props {
 }
 
 const { title, description, ogImage = '/og-image.png', ogType = 'website' } = Astro.props;
+
+const lang = (Astro.currentLocale as 'tr' | 'en' | 'fr') ?? getLangFromUrl(Astro.url);
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const absoluteOgImage = new URL(ogImage, Astro.site).toString();
+const isHome = title === 'Semih Mutlu';
+const displayTitle = isHome ? title : `${title} — Semih Mutlu`;
+
+// hreflang: strip locale prefix to get the bare path, map iletisim/contact
+const locales = ['tr', 'en', 'fr'] as const;
+let barePath = lang === defaultLang
+  ? Astro.url.pathname
+  : Astro.url.pathname.replace(new RegExp(`^/${lang}`), '') || '/';
+
+// Normalize contact page path for hreflang generation
+const barePathClean = barePath.replace(/\/$/, '') || '/';
+const isContactPage = barePathClean === '/iletisim' || barePathClean === '/contact';
+
+function hreflangUrl(loc: Lang): string {
+  if (isContactPage) {
+    return new URL(localePath(loc, contactPath(loc)), Astro.site).toString();
+  }
+  return new URL(localePath(loc, barePath), Astro.site).toString();
+}
+
+function xDefaultUrl(): string {
+  if (isContactPage) return new URL('/iletisim', Astro.site).toString();
+  return new URL(barePath, Astro.site).toString();
+}
+
+// RSS feed for current locale
+const rssFeed = lang === defaultLang ? '/rss.xml' : `/${lang}/rss.xml`;
 ---
 
-<html lang="tr">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <title>{displayTitle}</title>
     {description && <meta name="description" content={description} />}
+    <meta name="author" content="Semih Mutlu" />
     <link rel="canonical" href={canonicalUrl.toString()} />
+
+    <!-- hreflang alternates -->
+    {locales.map((loc) => (
+      <link
+        rel="alternate"
+        hreflang={loc}
+        href={hreflangUrl(loc)}
+      />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={xDefaultUrl()} />
+
+    <!-- Open Graph -->
     <meta property="og:url" content={canonicalUrl.toString()} />
     <meta property="og:type" content={ogType} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={displayTitle} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:site_name" content="Semih Mutlu" />
+    <meta property="og:locale" content={getOgLocale(lang)} />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={absoluteOgImage} />
-    <link rel="alternate" type="application/rss+xml" title="Semih Mutlu" href="/rss.xml" />
+    <meta name="twitter:site" content="@semihlaki" />
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="Semih Mutlu" href={rssFeed} />
   </head>
   <body class="font-sans bg-[var(--c-bg)] text-[var(--c-text)] min-h-dvh flex flex-col">
     <Header />

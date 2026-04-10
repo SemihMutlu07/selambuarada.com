@@ -1,44 +1,51 @@
 ---
+import { getLangFromUrl, useTranslations, localePath, contactPath } from '../i18n/utils';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 const pathname = Astro.url.pathname;
 
 const navLinks = [
-  { href: '/about', label: 'Hakkımda' },
-  { href: '/blog', label: 'Yazılar' },
-  { href: '/projects', label: 'Projeler' },
-  { href: '/films', label: 'Filmler' },
-  { href: '/iletisim', label: 'İletişim' },
+  { path: '/about', label: t('nav.about') },
+  { path: '/blog', label: t('nav.blog') },
+  { path: '/projects', label: t('nav.projects') },
+  { path: '/films', label: t('nav.films') },
+  { path: contactPath(lang), label: t('nav.contact') },
 ];
+
+function isActive(linkPath: string): boolean {
+  const href = localePath(lang, linkPath);
+  if (href === '/' || href === `/${lang}`) return pathname === href;
+  return pathname.startsWith(href);
+}
 ---
 
 <header class="w-full border-b border-[var(--c-border)]">
   <div class="mx-auto max-w-2xl px-4 py-4 flex items-center justify-between">
-    <a href="/" class="font-bold text-[var(--c-text)]">
+    <a href={localePath(lang, '/')} class="font-bold text-[var(--c-text)]">
       Semih Mutlu
     </a>
 
     <div class="hidden md:flex items-center gap-6">
-      {navLinks.map(({ href, label }) => {
-        const isActive = href === '/'
-          ? pathname === '/'
-          : pathname.startsWith(href);
-        return (
-          <a
-            href={href}
-            class:list={[
-              'text-sm hover:underline underline-offset-4',
-              isActive ? 'text-[var(--c-text)]' : 'text-[var(--c-text-faint)]',
-            ]}
-          >
-            {label}
-          </a>
-        );
-      })}
+      {navLinks.map(({ path, label }) => (
+        <a
+          href={localePath(lang, path)}
+          class:list={[
+            'text-sm hover:underline underline-offset-4',
+            isActive(path) ? 'text-[var(--c-text)]' : 'text-[var(--c-text-faint)]',
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+      <LanguageSwitcher />
     </div>
 
     <button
       id="menu-toggle"
       class="md:hidden text-[var(--c-text-faint)]"
-      aria-label="Menü"
+      aria-label={t('nav.menu')}
     >
       <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -51,14 +58,17 @@ const navLinks = [
 
   <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--c-border)]">
     <div class="mx-auto max-w-2xl px-4 py-3 flex flex-col gap-2">
-      {navLinks.map(({ href, label }) => (
+      {navLinks.map(({ path, label }) => (
         <a
-          href={href}
+          href={localePath(lang, path)}
           class="text-sm text-[var(--c-text-faint)] hover:text-[var(--c-text)] py-1"
         >
           {label}
         </a>
       ))}
+      <div class="pt-2 border-t border-[var(--c-border)]">
+        <LanguageSwitcher />
+      </div>
     </div>
   </div>
 </header>

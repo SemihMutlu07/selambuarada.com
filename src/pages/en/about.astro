@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+const t = useTranslations('en');
+---
+<BaseLayout title={t('about.title')} description={t('about.description')}>
+
+  <h1 class="text-2xl font-bold">{t('about.title')}</h1>
+
+  <div class="mt-6 space-y-4 text-[var(--c-text-soft)] leading-relaxed">
+    <p>
+      I'm a software developer, filmmaker, and photographer. I move between code, film,
+      and photography — each one feeds the other, and I'm still figuring out how.
+    </p>
+
+    <p>
+      On the software side, I build tools that prioritize simplicity and directness — products
+      where the interface steps aside and lets people do their work. On the film side, I'm drawn
+      to quiet subjects: craftspeople, production processes, the unglamorous hours before the
+      interesting part. Photography is where I slow down; a single frame has to carry everything
+      that video can spread across time.
+    </p>
+
+    <p>
+      This site holds it all together — writing, projects, films, and photos — none subordinate
+      to the other.
+    </p>
+  </div>
+
+  <p class="mt-8">
+    <a href="mailto:semihmutlu220@gmail.com" class="text-sm text-[var(--c-text-faint)] hover:underline underline-offset-4">
+      semihmutlu220@gmail.com
+    </a>
+  </p>
+
+</BaseLayout>

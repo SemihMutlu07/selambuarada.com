@@ -30,7 +30,7 @@ function todayISO(): string {
 }
 
 function buildPath(slug: string): string {
-  return `src/content/blog/${slug}.mdx`;
+  return `src/content/blog/tr/${slug}.mdx`;
 }
 
 export const POST: APIRoute = async ({ request }) => {

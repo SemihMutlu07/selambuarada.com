@@ -1,10 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { useTranslations, getDateLocale, localePath, getSlugFromId } from '../../i18n/utils';
-import type { Lang } from '../../i18n/translations';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { useTranslations, getDateLocale, localePath, getSlugFromId } from '../../../i18n/utils';
+import type { Lang } from '../../../i18n/translations';
 
-const lang: Lang = 'tr';
+const lang: Lang = 'en';
 const t = useTranslations(lang);
 
 const allPosts = await getCollection('blog', ({ data }) => {

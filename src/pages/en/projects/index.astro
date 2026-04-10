@@ -1,10 +1,9 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { fetchProjects } from '../../lib/github';
-import { useTranslations, getLangFromUrl } from '../../i18n/utils';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { fetchProjects } from '../../../lib/github';
+import { useTranslations } from '../../../i18n/utils';
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const t = useTranslations('en');
 
 const { nodes: githubProjects } = await fetchProjects();
 
